@@ -1,0 +1,72 @@
+#+TITLE: The Epsilon Greedy Algorithm
+* Background
+  This is an implementation of the Epsilon Greedy algorithm to find solutions for the multi-arm-bandit problem.
+* Imports
+#+BEGIN_SRC python :noweb-ref imports
+# pypi
+import numpy
+#+END_SRC
+
+* Epsilon Greedy
+  The /epsilon-greedy/ algorithm tries to solve the exploitation-exploration dilemna by exploring a fraction of the time (set by /epsilon/) and using the best solution found so far the rest of the time. This implementation is based on the one in Bandit Algorithms for Website Optimization[fn:ba].
+
+#+BEGIN_SRC python :tangle epsilon_greedy.py
+<<imports>>
+
+class EpsilonGreedy(object):
+    """The Epsilon Greedy Algorithm
+
+    Args:
+     epsilon (float): fraction of the time to explore
+     arms (list): collection of bandits to pull
+    """
+<<constructor>>
+<<best-arm>>
+<<counts>>
+<<rewards>>
+<<select-arm>>
+<<update>>
+<<reset>>
+<<call>>
+#+END_SRC
+** The Constructor
+   The constructor takes two arguments - /epsilon/ and /arms/. The /arms/ list should contain bandits that return a reward or penalty when pulled (called).
+
+#+BEGIN_SRC python :noweb-ref constructor
+    def __init__(self, epsilon, arms):
+        self.epsilon = epsilon
+        self.arms = arms
+        self._count = None
+        self._rewards = None
+        return
+#+END_SRC
+
+** Best Arm
+   The =best_arm= property returns the index of the arm that has the highest average reward so far. It returns the index instead of the arm itself because it's used to get the matching counts and rewards in the =update= method.
+
+#+BEGIN_SRC python :noweb-ref best-arm
+    @property
+    def best_arm(self):
+        """Index of the arm with the most reward"""
+        index = max(self.rewards)        
+        return self.rewards.index(index)
+#+END_SRC
+
+** Rewards
+   The =rewards= attributes holds the running average reward that each arm has returned.
+
+#+BEGIN_SRC python :noweb-ref rewards
+    @property
+    def rewards(self):
+        """array of running average of rewards for each arms
+
+        Returns:
+         numpy.array: running averages
+        """
+        if self._rewards is None:
+            self._rewards = numpy.zeros(len(self.arms))
+        return self._rewards
+#+END_SRC
+* References
+
+[fn:ba] Bandit Algorithms for Website Optimization by John Myles White. Copyright 2013 John Myles White, 978-1-449-34133-6
