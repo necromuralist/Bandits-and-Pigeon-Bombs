@@ -11,3 +11,9 @@ Scenario: The best-arm is retrieved
   And the Epsilon Greedy object has been called
   When the best-arm is retrieved
   Then it is the arm with the most reward so far
+
+Scenario: The counts are retrieved
+  Given A created Epsilon Greedy object
+  When the counts are retrieved
+  Then they are an array of zeros
+  And they have the same length as the arms

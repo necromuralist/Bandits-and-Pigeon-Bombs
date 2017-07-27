@@ -7,6 +7,7 @@ import random
 # pypi
 from expects import (
     be,
+    be_true,
     equal,
     expect,
 )
@@ -15,6 +16,7 @@ from pytest_bdd import (
     then,
     when,
 )
+import numpy
 import pytest_bdd
 
 # testing
@@ -22,6 +24,7 @@ from .fixtures import context
 from ..epsilon_greedy import EpsilonGreedy
 
 scenario = partial(pytest_bdd.scenario, "epsilon_greedy.feature")
+and_also = then
 And = when
 and_given = given
 
@@ -73,7 +76,9 @@ def test_best_arm():
 
 
 @and_given("the Epsilon Greedy object has been called")
-def setup_epsilon_greedy_call_simulation():
+def setup_epsilon_greedy_call_simulation(context):
+    context.algorithm._rewards = numpy.array([5, 10, 2])
+    context.expected = 1
     return
 
 
@@ -86,4 +91,30 @@ def get_best_arm(context):
 @then("it is the arm with the most reward so far")
 def check_best_arm(context):
     expect(context.best_arm).to(equal(context.expected))
+    return
+
+# ******************** counts ******************** #
+
+
+@scenario("The counts are retrieved")
+def test_counts():
+    return
+
+#  Given A created Epsilon Greedy object
+
+
+@when("the counts are retrieved")
+def get_counts(context):
+    context.actual = context.algorithm.counts
+    return
+
+
+@then("they are an array of zeros")
+def check_zeros(context):
+    expect(all(context.actual == 0)).to(be_true)
+    return
+
+
+@and_also("they have the same length as the arms")
+def check_length():
     return

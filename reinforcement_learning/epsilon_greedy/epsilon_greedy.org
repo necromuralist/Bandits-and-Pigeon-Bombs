@@ -4,7 +4,30 @@
 * Imports
 #+BEGIN_SRC python :noweb-ref imports
 # pypi
+from numba import jit
 import numpy
+#+END_SRC
+
+* Find First
+  This is a helper function to find the first matching item in an array-like collection.
+
+#+BEGIN_SRC python :noweb-ref find-first
+@jit
+def find_first(item, vector):
+    """find the first item in the vector
+
+    Args:
+     item: thing to match
+     vector: thing to search
+
+    Returns:
+     value: index of first matching item, -1 if not found
+    """
+    for index in range(len(vector)):
+        if item == vector[index]:
+            return index
+    return -1
+        
 #+END_SRC
 
 * Epsilon Greedy
@@ -12,6 +35,8 @@ import numpy
 
 #+BEGIN_SRC python :tangle epsilon_greedy.py
 <<imports>>
+
+<<find-first>>
 
 class EpsilonGreedy(object):
     """The Epsilon Greedy Algorithm
@@ -36,7 +61,7 @@ class EpsilonGreedy(object):
     def __init__(self, epsilon, arms):
         self.epsilon = epsilon
         self.arms = arms
-        self._count = None
+        self._counts = None
         self._rewards = None
         return
 #+END_SRC
@@ -48,10 +73,24 @@ class EpsilonGreedy(object):
     @property
     def best_arm(self):
         """Index of the arm with the most reward"""
-        index = max(self.rewards)        
-        return self.rewards.index(index)
+        index = self.rewards.max()
+        return find_first(index, self.rewards)
 #+END_SRC
+** Counts
+   The `counts` keeps track of the number of times each arm is pulled.
 
+#+BEGIN_SRC python :noweb-ref counts
+    @property
+    def counts(self):
+        """counts of times each arm is pulled
+
+        Returns:
+         numpy.array: array of counts
+        """
+        if self._counts is None:
+            self._counts = numpy.zeros(len(self.arms))
+        return self._counts
+#+END_SRC
 ** Rewards
    The =rewards= attributes holds the running average reward that each arm has returned.
 
