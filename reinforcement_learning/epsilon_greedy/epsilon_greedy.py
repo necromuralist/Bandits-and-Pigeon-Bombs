@@ -1,3 +1,5 @@
+# python
+import random
 # pypi
 from numba import jit
 import numpy
@@ -57,3 +59,27 @@ class EpsilonGreedy(object):
         if self._rewards is None:
             self._rewards = numpy.zeros(len(self.arms))
         return self._rewards
+    def select_arm(self):
+        """chooses the next arm to update
+
+        Returns:
+         int: index of the next arm to pull
+        """
+        if random.random() < self.epsilon:
+            return random.randrange(len(self.arms))
+        return self.best_arm
+
+    def reset(self):
+        """sets the counts and rewards to None
+
+        This lets you re-used the EpsilonGreedy without re-constructing
+        the arms
+        """
+        self._counts = None
+        self._rewards = None
+        return
+    def __call__(self):
+        """chooses an arm and updates the rewards"""
+        arm = self.select_arm()
+        self.update(arm)
+        return

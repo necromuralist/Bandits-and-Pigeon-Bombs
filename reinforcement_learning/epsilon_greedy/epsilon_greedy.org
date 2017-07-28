@@ -3,6 +3,8 @@
   This is an implementation of the Epsilon Greedy algorithm to find solutions for the multi-arm-bandit problem.
 * Imports
 #+BEGIN_SRC python :noweb-ref imports
+# python
+import random
 # pypi
 from numba import jit
 import numpy
@@ -106,6 +108,45 @@ class EpsilonGreedy(object):
             self._rewards = numpy.zeros(len(self.arms))
         return self._rewards
 #+END_SRC
+** Reset
+#+BEGIN_SRC python :noweb-ref reset
+    def reset(self):
+        """sets the counts and rewards to None
+
+        This lets you re-used the EpsilonGreedy without re-constructing
+        the arms
+        """
+        self._counts = None
+        self._rewards = None
+        return
+#+END_SRC
+
+** Select Arm
+   The /select_arm/ method will choose either the best arm or a random one based on a randomly drawn value and how it compares to epsilon.
+
+#+BEGIN_SRC python :noweb-ref select-arm
+    def select_arm(self):
+        """chooses the next arm to update
+
+        Returns:
+         int: index of the next arm to pull
+        """
+        if random.random() < self.epsilon:
+            return random.randrange(len(self.arms))
+        return self.best_arm
+#+END_SRC
+
+** Call
+   The /__call__/ method will be the main update method that unifies the naming conventions found in the books.
+
+#+BEGIN_SRC python :noweb-ref call
+    def __call__(self):
+        """chooses an arm and updates the rewards"""
+        arm = self.select_arm()
+        self.update(arm)
+        return
+#+END_SRC
+
 * References
 
 [fn:ba] Bandit Algorithms for Website Optimization by John Myles White. Copyright 2013 John Myles White, 978-1-449-34133-6
