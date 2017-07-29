@@ -272,15 +272,26 @@ def test_update():
 
 @when("the update method is called")
 def call_update(context):
-|     context.arm = random.randrange(len(context.arms))
-|     return
+    context.arm = random.randrange(len(context.arms))
+    pulls = [1, 0, 1, 1]
+    context.expected_count = len(pulls)
+    context.expected_reward = 0.75
+    def side_effect():
+        return pulls.pop()
+
+    context.arms[context.arm].side_effect = side_effect
+    for pull in range(len(pulls)):
+        context.algorithm.update(context.arm)
+    return
 
 
-| @then("the count is updated")
-| def check_count():
-|     return
+@then("the count is updated")
+def check_count(context):
+    expect(context.algorithm.counts[context.arm]).to(equal(context.expected_count))
+    return
 
 
 @and_also("the reward is updated")
-def check_reward():
+def check_reward(context):
+    expect(context.algorithm.rewards[context.arm]).to(equal(context.expected_reward))
     return

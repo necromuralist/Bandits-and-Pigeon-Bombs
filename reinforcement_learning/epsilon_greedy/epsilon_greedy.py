@@ -34,34 +34,38 @@ class EpsilonGreedy(object):
         self._counts = None
         self._rewards = None
         return
+
     @property
     def best_arm(self):
         """Index of the arm with the most reward"""
         index = self.rewards.max()
         return find_first(index, self.rewards)
+
     @property
     def counts(self):
         """counts of times each arm is pulled
-
+    
         Returns:
          numpy.array: array of counts
         """
         if self._counts is None:
-            self._counts = numpy.zeros(len(self.arms))
+            self._counts = numpy.zeros(len(self.arms), dtype=int)
         return self._counts
+
     @property
     def rewards(self):
         """array of running average of rewards for each arms
-
+    
         Returns:
          numpy.array: running averages
         """
         if self._rewards is None:
             self._rewards = numpy.zeros(len(self.arms))
         return self._rewards
+
     def select_arm(self):
         """chooses the next arm to update
-
+    
         Returns:
          int: index of the next arm to pull
         """
@@ -69,15 +73,30 @@ class EpsilonGreedy(object):
             return random.randrange(len(self.arms))
         return self.best_arm
 
+    def update(self, arm):
+        """pulls the arm and updates the value
+    
+        Args:
+         arm (int): index of the arm to pull
+        """
+        self.counts[arm] += 1
+        count = self.counts[arm]
+        average_reward = self.rewards[arm]
+        reward = self.arms[arm]()
+        self.rewards[arm] = (((count - 1)/float(count)) * average_reward
+                            + (reward/float(count)))
+        return
+
     def reset(self):
         """sets the counts and rewards to None
-
+    
         This lets you re-used the EpsilonGreedy without re-constructing
         the arms
         """
         self._counts = None
         self._rewards = None
         return
+
     def __call__(self):
         """chooses an arm and updates the rewards"""
         arm = self.select_arm()
