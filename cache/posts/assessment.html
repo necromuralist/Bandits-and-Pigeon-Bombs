@@ -1,0 +1,243 @@
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#introduction" id="id1">1 Introduction</a></li>
+<li><a class="reference internal" href="#imports" id="id2">2 Imports</a></li>
+<li><a class="reference internal" href="#set-up-the-plotting" id="id3">3 Set-up the Plotting</a></li>
+<li><a class="reference internal" href="#the-probabilities" id="id4">4 The Probabilities</a><ul>
+<li><a class="reference internal" href="#generate-the-probabilities" id="id5">4.1 Generate the Probabilities</a></li>
+<li><a class="reference internal" href="#inspecting-the-outcome" id="id6">4.2 Inspecting the Outcome</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#average-reward" id="id7">5 Average Reward</a></li>
+<li><a class="reference internal" href="#cumulative-reward" id="id8">6 Cumulative Reward</a><ul>
+<li><a class="reference internal" href="#imbalanced-case" id="id9">6.1 Imbalanced Case</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h1><a class="toc-backref" href="#id1">1 Introduction</a></h1>
+<p>This is one of the ways to characterize the performance of the <em>Epsilon Greedy</em> agent using our <em>Bernoulli Arm</em>. We are going to look at three ways to evaluate how well the algorithm does.</p>
+<ul class="simple">
+<li>probability of using the best arm</li>
+<li>average reward</li>
+<li>cumulative reward</li>
+</ul>
+</div>
+<div class="section" id="imports">
+<h1><a class="toc-backref" href="#id2">2 Imports</a></h1>
+<pre class="code ipython"><a name="rest_code_842d8d744c964e7fb47671b77d0eb90c-1"></a><span class="c1"># python standard library</span>
+<a name="rest_code_842d8d744c964e7fb47671b77d0eb90c-2"></a><span class="kn">import</span> <span class="nn">random</span>
+<a name="rest_code_842d8d744c964e7fb47671b77d0eb90c-3"></a><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<a name="rest_code_842d8d744c964e7fb47671b77d0eb90c-4"></a>
+<a name="rest_code_842d8d744c964e7fb47671b77d0eb90c-5"></a><span class="c1"># pypi</span>
+<a name="rest_code_842d8d744c964e7fb47671b77d0eb90c-6"></a><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
+<a name="rest_code_842d8d744c964e7fb47671b77d0eb90c-7"></a><span class="kn">import</span> <span class="nn">numpy</span>
+<a name="rest_code_842d8d744c964e7fb47671b77d0eb90c-8"></a><span class="kn">import</span> <span class="nn">pandas</span>
+<a name="rest_code_842d8d744c964e7fb47671b77d0eb90c-9"></a><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plot</span>
+<a name="rest_code_842d8d744c964e7fb47671b77d0eb90c-10"></a><span class="kn">import</span> <span class="nn">seaborn</span>
+<a name="rest_code_842d8d744c964e7fb47671b77d0eb90c-11"></a>
+<a name="rest_code_842d8d744c964e7fb47671b77d0eb90c-12"></a><span class="c1"># this project</span>
+<a name="rest_code_842d8d744c964e7fb47671b77d0eb90c-13"></a><span class="kn">from</span> <span class="nn">epsilon_greedy</span> <span class="kn">import</span> <span class="p">(</span>
+<a name="rest_code_842d8d744c964e7fb47671b77d0eb90c-14"></a>    <span class="n">EpsilonGreedy</span><span class="p">,</span>
+<a name="rest_code_842d8d744c964e7fb47671b77d0eb90c-15"></a>    <span class="n">find_first</span>
+<a name="rest_code_842d8d744c964e7fb47671b77d0eb90c-16"></a><span class="p">)</span>
+<a name="rest_code_842d8d744c964e7fb47671b77d0eb90c-17"></a><span class="kn">from</span> <span class="nn">epsilon_greedy_optimized</span> <span class="kn">import</span> <span class="n">EpsilonGreedyOptimized</span>
+<a name="rest_code_842d8d744c964e7fb47671b77d0eb90c-18"></a><span class="kn">from</span> <span class="nn">bernoulli_arm</span> <span class="kn">import</span> <span class="n">BernoulliArm</span>
+</pre></div>
+<div class="section" id="set-up-the-plotting">
+<h1><a class="toc-backref" href="#id3">3 Set-up the Plotting</a></h1>
+<p>This will enable the plotting and set the style.</p>
+<pre class="code ipython"><a name="rest_code_b8559ac8c1f64d7a9ccc73b48f5efa60-1"></a><span class="o">%</span><span class="k">matplotlib</span> inline
+<a name="rest_code_b8559ac8c1f64d7a9ccc73b48f5efa60-2"></a><span class="n">seaborn</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
+</pre></div>
+<div class="section" id="the-probabilities">
+<h1><a class="toc-backref" href="#id4">4 The Probabilities</a></h1>
+<div class="section" id="generate-the-probabilities">
+<h2><a class="toc-backref" href="#id5">4.1 Generate the Probabilities</a></h2>
+<p>This code will run generate the probabilities. Although I made it so that using the <tt class="docutils literal">EpsilonGreedy</tt> call method would both choose the arm and update the reward, in this case we need to know which arm was selected so I'm going to do the steps individually.</p>
+<pre class="code ipython"><a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-1"></a><span class="k">def</span> <span class="nf">generate_probabilities</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">trials</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-2"></a>    <span class="sd">&quot;&quot;&quot;this generates the probabilites for finding the best arm</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-3"></a>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-4"></a><span class="sd">    Args:</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-5"></a><span class="sd">     trials (int): number of times to train the agent</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-6"></a><span class="sd">     times (int): length of time to train the agent</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-7"></a><span class="sd">    Returns:</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-8"></a><span class="sd">     Dict: the probabilites for each epsilon over time</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-9"></a><span class="sd">     &quot;&quot;&quot;</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-10"></a>    <span class="n">arm_probabilities</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-11"></a>    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">arm_probabilities</span><span class="p">)</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-12"></a>    <span class="n">best_arm</span> <span class="o">=</span> <span class="n">arm_probabilities</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">arm_probabilities</span><span class="p">))</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-13"></a>    <span class="n">arms</span> <span class="o">=</span> <span class="p">[</span><span class="n">BernoulliArm</span><span class="p">(</span><span class="n">probability</span><span class="p">)</span> <span class="k">for</span> <span class="n">probability</span> <span class="ow">in</span> <span class="n">arm_probabilities</span><span class="p">]</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-14"></a>    <span class="n">epsilons</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-15"></a>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-16"></a>    <span class="n">outcomes</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-17"></a>    <span class="k">for</span> <span class="n">epsilon</span> <span class="ow">in</span> <span class="n">epsilons</span><span class="p">:</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-18"></a>        <span class="n">agent</span> <span class="o">=</span> <span class="n">EpsilonGreedy</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">arms</span><span class="p">)</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-19"></a>        <span class="n">probabilities</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-20"></a>        <span class="k">for</span> <span class="n">trial</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">trials</span><span class="p">):</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-21"></a>            <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">times</span><span class="p">):</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-22"></a>                <span class="n">arm</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">select_arm</span><span class="p">()</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-23"></a>                <span class="n">agent</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">arm</span><span class="p">)</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-24"></a>                <span class="k">if</span> <span class="n">arm</span> <span class="o">==</span> <span class="n">best_arm</span><span class="p">:</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-25"></a>                    <span class="n">probabilities</span><span class="p">[</span><span class="n">time</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-26"></a>            <span class="n">agent</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-27"></a>        <span class="n">outcomes</span><span class="p">[</span><span class="s2">&quot;Epsilon {:.02f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)]</span> <span class="o">=</span> <span class="n">probabilities</span><span class="o">/</span><span class="n">times</span>
+<a name="rest_code_238f478030fc4d048d6ba8a4afc0a692-28"></a>    <span class="k">return</span> <span class="n">outcomes</span>
+</pre></div>
+<div class="section" id="inspecting-the-outcome">
+<h2><a class="toc-backref" href="#id6">4.2 Inspecting the Outcome</a></h2>
+<pre class="code ipython"><a name="rest_code_20af9eb454004c5095a278bcc8d3102a-1"></a><span class="n">TRIALS</span> <span class="o">=</span> <span class="mi">5000</span>
+<a name="rest_code_20af9eb454004c5095a278bcc8d3102a-2"></a><span class="n">TIMES</span> <span class="o">=</span> <span class="mi">400</span>
+</pre><pre class="code ipython"><a name="rest_code_3719a2305a4e4c819811f519de24fc1a-1"></a><span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<a name="rest_code_3719a2305a4e4c819811f519de24fc1a-2"></a><span class="n">probabilities</span> <span class="o">=</span> <span class="n">generate_probabilities</span><span class="p">(</span><span class="n">trials</span><span class="o">=</span><span class="n">TRIALS</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">TIMES</span><span class="p">)</span>
+<a name="rest_code_3719a2305a4e4c819811f519de24fc1a-3"></a><span class="k">print</span><span class="p">(</span><span class="s2">&quot;Run Time: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">))</span>
+<a name="rest_code_3719a2305a4e4c819811f519de24fc1a-4"></a><span class="n">probabilities</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">probabilities</span><span class="p">)</span>
+<a name="rest_code_3719a2305a4e4c819811f519de24fc1a-5"></a><span class="n">probabilities</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre><pre class="literal-block">
+       Epsilon 0.05  Epsilon 0.10  Epsilon 0.20  Epsilon 0.30  Epsilon 0.40  \
+count    400.000000    400.000000    400.000000    400.000000    400.000000
+mean       8.784956      9.971200      9.801344      9.084844      8.235194
+std        3.064916      2.523568      1.775677      1.319447      0.998305
+min        0.120000      0.275000      0.495000      0.757500      1.050000
+25%        7.141875      9.740000     10.264375      9.390000      8.409375
+50%        9.937500     11.187500     10.456250      9.475000      8.480000
+75%       11.225000     11.457500     10.515000      9.530625      8.545000
+max       11.720000     11.605000     10.727500      9.665000      8.712500
+
+       Epsilon 0.50
+count    400.000000
+mean       7.310087
+std        0.763259
+min        1.190000
+25%        7.406875
+50%        7.473750
+75%        7.535625
+max        7.725000
+</pre>
+<pre class="code ipython"><a name="rest_code_2be0449551b84ecba5cd12c16acc7190-1"></a><span class="n">probabilities</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;epsilon_greedy_accuracy.csv&quot;</span><span class="p">)</span>
+</pre><pre class="code ipython"><a name="rest_code_ea16d81e05c946dfba5634dc80d617e7-1"></a><span class="n">figure</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<a name="rest_code_ea16d81e05c946dfba5634dc80d617e7-2"></a><span class="n">axe</span> <span class="o">=</span> <span class="n">figure</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<a name="rest_code_ea16d81e05c946dfba5634dc80d617e7-3"></a><span class="n">axe</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Accuracy of the Epsilon Greedy Algorithm ({} trials)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">TRIALS</span><span class="p">))</span>
+<a name="rest_code_ea16d81e05c946dfba5634dc80d617e7-4"></a><span class="n">axe</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (number of pulls on the arm)&quot;</span><span class="p">)</span>
+<a name="rest_code_ea16d81e05c946dfba5634dc80d617e7-5"></a><span class="n">axe</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Probability of retrieving the best arm&quot;</span><span class="p">)</span>
+<a name="rest_code_ea16d81e05c946dfba5634dc80d617e7-6"></a><span class="n">probabilities</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axe</span><span class="p">)</span>
+</pre><img alt="epsilon_greedy_probablilities.png" src="epsilon_greedy_probablilities.png" />
+<p>Looking at the plots, it appears that the epsilons greater than 0.05 converge faster that 0.05 (their curves are steeper at the beginning), as you would expect, but they also don't do as well in the long run, as you might also expect, since they're doing more exploration. In the long run, the more exploitation, the better the profit, but I suppose it depends on the window you have to work with, if you have a short one, then the more aggresive explorers might be better. Anything less than 350 would do better with 0.1 rather than 0.05, for instance.</p>
+</div>
+</div>
+<div class="section" id="average-reward">
+<h1><a class="toc-backref" href="#id7">5 Average Reward</a></h1>
+<p>One of the things to note about the previous trials is that there was one arm that did notably better than all the others. When they are more uniform using the probability of retrieving the best arm might not be as revealing. Instead, using the average reward so far would give us more information.</p>
+<pre class="code ipython"><a name="rest_code_832685b26783430788086575214384a8-1"></a><span class="nd">@jit</span>
+<a name="rest_code_832685b26783430788086575214384a8-2"></a><span class="k">def</span> <span class="nf">average_reward</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">trials</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<a name="rest_code_832685b26783430788086575214384a8-3"></a>    <span class="sd">&quot;&quot;&quot;this generates the probabilites for finding the best arm</span>
+<a name="rest_code_832685b26783430788086575214384a8-4"></a>
+<a name="rest_code_832685b26783430788086575214384a8-5"></a><span class="sd">    Args:</span>
+<a name="rest_code_832685b26783430788086575214384a8-6"></a><span class="sd">     trials (int): number of times to train the agent</span>
+<a name="rest_code_832685b26783430788086575214384a8-7"></a><span class="sd">     times (int): length of time to train the agent</span>
+<a name="rest_code_832685b26783430788086575214384a8-8"></a><span class="sd">    Returns:</span>
+<a name="rest_code_832685b26783430788086575214384a8-9"></a><span class="sd">     Dict: the probabilites for each epsilon over time</span>
+<a name="rest_code_832685b26783430788086575214384a8-10"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a name="rest_code_832685b26783430788086575214384a8-11"></a>    <span class="n">arm_probabilities</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
+<a name="rest_code_832685b26783430788086575214384a8-12"></a>    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">arm_probabilities</span><span class="p">)</span>
+<a name="rest_code_832685b26783430788086575214384a8-13"></a>    <span class="c1"># arms = [BernoulliArm(probability) for probability in arm_probabilities]</span>
+<a name="rest_code_832685b26783430788086575214384a8-14"></a>    <span class="n">epsilons</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
+<a name="rest_code_832685b26783430788086575214384a8-15"></a>
+<a name="rest_code_832685b26783430788086575214384a8-16"></a>    <span class="n">outcomes</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="rest_code_832685b26783430788086575214384a8-17"></a>    <span class="k">for</span> <span class="n">epsilon</span> <span class="ow">in</span> <span class="n">epsilons</span><span class="p">:</span>
+<a name="rest_code_832685b26783430788086575214384a8-18"></a>        <span class="n">agent</span> <span class="o">=</span> <span class="n">EpsilonGreedyOptimized</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">arm_probabilities</span><span class="p">)</span>
+<a name="rest_code_832685b26783430788086575214384a8-19"></a>        <span class="n">average_rewards</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+<a name="rest_code_832685b26783430788086575214384a8-20"></a>        <span class="k">for</span> <span class="n">trial</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">trials</span><span class="p">):</span>
+<a name="rest_code_832685b26783430788086575214384a8-21"></a>            <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">times</span><span class="p">):</span>
+<a name="rest_code_832685b26783430788086575214384a8-22"></a>                <span class="n">arm</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">select_arm</span><span class="p">()</span>
+<a name="rest_code_832685b26783430788086575214384a8-23"></a>                <span class="n">old_reward</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">total_reward</span>
+<a name="rest_code_832685b26783430788086575214384a8-24"></a>                <span class="n">agent</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">arm</span><span class="p">)</span>
+<a name="rest_code_832685b26783430788086575214384a8-25"></a>                <span class="n">average_rewards</span><span class="p">[</span><span class="n">time</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">total_reward</span> <span class="o">-</span> <span class="n">old_reward</span><span class="p">)</span>
+<a name="rest_code_832685b26783430788086575214384a8-26"></a>            <span class="n">agent</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<a name="rest_code_832685b26783430788086575214384a8-27"></a>        <span class="n">outcomes</span><span class="p">[</span><span class="s2">&quot;Epsilon {0:.02f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)]</span> <span class="o">=</span> <span class="n">average_rewards</span><span class="o">/</span><span class="n">trials</span>
+<a name="rest_code_832685b26783430788086575214384a8-28"></a>    <span class="k">return</span> <span class="n">outcomes</span>
+</pre><pre class="code ipython"><a name="rest_code_3cba7a53b9e240fab4772772d80b982c-1"></a><span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<a name="rest_code_3cba7a53b9e240fab4772772d80b982c-2"></a><span class="n">averages</span> <span class="o">=</span> <span class="n">average_reward</span><span class="p">(</span><span class="n">TIMES</span><span class="p">,</span> <span class="n">TRIALS</span><span class="p">)</span>
+<a name="rest_code_3cba7a53b9e240fab4772772d80b982c-3"></a><span class="k">print</span><span class="p">(</span><span class="s2">&quot;Run Time: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">))</span>
+<a name="rest_code_3cba7a53b9e240fab4772772d80b982c-4"></a><span class="n">averages</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">averages</span><span class="p">)</span>
+</pre><pre class="literal-block">
+Run Time: 0:01:08.727723
+</pre>
+<pre class="code ipython"><a name="rest_code_599a325931b34b5d9bfd4c5d6c1ad228-1"></a><span class="n">figure</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<a name="rest_code_599a325931b34b5d9bfd4c5d6c1ad228-2"></a><span class="n">axe</span> <span class="o">=</span> <span class="n">figure</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<a name="rest_code_599a325931b34b5d9bfd4c5d6c1ad228-3"></a><span class="n">axe</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Reward of the Epsilon Greedy Algorithm ({} trials)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">TRIALS</span><span class="p">))</span>
+<a name="rest_code_599a325931b34b5d9bfd4c5d6c1ad228-4"></a><span class="n">axe</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (number of pulls on the arm)&quot;</span><span class="p">)</span>
+<a name="rest_code_599a325931b34b5d9bfd4c5d6c1ad228-5"></a><span class="n">axe</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Average Reward&quot;</span><span class="p">)</span>
+<a name="rest_code_599a325931b34b5d9bfd4c5d6c1ad228-6"></a><span class="n">averages</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axe</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;None&quot;</span><span class="p">)</span>
+</pre><img alt="epsilon_averages.png" src="epsilon_averages.png" />
+<p>There's much more variablity and overlap here, as you might expect since I made the probabilities closer. Interestingly, the strongly exploratory agents seem to do worse, even from the beginning, while the more exploitative ones do better.  Although it looks like 0.2 might be doing as well or better than 0.1 once you get over 100.</p>
+</div>
+<div class="section" id="cumulative-reward">
+<h1><a class="toc-backref" href="#id8">6 Cumulative Reward</a></h1>
+<p>The previous two metrics turn out to be useful, but somewhat unfair to the aggresively exploring models, which we know won't ultimately do as well, but do have an advantage in the initial phase. To better qualify the overall effect of exploration versus exploitation, it's better to use a cumulative sum of the rewards.</p>
+<pre class="code ipython"><a name="rest_code_3aca164cc5e0483f8a8aeac037317037-1"></a><span class="nd">@jit</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-2"></a><span class="k">def</span> <span class="nf">cumulative_reward</span><span class="p">(</span><span class="n">arms</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">trials</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-3"></a>    <span class="sd">&quot;&quot;&quot;this generates the cumulative reward as the agent pulls the arms</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-4"></a>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-5"></a><span class="sd">    Args:</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-6"></a><span class="sd">     arms (numpy.array): array of probabilities that the arm will pay-off</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-7"></a><span class="sd">     trials (int): number of times to train the agent</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-8"></a><span class="sd">     times (int): length of time to train the agent</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-9"></a><span class="sd">    Returns:</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-10"></a><span class="sd">     Dict: the probabilites for each epsilon over time</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-11"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-12"></a>    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">arms</span><span class="p">)</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-13"></a>    <span class="n">epsilons</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-14"></a>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-15"></a>    <span class="n">outcomes</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-16"></a>    <span class="k">for</span> <span class="n">epsilon</span> <span class="ow">in</span> <span class="n">epsilons</span><span class="p">:</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-17"></a>        <span class="n">agent</span> <span class="o">=</span> <span class="n">EpsilonGreedyOptimized</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">arms</span><span class="p">)</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-18"></a>        <span class="n">cumulative_rewards</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-19"></a>        <span class="k">for</span> <span class="n">trial</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">trials</span><span class="p">):</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-20"></a>            <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">times</span><span class="p">):</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-21"></a>                <span class="n">arm</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">select_arm</span><span class="p">()</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-22"></a>                <span class="n">agent</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">arm</span><span class="p">)</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-23"></a>                <span class="n">cumulative_rewards</span><span class="p">[</span><span class="n">time</span><span class="p">]</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">total_reward</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-24"></a>            <span class="n">agent</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-25"></a>        <span class="n">outcomes</span><span class="p">[</span><span class="s2">&quot;Epsilon {:.02f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)]</span> <span class="o">=</span> <span class="n">cumulative_rewards</span><span class="o">/</span><span class="n">trials</span>
+<a name="rest_code_3aca164cc5e0483f8a8aeac037317037-26"></a>    <span class="k">return</span> <span class="n">outcomes</span>
+</pre><pre class="code ipython"><a name="rest_code_3d277ef6cf3e4633ac8409bf34bf741e-1"></a><span class="k">def</span> <span class="nf">generate_cumulative</span><span class="p">(</span><span class="n">arms</span><span class="p">):</span>
+<a name="rest_code_3d277ef6cf3e4633ac8409bf34bf741e-2"></a>    <span class="sd">&quot;&quot;&quot;runs the cumulative output function</span>
+<a name="rest_code_3d277ef6cf3e4633ac8409bf34bf741e-3"></a>
+<a name="rest_code_3d277ef6cf3e4633ac8409bf34bf741e-4"></a><span class="sd">    Args:</span>
+<a name="rest_code_3d277ef6cf3e4633ac8409bf34bf741e-5"></a><span class="sd">     arms (numpy.array): probabilities that arms will pay out</span>
+<a name="rest_code_3d277ef6cf3e4633ac8409bf34bf741e-6"></a>
+<a name="rest_code_3d277ef6cf3e4633ac8409bf34bf741e-7"></a><span class="sd">    Returns:</span>
+<a name="rest_code_3d277ef6cf3e4633ac8409bf34bf741e-8"></a><span class="sd">     pandas.DataFrame: the average cumulative rewards</span>
+<a name="rest_code_3d277ef6cf3e4633ac8409bf34bf741e-9"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a name="rest_code_3d277ef6cf3e4633ac8409bf34bf741e-10"></a>    <span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<a name="rest_code_3d277ef6cf3e4633ac8409bf34bf741e-11"></a>    <span class="n">cumulative</span> <span class="o">=</span> <span class="n">cumulative_reward</span><span class="p">(</span><span class="n">arms</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">TIMES</span><span class="p">,</span> <span class="n">trials</span><span class="o">=</span><span class="n">TRIALS</span><span class="p">)</span>
+<a name="rest_code_3d277ef6cf3e4633ac8409bf34bf741e-12"></a>    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Run Time: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">))</span>
+<a name="rest_code_3d277ef6cf3e4633ac8409bf34bf741e-13"></a>    <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">cumulative</span><span class="p">)</span>
+</pre><pre class="code ipython"><a name="rest_code_28f8abe6943e4dfeba74f062b8e3b43d-1"></a><span class="k">def</span> <span class="nf">plot_cumulative</span><span class="p">(</span><span class="n">cumulative</span><span class="p">):</span>
+<a name="rest_code_28f8abe6943e4dfeba74f062b8e3b43d-2"></a>    <span class="sd">&quot;&quot;&quot;generates and plots cumulative average</span>
+<a name="rest_code_28f8abe6943e4dfeba74f062b8e3b43d-3"></a>
+<a name="rest_code_28f8abe6943e4dfeba74f062b8e3b43d-4"></a><span class="sd">    Args:</span>
+<a name="rest_code_28f8abe6943e4dfeba74f062b8e3b43d-5"></a><span class="sd">     cumulative (pandas.DataFrame): data to plot</span>
+<a name="rest_code_28f8abe6943e4dfeba74f062b8e3b43d-6"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a name="rest_code_28f8abe6943e4dfeba74f062b8e3b43d-7"></a>    <span class="n">figure</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<a name="rest_code_28f8abe6943e4dfeba74f062b8e3b43d-8"></a>    <span class="n">axe</span> <span class="o">=</span> <span class="n">figure</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<a name="rest_code_28f8abe6943e4dfeba74f062b8e3b43d-9"></a>    <span class="n">axe</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Cumulative Reward of the Epsilon Greedy Algorithm ({} trials)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">TRIALS</span><span class="p">))</span>
+<a name="rest_code_28f8abe6943e4dfeba74f062b8e3b43d-10"></a>    <span class="n">axe</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (number of pulls on the arm)&quot;</span><span class="p">)</span>
+<a name="rest_code_28f8abe6943e4dfeba74f062b8e3b43d-11"></a>    <span class="n">axe</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Cumulative Reward&quot;</span><span class="p">)</span>
+<a name="rest_code_28f8abe6943e4dfeba74f062b8e3b43d-12"></a>    <span class="n">cumulative</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axe</span><span class="p">)</span>
+<a name="rest_code_28f8abe6943e4dfeba74f062b8e3b43d-13"></a>    <span class="k">return</span>
+</pre><pre class="code ipython"><a name="rest_code_dab9b023901e46caaeea5a4084f22a21-1"></a><span class="n">cumulative</span> <span class="o">=</span> <span class="n">generate_cumulative</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">))</span>
+<a name="rest_code_dab9b023901e46caaeea5a4084f22a21-2"></a><span class="n">plot_cumulative</span><span class="p">(</span><span class="n">cumulative</span><span class="p">)</span>
+</pre><img alt="epsilon_greedy_cumulative.png" src="epsilon_greedy_cumulative.png" />
+<p>Because of the randomness this will change everytime you run it, but we can see that in this case, the average cumulative reward was better for the 0.3 and 0.5 epsilon values that the more conservative values up until around 275, and the second most conservative case (0.2) actually did worse on average than the more exploratory cases did.</p>
+<div class="section" id="imbalanced-case">
+<h2><a class="toc-backref" href="#id9">6.1 Imbalanced Case</a></h2>
+<p>I'll re-run this again with more arms and a only one clear good arm to see if this changes things.</p>
+<pre class="code ipython"><a name="rest_code_23fadfc804a54e19ae1f10eba630ffb0-1"></a><span class="n">plot_cumulative</span><span class="p">(</span><span class="n">generate_cumulative</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">])))</span>
+</pre><img alt="epsilon_cumulative_2.png" src="epsilon_cumulative_2.png" />
+<p>In this case, the most exploitive agent did much worse than the other agents. It looks like it didn't find the best arm until around the 240th pull. In this case, when most arms pay off poorly and one arm pays off much better, the exploratory arms accumulate more reward within our time frame. I'm guessing that the 0.10 epsilon would, given enough time, pull ahead, and you can in fact see that the most exploratory agent has already been surpassed by the 0.2 agent, so eventually exploration would probably take a back seat to exploitation, but not in this case. It's important to note, however, that if the most exploitive agent had happened to find the best arm at the start, he would likely have ended up the best, it's just the nature of randomization that you aren't guaranteed that this would be the case.</p>
+</div>
+</div>
