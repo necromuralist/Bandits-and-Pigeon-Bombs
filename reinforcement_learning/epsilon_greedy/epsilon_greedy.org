@@ -5,6 +5,7 @@
 #+BEGIN_SRC python :noweb-ref imports
 # python
 import random
+
 # pypi
 from numba import jit
 import numpy
@@ -39,7 +40,6 @@ def find_first(item, vector):
 <<imports>>
 
 <<find-first>>
-
 class EpsilonGreedy(object):
     """The Epsilon Greedy Algorithm
 
@@ -72,6 +72,7 @@ def __init__(self, epsilon, arms):
     self.arms = arms
     self._counts = None
     self._rewards = None
+    self.total_reward = None
     return
 #+END_SRC
 
@@ -125,6 +126,7 @@ def reset(self):
     """
     self._counts = None
     self._rewards = None
+    self.total_reward = 0
     return
 #+END_SRC
 
@@ -157,6 +159,7 @@ def update(self, arm):
     count = self.counts[arm]
     average_reward = self.rewards[arm]
     reward = self.arms[arm]()
+    self.total_reward += reward
     self.rewards[arm] = (((count - 1)/float(count)) * average_reward
                         + (reward/float(count)))
     return
@@ -169,6 +172,125 @@ def __call__(self):
     """chooses an arm and updates the rewards"""
     arm = self.select_arm()
     self.update(arm)
+    return
+#+END_SRC
+
+* Epsilon Greedy Optimized
+  This is an attempt to get a version working that will work in numba.
+#+BEGIN_SRC python :tangle epsilon_greedy_optimized.py
+<<optimized-imports>>
+
+<<spec>>
+
+<<find-first>>
+@jitclass(spec)
+class EpsilonGreedyOptimized(object):
+    """The Epsilon Greedy Algorithm
+
+    Args:
+     epsilon (float): fraction of the time to explore
+     arms (list): collection of probabilities for bandit arm
+    """
+    <<optimized-constructor>>
+
+    <<best-arm>>
+
+    <<select-arm>>
+
+    <<optimized-pull-arm>>
+
+    <<optimized-update>>
+
+    <<optimized-reset>>
+
+    <<call>>
+#+END_SRC
+
+** Optimized Imports
+#+BEGIN_SRC python :noweb-ref optimized-imports
+# python
+import random
+
+# pypi
+from numba import (
+    jit,
+    jitclass,
+    )
+import numba
+import numpy
+#+END_SRC
+** The Spec
+   This is how you tell numba what attributes the class will have.
+#+BEGIN_SRC python :noweb-ref spec
+spec = [
+    ("epsilon", numba.double),
+    ("arms", numba.double[:]),
+    ("counts", numba.double[:]),
+    ("rewards", numba.double[:]),
+    ("total_reward", numba.int64),
+]
+#+END_SRC
+
+** The Constructor
+   The constructor takes two arguments - /epsilon/ and /arms/. The /arms/ list should contain probabilities that a reward or penalty will be returned when pulled.
+
+#+BEGIN_SRC python :noweb-ref optimized-constructor
+def __init__(self, epsilon, arms):
+    self.epsilon = epsilon
+    self.arms = arms
+    self.counts = numpy.zeros(len(arms))
+    self.rewards = numpy.zeros(len(arms))
+    self.total_reward = 0
+    return
+#+END_SRC
+
+** Reset
+#+BEGIN_SRC python :noweb-ref optimized-reset
+def reset(self):
+    """sets the counts, rewards, total_reward to 0s
+
+    This lets you re-used the EpsilonGreedy
+    """
+    self.counts = numpy.zeros(len(self.arms))
+    self.rewards = numpy.zeros(len(self.arms))
+    self.total_reward = 0
+    return
+#+END_SRC
+
+** Pull Arm
+   Since we can't give user-defined objects as attributes of the class, this version will be both algorithm and bandit.
+
+#+BEGIN_SRC python :noweb-ref optimized-pull-arm
+def pull_arm(self, arm):
+    """gets the reward
+    
+    Args:
+     arm (int): index for the arm-probability array
+    Returns:
+     int: reward or no reward
+    """
+    if random.random() > self.arms[arm]:
+        return 0
+    return 1
+#+END_SRC
+   
+** Update
+   The update method pulls the arm whose index it is given and then updates the count and reward. Here we're calling the =pull_arm= method instead of using a =BernoulliArm= so we can't re-use the original method.
+
+#+BEGIN_SRC python :noweb-ref optimized-update
+def update(self, arm):
+    """pulls the arm and updates the value
+
+    Args:
+     arm (int): index of the arm to pull
+    """
+    self.counts[arm] += 1
+    count = self.counts[arm]
+    average_reward = self.rewards[arm]
+    reward = self.pull_arm(arm)
+    self.total_reward += reward
+    self.rewards[arm] = (((count - 1)/float(count)) * average_reward
+                        + (reward/float(count)))
     return
 #+END_SRC
 
