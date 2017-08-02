@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Comparing the Optimistic Initial Values algorithm with Epsilon Greedy">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assessing the Performance | Reinforcement Learning</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="canonical" href="https://necromuralist.github.io/data_science/posts/assessing-the-performance/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js"></script><meta name="author" content="Brunhilde">
+<link rel="prev" href="../finding-the-best-epsilon/" title="Finding the Best Epsilon" type="text/html">
+<link rel="next" href="../Optimistic-Initial-Values/" title="Optimistic Initial Values" type="text/html">
+<meta property="og:site_name" content="Reinforcement Learning">
+<meta property="og:title" content="Assessing the Performance">
+<meta property="og:url" content="https://necromuralist.github.io/data_science/posts/assessing-the-performance/">
+<meta property="og:description" content="Comparing the Optimistic Initial Values algorithm with Epsilon Greedy">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2017-08-01T18:46:00-07:00">
+<meta property="article:tag" content="bandits reinforcementLearning">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://necromuralist.github.io/data_science/">
+
+                <span id="blog-title">Reinforcement Learning</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../archive.html">Archive</a>
+                </li>
+<li>
+<a href="../../categories/">Tags</a>
+                </li>
+<li>
+<a href="../../rss.xml">RSS feed</a>
+
+                
+            </li>
+</ul>
+<!-- Google custom search --><form method="get" action="https://www.google.com/search" class="navbar-form
+ navbar-right" role="search">
+<div class="form-group">
+<input type="text" name="q" class="form-control" placeholder="Search">
+</div>
+<button type="submit" class="btn btn-primary">
+<span class="glyphicon glyphicon-search"></span>
+</button>
+<input type="hidden" name="sitesearch" value="https://necromuralist.github.io/data_science/">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.rst" id="sourcelink">Source</a>
+    </li>
+
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Assessing the Performance</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                    <a href="../../authors/brunhilde/">Brunhilde</a>
+            </span></p>
+            <p class="dateline"><a href="." rel="bookmark"><time class="published dt-published" datetime="2017-08-01T18:46:00-07:00" itemprop="datePublished" title="2017-08-01 18:46">2017-08-01 18:46</time></a></p>
+            
+        <p class="sourceline"><a href="index.rst" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="section" id="introduction">
+<h2>1 Introduction</h2>
+<p>As with the Epsilon-Greedy algorithm I'm going to use the Cumulative Reward as the metric. In this case we don't really have a parameter to tune.</p>
+</div>
+<div class="section" id="imports">
+<h2>2 Imports</h2>
+<p>The dependencies.</p>
+<pre class="code ipython"><a name="rest_code_13e69967ef38464997ec06a7aa53bf7d-1"></a><span class="c1"># python standard library</span>
+<a name="rest_code_13e69967ef38464997ec06a7aa53bf7d-2"></a><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<a name="rest_code_13e69967ef38464997ec06a7aa53bf7d-3"></a>
+<a name="rest_code_13e69967ef38464997ec06a7aa53bf7d-4"></a><span class="c1"># pypi</span>
+<a name="rest_code_13e69967ef38464997ec06a7aa53bf7d-5"></a><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
+<a name="rest_code_13e69967ef38464997ec06a7aa53bf7d-6"></a><span class="kn">import</span> <span class="nn">numpy</span>
+<a name="rest_code_13e69967ef38464997ec06a7aa53bf7d-7"></a><span class="kn">import</span> <span class="nn">pandas</span>
+<a name="rest_code_13e69967ef38464997ec06a7aa53bf7d-8"></a><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plot</span>
+<a name="rest_code_13e69967ef38464997ec06a7aa53bf7d-9"></a><span class="kn">import</span> <span class="nn">seaborn</span>
+<a name="rest_code_13e69967ef38464997ec06a7aa53bf7d-10"></a>
+<a name="rest_code_13e69967ef38464997ec06a7aa53bf7d-11"></a><span class="c1"># this project</span>
+<a name="rest_code_13e69967ef38464997ec06a7aa53bf7d-12"></a><span class="kn">from</span> <span class="nn">optimistic_initial_values</span> <span class="kn">import</span> <span class="n">OptimisticInitialValues</span>
+<a name="rest_code_13e69967ef38464997ec06a7aa53bf7d-13"></a><span class="kn">from</span> <span class="nn">epsilon_greedy_normal</span> <span class="kn">import</span> <span class="n">EpsilonGreedyNormal</span>
+</pre>
+</div>
+<div class="section" id="set-up-the-plotting">
+<h2>3 Set-up the Plotting</h2>
+<p>This will enable the plotting and set the style.</p>
+<pre class="code ipython"><a name="rest_code_5f4dd984235f496ebcd42ef7504ade93-1"></a><span class="o">%</span><span class="k">matplotlib</span> inline
+<a name="rest_code_5f4dd984235f496ebcd42ef7504ade93-2"></a><span class="n">seaborn</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">"whitegrid"</span><span class="p">)</span>
+</pre>
+</div>
+<div class="section" id="running-the-assessment">
+<h2>4 Running the Assessment</h2>
+<pre class="code ipython"><a name="rest_code_5863ab41d3704897b2c772ff73b3ea23-1"></a><span class="nd">@jit</span>
+<a name="rest_code_5863ab41d3704897b2c772ff73b3ea23-2"></a><span class="k">def</span> <span class="nf">cumulative_reward</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">trials</span><span class="o">=</span><span class="mi">400</span><span class="p">):</span>
+<a name="rest_code_5863ab41d3704897b2c772ff73b3ea23-3"></a>    <span class="sd">"""this generates the cumulative reward as the agent pulls the arms</span>
+<a name="rest_code_5863ab41d3704897b2c772ff73b3ea23-4"></a>
+<a name="rest_code_5863ab41d3704897b2c772ff73b3ea23-5"></a><span class="sd">    Args:</span>
+<a name="rest_code_5863ab41d3704897b2c772ff73b3ea23-6"></a><span class="sd">     agent: implementation that selects and updates the arms</span>
+<a name="rest_code_5863ab41d3704897b2c772ff73b3ea23-7"></a><span class="sd">     trials (int): number of times to train the agent</span>
+<a name="rest_code_5863ab41d3704897b2c772ff73b3ea23-8"></a><span class="sd">     times (int): length of time to train the agent</span>
+<a name="rest_code_5863ab41d3704897b2c772ff73b3ea23-9"></a><span class="sd">    Returns:</span>
+<a name="rest_code_5863ab41d3704897b2c772ff73b3ea23-10"></a><span class="sd">     numpy.array: average cumulative rewards over time</span>
+<a name="rest_code_5863ab41d3704897b2c772ff73b3ea23-11"></a><span class="sd">    """</span>
+<a name="rest_code_5863ab41d3704897b2c772ff73b3ea23-12"></a>    <span class="n">cumulative_rewards</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+<a name="rest_code_5863ab41d3704897b2c772ff73b3ea23-13"></a>    <span class="k">for</span> <span class="n">trial</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">trials</span><span class="p">):</span>
+<a name="rest_code_5863ab41d3704897b2c772ff73b3ea23-14"></a>        <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">times</span><span class="p">):</span>
+<a name="rest_code_5863ab41d3704897b2c772ff73b3ea23-15"></a>            <span class="n">arm</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">select_arm</span><span class="p">()</span>
+<a name="rest_code_5863ab41d3704897b2c772ff73b3ea23-16"></a>            <span class="n">agent</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">arm</span><span class="p">)</span>
+<a name="rest_code_5863ab41d3704897b2c772ff73b3ea23-17"></a>            <span class="n">cumulative_rewards</span><span class="p">[</span><span class="n">time</span><span class="p">]</span> <span class="o">+=</span> <span class="n">agent</span><span class="o">.</span><span class="n">total_reward</span>
+<a name="rest_code_5863ab41d3704897b2c772ff73b3ea23-18"></a>        <span class="n">agent</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<a name="rest_code_5863ab41d3704897b2c772ff73b3ea23-19"></a>    <span class="k">return</span> <span class="n">cumulative_rewards</span><span class="o">/</span><span class="n">trials</span>
+</pre>
+<pre class="code ipython"><a name="rest_code_b7448ea995094170b19f88a9ae578d0f-1"></a><span class="k">def</span> <span class="nf">plot_cumulative</span><span class="p">(</span><span class="n">cumulative</span><span class="p">):</span>
+<a name="rest_code_b7448ea995094170b19f88a9ae578d0f-2"></a>    <span class="sd">"""generates and plots cumulative average</span>
+<a name="rest_code_b7448ea995094170b19f88a9ae578d0f-3"></a>
+<a name="rest_code_b7448ea995094170b19f88a9ae578d0f-4"></a><span class="sd">    Args:</span>
+<a name="rest_code_b7448ea995094170b19f88a9ae578d0f-5"></a><span class="sd">     cumulative (pandas.DataFrame): data to plot</span>
+<a name="rest_code_b7448ea995094170b19f88a9ae578d0f-6"></a><span class="sd">    """</span>
+<a name="rest_code_b7448ea995094170b19f88a9ae578d0f-7"></a>    <span class="n">figure</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<a name="rest_code_b7448ea995094170b19f88a9ae578d0f-8"></a>    <span class="n">axe</span> <span class="o">=</span> <span class="n">figure</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<a name="rest_code_b7448ea995094170b19f88a9ae578d0f-9"></a>    <span class="n">axe</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Cumulative Reward of the Optimistic Initial Values Algorithm ({} trials)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">TRIALS</span><span class="p">))</span>
+<a name="rest_code_b7448ea995094170b19f88a9ae578d0f-10"></a>    <span class="n">axe</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Time (number of pulls on the arm)"</span><span class="p">)</span>
+<a name="rest_code_b7448ea995094170b19f88a9ae578d0f-11"></a>    <span class="n">axe</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Cumulative Reward"</span><span class="p">)</span>
+<a name="rest_code_b7448ea995094170b19f88a9ae578d0f-12"></a>    <span class="n">cumulative</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axe</span><span class="p">)</span>
+<a name="rest_code_b7448ea995094170b19f88a9ae578d0f-13"></a>    <span class="k">return</span>
+</pre>
+<pre class="code ipython"><a name="rest_code_92392caa3b304c58a064523b5aa0f1e9-1"></a><span class="n">TRIALS</span> <span class="o">=</span> <span class="mi">5000</span>
+<a name="rest_code_92392caa3b304c58a064523b5aa0f1e9-2"></a><span class="n">TIMES</span> <span class="o">=</span> <span class="mi">400</span>
+<a name="rest_code_92392caa3b304c58a064523b5aa0f1e9-3"></a><span class="n">similar_payout_rates</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">)</span>
+<a name="rest_code_92392caa3b304c58a064523b5aa0f1e9-4"></a><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">similar_payout_rates</span><span class="p">)</span>
+<a name="rest_code_92392caa3b304c58a064523b5aa0f1e9-5"></a><span class="n">one_good_arm_rates</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">[</span><span class="mf">9.0</span><span class="p">])</span>
+<a name="rest_code_92392caa3b304c58a064523b5aa0f1e9-6"></a><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">one_good_arm_rates</span><span class="p">)</span>
+</pre>
+<div class="section" id="similar-arms">
+<h3>4.1 Similar Arms</h3>
+<p>This will create a range where each arm only differs by 0.1</p>
+<pre class="code ipython"><a name="rest_code_96d818c7a57b436182501d3ae3dbbc33-1"></a><span class="n">optimistic_agent</span> <span class="o">=</span> <span class="n">OptimisticInitialValues</span><span class="p">(</span><span class="n">similar_payout_rates</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)</span>
+<a name="rest_code_96d818c7a57b436182501d3ae3dbbc33-2"></a><span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="rest_code_96d818c7a57b436182501d3ae3dbbc33-3"></a><span class="n">data</span><span class="p">[</span><span class="s2">"Optimistic Initial Values"</span><span class="p">]</span> <span class="o">=</span> <span class="n">cumulative_reward</span><span class="p">(</span><span class="n">optimistic_agent</span><span class="p">,</span> <span class="n">trials</span><span class="o">=</span><span class="n">TRIALS</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">TIMES</span><span class="p">)</span>
+<a name="rest_code_96d818c7a57b436182501d3ae3dbbc33-4"></a><span class="n">epsilon_agent</span> <span class="o">=</span> <span class="n">EpsilonGreedyNormal</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">similar_payout_rates</span><span class="p">)</span>
+<a name="rest_code_96d818c7a57b436182501d3ae3dbbc33-5"></a><span class="n">data</span><span class="p">[</span><span class="s2">"Epsilon Greedy (0.1)"</span><span class="p">]</span> <span class="o">=</span> <span class="n">cumulative_reward</span><span class="p">(</span><span class="n">epsilon_agent</span><span class="p">,</span> <span class="n">trials</span><span class="o">=</span><span class="n">TRIALS</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">TIMES</span><span class="p">)</span>
+<a name="rest_code_96d818c7a57b436182501d3ae3dbbc33-6"></a><span class="n">data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<a name="rest_code_96d818c7a57b436182501d3ae3dbbc33-7"></a><span class="n">plot_cumulative</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre>
+<img alt="optimistic_similar_cumulative.png" src="optimistic_similar_cumulative.png"><p>The Optimistic Initial Values agent does better than the Epsilon Greedy, as you would expect (since it eventually stops exploring). But it looks suspisciously linear.</p>
+</div>
+<div class="section" id="one-good-arm">
+<h3>4.2 One Good Arm</h3>
+<p>Lets see how it goes when one arm dominates the payouts.</p>
+<pre class="code ipython"><a name="rest_code_a71c432c0a8646cbbd171d017f8c2914-1"></a><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">one_good_arm_rates</span><span class="p">)</span>
+<a name="rest_code_a71c432c0a8646cbbd171d017f8c2914-2"></a><span class="n">optimistic_agent</span> <span class="o">=</span> <span class="n">OptimisticInitialValues</span><span class="p">(</span><span class="n">one_good_arm_rates</span><span class="p">,</span> <span class="mf">10.</span><span class="p">)</span>
+<a name="rest_code_a71c432c0a8646cbbd171d017f8c2914-3"></a><span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="rest_code_a71c432c0a8646cbbd171d017f8c2914-4"></a><span class="n">data</span><span class="p">[</span><span class="s2">"Optimistic Initial Values"</span><span class="p">]</span> <span class="o">=</span> <span class="n">cumulative_reward</span><span class="p">(</span><span class="n">optimistic_agent</span><span class="p">,</span> <span class="n">trials</span><span class="o">=</span><span class="n">TRIALS</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">TIMES</span><span class="p">)</span>
+<a name="rest_code_a71c432c0a8646cbbd171d017f8c2914-5"></a><span class="n">epsilon_agent</span> <span class="o">=</span> <span class="n">EpsilonGreedyNormal</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">one_good_arm_rates</span><span class="p">)</span>
+<a name="rest_code_a71c432c0a8646cbbd171d017f8c2914-6"></a><span class="n">data</span><span class="p">[</span><span class="s2">"Epsilon Greedy (0.1)"</span><span class="p">]</span> <span class="o">=</span> <span class="n">cumulative_reward</span><span class="p">(</span><span class="n">epsilon_agent</span><span class="p">,</span> <span class="n">trials</span><span class="o">=</span><span class="n">TRIALS</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">TIMES</span><span class="p">)</span>
+<a name="rest_code_a71c432c0a8646cbbd171d017f8c2914-7"></a><span class="n">data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<a name="rest_code_a71c432c0a8646cbbd171d017f8c2914-8"></a><span class="n">plot_cumulative</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre>
+<img alt="optimistic_cumulative_one_good_arm.png" src="optimistic_cumulative_one_good_arm.png"><p>It looks like the optimistic agent does even better with one dominant arm. Likely because it found it quick enough that always exploiting it gives it a huge advantage over the epsilon greedy, which never stops exploring.</p>
+<pre class="code ipython"><a name="rest_code_c298e8bed8e946e3a73b15b6252fff1a-1"></a><span class="nd">@jit</span>
+<a name="rest_code_c298e8bed8e946e3a73b15b6252fff1a-2"></a><span class="k">def</span> <span class="nf">average_reward</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">trials</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<a name="rest_code_c298e8bed8e946e3a73b15b6252fff1a-3"></a>    <span class="sd">"""this generates the average reward for the trials over time</span>
+<a name="rest_code_c298e8bed8e946e3a73b15b6252fff1a-4"></a>
+<a name="rest_code_c298e8bed8e946e3a73b15b6252fff1a-5"></a><span class="sd">    Args:</span>
+<a name="rest_code_c298e8bed8e946e3a73b15b6252fff1a-6"></a><span class="sd">     trials (int): number of times to train the agent</span>
+<a name="rest_code_c298e8bed8e946e3a73b15b6252fff1a-7"></a><span class="sd">     times (int): length of time to train the agent</span>
+<a name="rest_code_c298e8bed8e946e3a73b15b6252fff1a-8"></a><span class="sd">    Returns:</span>
+<a name="rest_code_c298e8bed8e946e3a73b15b6252fff1a-9"></a><span class="sd">     numpy.array: the average reward</span>
+<a name="rest_code_c298e8bed8e946e3a73b15b6252fff1a-10"></a><span class="sd">    """</span>
+<a name="rest_code_c298e8bed8e946e3a73b15b6252fff1a-11"></a>    <span class="n">average_rewards</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+<a name="rest_code_c298e8bed8e946e3a73b15b6252fff1a-12"></a>    <span class="k">for</span> <span class="n">trial</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">trials</span><span class="p">):</span>
+<a name="rest_code_c298e8bed8e946e3a73b15b6252fff1a-13"></a>        <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">times</span><span class="p">):</span>
+<a name="rest_code_c298e8bed8e946e3a73b15b6252fff1a-14"></a>            <span class="n">arm</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">select_arm</span><span class="p">()</span>
+<a name="rest_code_c298e8bed8e946e3a73b15b6252fff1a-15"></a>            <span class="n">old_reward</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">total_reward</span>
+<a name="rest_code_c298e8bed8e946e3a73b15b6252fff1a-16"></a>            <span class="n">agent</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">arm</span><span class="p">)</span>
+<a name="rest_code_c298e8bed8e946e3a73b15b6252fff1a-17"></a>            <span class="n">average_rewards</span><span class="p">[</span><span class="n">time</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">total_reward</span> <span class="o">-</span> <span class="n">old_reward</span><span class="p">)</span>
+<a name="rest_code_c298e8bed8e946e3a73b15b6252fff1a-18"></a>        <span class="n">agent</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<a name="rest_code_c298e8bed8e946e3a73b15b6252fff1a-19"></a>    <span class="k">return</span> <span class="n">average_rewards</span><span class="o">/</span><span class="n">trials</span>
+</pre>
+<pre class="code ipython"><a name="rest_code_455fafc2386347038c8389c21e35680f-1"></a><span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="rest_code_455fafc2386347038c8389c21e35680f-2"></a><span class="n">data</span><span class="p">[</span><span class="s2">"Optimistic Initial Values"</span><span class="p">]</span> <span class="o">=</span> <span class="n">average_reward</span><span class="p">(</span><span class="n">optimistic_agent</span><span class="p">,</span> <span class="n">TIMES</span><span class="p">,</span> <span class="n">TRIALS</span><span class="p">)</span>
+<a name="rest_code_455fafc2386347038c8389c21e35680f-3"></a><span class="n">data</span><span class="p">[</span><span class="s2">"Epsilon 0.1"</span><span class="p">]</span> <span class="o">=</span> <span class="n">average_reward</span><span class="p">(</span><span class="n">epsilon_agent</span><span class="p">,</span> <span class="n">TIMES</span><span class="p">,</span> <span class="n">TRIALS</span><span class="p">)</span>
+</pre>
+<pre class="code ipython"><a name="rest_code_03f6d58a2a67457b9e6b4b89f7753b49-1"></a><span class="n">averages</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre>
+<pre class="code ipython"><a name="rest_code_124cd45396b74a11afb62e1c636b5516-1"></a><span class="n">figure</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<a name="rest_code_124cd45396b74a11afb62e1c636b5516-2"></a><span class="n">axe</span> <span class="o">=</span> <span class="n">figure</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<a name="rest_code_124cd45396b74a11afb62e1c636b5516-3"></a><span class="n">axe</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Average Reward (One Dominant Arm)"</span><span class="p">)</span>
+<a name="rest_code_124cd45396b74a11afb62e1c636b5516-4"></a><span class="n">axe</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Time (number of pulls on the arm)"</span><span class="p">)</span>
+<a name="rest_code_124cd45396b74a11afb62e1c636b5516-5"></a><span class="n">axe</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Average Reward"</span><span class="p">)</span>
+<a name="rest_code_124cd45396b74a11afb62e1c636b5516-6"></a><span class="n">averages</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axe</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"None"</span><span class="p">)</span>
+</pre>
+<img alt="optimistic_averages.png" src="optimistic_averages.png"><p>It looks like there was a brief period where the Epsilon Greedy did better, but the Optimistic agent settled in fairly quickly.</p>
+</div>
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/bandits-reinforcementlearning/" rel="tag">bandits reinforcementLearning</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../finding-the-best-epsilon/" rel="prev" title="Finding the Best Epsilon">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../Optimistic-Initial-Values/" rel="next" title="Optimistic Initial Values">Next post</a>
+            </li>
+        </ul></nav></aside></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2017         <a href="mailto:necromuralist@gmail.com">necromuralist</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<img alt="Creative Commons License BY-NC-SA" style="border-width:0; margin-bottom:12px;" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a>
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../assets/js/all-nocdn.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates -->
+</body>
+</html>

@@ -7,58 +7,74 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>https://necromuralist.github.io/data_science/</loc>
-  <lastmod>2017-07-31T01:17:00Z</lastmod>
+  <lastmod>2017-08-02T01:48:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/2017/</loc>
-  <lastmod>2017-07-31T01:17:00Z</lastmod>
+  <lastmod>2017-08-02T01:44:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/archive.html</loc>
-  <lastmod>2017-07-31T01:47:00Z</lastmod>
+  <lastmod>2017-08-02T01:48:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/data_science/authors/</loc>
+  <lastmod>2017-08-02T01:48:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/data_science/authors/brunhilde/</loc>
+  <lastmod>2017-08-02T01:48:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/data_science/authors/hades/</loc>
+  <lastmod>2017-08-02T01:48:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/categories/</loc>
-  <lastmod>2017-07-31T01:38:00Z</lastmod>
+  <lastmod>2017-08-02T01:48:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/categories/algorithm-reinforcementlearning/</loc>
-  <lastmod>2017-07-31T01:22:00Z</lastmod>
+  <lastmod>2017-08-02T01:44:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/categories/algorithm/</loc>
-  <lastmod>2017-07-31T01:38:00Z</lastmod>
+  <lastmod>2017-08-02T01:44:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/categories/cat_algorithm/</loc>
-  <lastmod>2017-07-31T01:19:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/data_science/categories/reinforcementlearning-algorithm-agent/</loc>
-  <lastmod>2017-07-31T01:19:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/data_science/galleries/</loc>
-  <lastmod>2017-07-31T01:14:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/categories/bandits-reinforcementlearning/</loc>
+  <lastmod>2017-08-02T01:48:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/listings/</loc>
-  <lastmod>2017-07-31T01:14:00Z</lastmod>
+  <lastmod>2017-08-02T01:44:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/posts/A-Bernoulli-Arm/</loc>
-  <lastmod>2017-07-31T01:38:00Z</lastmod>
+  <lastmod>2017-08-02T01:44:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/data_science/posts/Assessing-the-Performance/</loc>
+  <lastmod>2017-08-02T01:48:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/data_science/posts/Epsilon-Greedy-with-Normal-Distribution-Payouts/</loc>
+  <lastmod>2017-08-02T01:48:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/data_science/posts/Optimistic-Initial-Values/</loc>
+  <lastmod>2017-08-02T01:48:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/posts/The-Epsilon-Greedy-Algorithm/</loc>
-  <lastmod>2017-07-31T01:22:00Z</lastmod>
+  <lastmod>2017-08-02T01:44:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/posts/epsilon-greedy/</loc>
-  <lastmod>2017-07-31T01:17:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/posts/assessing-the-performance/</loc>
+  <lastmod>2017-08-02T01:51:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/posts/finding-the-best-epsilon/</loc>
-  <lastmod>2017-07-31T01:49:00Z</lastmod>
+  <lastmod>2017-08-02T01:44:00Z</lastmod>
  </url>
 </urlset>
