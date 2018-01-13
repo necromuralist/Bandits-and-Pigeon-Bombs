@@ -7,30 +7,38 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
   <loc>https://necromuralist.github.io/data_science/authors/brunhilde.xml</loc>
-  <lastmod>2017-08-02T01:51:00Z</lastmod>
+  <lastmod>2018-01-13T00:17:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/data_science/authors/hades.xml</loc>
-  <lastmod>2017-08-02T01:48:00Z</lastmod>
+  <lastmod>2018-01-13T00:17:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://necromuralist.github.io/data_science/authors/necromuralist.xml</loc>
+  <lastmod>2018-01-13T00:19:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/data_science/categories/algorithm-reinforcementlearning.xml</loc>
-  <lastmod>2017-08-02T01:44:00Z</lastmod>
+  <lastmod>2018-01-13T00:17:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/data_science/categories/algorithm.xml</loc>
-  <lastmod>2017-08-02T01:44:00Z</lastmod>
+  <lastmod>2018-01-13T00:17:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/data_science/categories/bandits-reinforcementlearning.xml</loc>
-  <lastmod>2017-08-02T01:51:00Z</lastmod>
+  <lastmod>2018-01-13T00:17:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://necromuralist.github.io/data_science/categories/pybrain-optimization.xml</loc>
+  <lastmod>2018-01-13T00:19:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/data_science/rss.xml</loc>
-  <lastmod>2017-08-02T01:51:00Z</lastmod>
+  <lastmod>2018-01-13T00:19:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/data_science/sitemap.xml</loc>
-  <lastmod>2017-08-02T01:51:00Z</lastmod>
+  <lastmod>2018-01-13T00:19:00Z</lastmod>
  </sitemap>
 </sitemapindex>
