@@ -7,38 +7,46 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
   <loc>https://necromuralist.github.io/data_science/authors/brunhilde.xml</loc>
-  <lastmod>2018-01-13T00:17:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/data_science/authors/hades.xml</loc>
-  <lastmod>2018-01-13T00:17:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/data_science/authors/necromuralist.xml</loc>
-  <lastmod>2018-01-13T00:19:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/data_science/categories/algorithm-reinforcementlearning.xml</loc>
-  <lastmod>2018-01-13T00:17:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/data_science/categories/algorithm.xml</loc>
-  <lastmod>2018-01-13T00:17:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/data_science/categories/bandits-reinforcementlearning.xml</loc>
-  <lastmod>2018-01-13T00:17:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://necromuralist.github.io/data_science/categories/cat_qlearning.xml</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/data_science/categories/pybrain-optimization.xml</loc>
-  <lastmod>2018-01-13T00:19:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://necromuralist.github.io/data_science/categories/qlearning.xml</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/data_science/rss.xml</loc>
-  <lastmod>2018-01-13T00:19:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/data_science/sitemap.xml</loc>
-  <lastmod>2018-01-13T00:19:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </sitemap>
 </sitemapindex>

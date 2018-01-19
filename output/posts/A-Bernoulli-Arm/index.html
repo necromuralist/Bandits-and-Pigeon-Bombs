@@ -108,26 +108,26 @@
 </div>
 <div class="section" id="imports">
 <h2>2 Imports</h2>
-<pre class="code python"><a name="rest_code_faf342424cd44410a5992a9205bad8b9-1"></a><span class="c1"># python standard library</span>
-<a name="rest_code_faf342424cd44410a5992a9205bad8b9-2"></a><span class="kn">import</span> <span class="nn">random</span>
+<pre class="code python"><a name="rest_code_5a7592b8a30145a6a06dd1f4aa6b0d2e-1"></a><span class="c1"># python standard library</span>
+<a name="rest_code_5a7592b8a30145a6a06dd1f4aa6b0d2e-2"></a><span class="kn">import</span> <span class="nn">random</span>
 </pre>
 </div>
 <div class="section" id="bernoulli-arm">
 <h2>3 Bernoulli Arm</h2>
 <p>The Bernoulli Arm will generate a value when its arm is pulled at a payout rate specified by the `probability` value.</p>
-<pre class="code python"><a name="rest_code_33bf9e47b5344e34927f880e18e3fec8-1"></a><span class="o">&lt;&lt;</span><span class="n">imports</span><span class="o">&gt;&gt;</span>
-<a name="rest_code_33bf9e47b5344e34927f880e18e3fec8-2"></a>
-<a name="rest_code_33bf9e47b5344e34927f880e18e3fec8-3"></a><span class="k">class</span> <span class="nc">BernoulliArm</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<a name="rest_code_33bf9e47b5344e34927f880e18e3fec8-4"></a>    <span class="sd">"""A simulation of one arm of a multi-armed bandit</span>
-<a name="rest_code_33bf9e47b5344e34927f880e18e3fec8-5"></a>
-<a name="rest_code_33bf9e47b5344e34927f880e18e3fec8-6"></a><span class="sd">    Args:</span>
-<a name="rest_code_33bf9e47b5344e34927f880e18e3fec8-7"></a><span class="sd">     probability (float): probability of a reward</span>
-<a name="rest_code_33bf9e47b5344e34927f880e18e3fec8-8"></a><span class="sd">     reward (float): value to return on a win</span>
-<a name="rest_code_33bf9e47b5344e34927f880e18e3fec8-9"></a><span class="sd">     penalty (float): value to return on a loss</span>
-<a name="rest_code_33bf9e47b5344e34927f880e18e3fec8-10"></a><span class="sd">    """</span>
-<a name="rest_code_33bf9e47b5344e34927f880e18e3fec8-11"></a>    <span class="o">&lt;&lt;</span><span class="n">constructor</span><span class="o">&gt;&gt;</span>
-<a name="rest_code_33bf9e47b5344e34927f880e18e3fec8-12"></a>
-<a name="rest_code_33bf9e47b5344e34927f880e18e3fec8-13"></a>    <span class="o">&lt;&lt;</span><span class="n">call</span><span class="o">&gt;&gt;</span>
+<pre class="code python"><a name="rest_code_1d44c9d641864045affb310b74661502-1"></a><span class="o">&lt;&lt;</span><span class="n">imports</span><span class="o">&gt;&gt;</span>
+<a name="rest_code_1d44c9d641864045affb310b74661502-2"></a>
+<a name="rest_code_1d44c9d641864045affb310b74661502-3"></a><span class="k">class</span> <span class="nc">BernoulliArm</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<a name="rest_code_1d44c9d641864045affb310b74661502-4"></a>    <span class="sd">"""A simulation of one arm of a multi-armed bandit</span>
+<a name="rest_code_1d44c9d641864045affb310b74661502-5"></a>
+<a name="rest_code_1d44c9d641864045affb310b74661502-6"></a><span class="sd">    Args:</span>
+<a name="rest_code_1d44c9d641864045affb310b74661502-7"></a><span class="sd">     probability (float): probability of a reward</span>
+<a name="rest_code_1d44c9d641864045affb310b74661502-8"></a><span class="sd">     reward (float): value to return on a win</span>
+<a name="rest_code_1d44c9d641864045affb310b74661502-9"></a><span class="sd">     penalty (float): value to return on a loss</span>
+<a name="rest_code_1d44c9d641864045affb310b74661502-10"></a><span class="sd">    """</span>
+<a name="rest_code_1d44c9d641864045affb310b74661502-11"></a>    <span class="o">&lt;&lt;</span><span class="n">constructor</span><span class="o">&gt;&gt;</span>
+<a name="rest_code_1d44c9d641864045affb310b74661502-12"></a>
+<a name="rest_code_1d44c9d641864045affb310b74661502-13"></a>    <span class="o">&lt;&lt;</span><span class="n">call</span><span class="o">&gt;&gt;</span>
 </pre>
 <div class="section" id="constructor">
 <h3>3.1 Constructor</h3>
@@ -138,25 +138,25 @@
 <li>penalty on losing</li>
 </ul>
 <p>Because of the way the problem is set up, the reward and penalty are already set at 1 and 0, but I didn't want there to be magic numbers so they can be changed if needed.</p>
-<pre class="code python"><a name="rest_code_8e786658fa3e4e0e9d1ae04853a93283-1"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">probability</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<a name="rest_code_8e786658fa3e4e0e9d1ae04853a93283-2"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">probability</span> <span class="o">=</span> <span class="n">probability</span>
-<a name="rest_code_8e786658fa3e4e0e9d1ae04853a93283-3"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">reward</span> <span class="o">=</span> <span class="n">reward</span>
-<a name="rest_code_8e786658fa3e4e0e9d1ae04853a93283-4"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">penalty</span> <span class="o">=</span> <span class="n">penalty</span>
-<a name="rest_code_8e786658fa3e4e0e9d1ae04853a93283-5"></a>    <span class="k">return</span>
+<pre class="code python"><a name="rest_code_41e72994acbf4bfd940c4c2f0ccc6ca2-1"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">probability</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<a name="rest_code_41e72994acbf4bfd940c4c2f0ccc6ca2-2"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">probability</span> <span class="o">=</span> <span class="n">probability</span>
+<a name="rest_code_41e72994acbf4bfd940c4c2f0ccc6ca2-3"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">reward</span> <span class="o">=</span> <span class="n">reward</span>
+<a name="rest_code_41e72994acbf4bfd940c4c2f0ccc6ca2-4"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">penalty</span> <span class="o">=</span> <span class="n">penalty</span>
+<a name="rest_code_41e72994acbf4bfd940c4c2f0ccc6ca2-5"></a>    <span class="k">return</span>
 </pre>
 </div>
 <div class="section" id="the-call">
 <h3>3.2 The Call</h3>
 <p>This is called <tt class="docutils literal">pull</tt> in most cases, but I thought it would be more uniform to put it in a call.</p>
-<pre class="code python"><a name="rest_code_016e8b598b5145a4abf6a662921bafcc-1"></a><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a name="rest_code_016e8b598b5145a4abf6a662921bafcc-2"></a>    <span class="sd">"""pulls the arm and returns a reward or penalty</span>
-<a name="rest_code_016e8b598b5145a4abf6a662921bafcc-3"></a>
-<a name="rest_code_016e8b598b5145a4abf6a662921bafcc-4"></a><span class="sd">    Returns:</span>
-<a name="rest_code_016e8b598b5145a4abf6a662921bafcc-5"></a><span class="sd">     float: value returned on pulling the arm</span>
-<a name="rest_code_016e8b598b5145a4abf6a662921bafcc-6"></a><span class="sd">    """</span>
-<a name="rest_code_016e8b598b5145a4abf6a662921bafcc-7"></a>    <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability</span><span class="p">:</span>
-<a name="rest_code_016e8b598b5145a4abf6a662921bafcc-8"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">penalty</span>
-<a name="rest_code_016e8b598b5145a4abf6a662921bafcc-9"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reward</span>
+<pre class="code python"><a name="rest_code_5f2fc530039644acb6932d26fae1bb8e-1"></a><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="rest_code_5f2fc530039644acb6932d26fae1bb8e-2"></a>    <span class="sd">"""pulls the arm and returns a reward or penalty</span>
+<a name="rest_code_5f2fc530039644acb6932d26fae1bb8e-3"></a>
+<a name="rest_code_5f2fc530039644acb6932d26fae1bb8e-4"></a><span class="sd">    Returns:</span>
+<a name="rest_code_5f2fc530039644acb6932d26fae1bb8e-5"></a><span class="sd">     float: value returned on pulling the arm</span>
+<a name="rest_code_5f2fc530039644acb6932d26fae1bb8e-6"></a><span class="sd">    """</span>
+<a name="rest_code_5f2fc530039644acb6932d26fae1bb8e-7"></a>    <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability</span><span class="p">:</span>
+<a name="rest_code_5f2fc530039644acb6932d26fae1bb8e-8"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">penalty</span>
+<a name="rest_code_5f2fc530039644acb6932d26fae1bb8e-9"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reward</span>
 </pre>
 </div>
 </div>

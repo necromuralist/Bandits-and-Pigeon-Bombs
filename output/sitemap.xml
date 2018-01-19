@@ -7,82 +7,94 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>https://necromuralist.github.io/data_science/</loc>
-  <lastmod>2018-01-13T00:19:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/2017/</loc>
-  <lastmod>2018-01-13T00:17:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/2018/</loc>
-  <lastmod>2018-01-13T00:19:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/archive.html</loc>
-  <lastmod>2018-01-13T00:19:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/authors/</loc>
-  <lastmod>2018-01-13T00:19:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/authors/brunhilde/</loc>
-  <lastmod>2018-01-13T00:17:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/authors/hades/</loc>
-  <lastmod>2018-01-13T00:17:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/authors/necromuralist/</loc>
-  <lastmod>2018-01-13T00:19:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/categories/</loc>
-  <lastmod>2018-01-13T00:19:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/categories/algorithm-reinforcementlearning/</loc>
-  <lastmod>2018-01-13T00:17:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/categories/algorithm/</loc>
-  <lastmod>2018-01-13T00:17:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/categories/bandits-reinforcementlearning/</loc>
-  <lastmod>2018-01-13T00:17:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/data_science/categories/cat_qlearning/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/categories/pybrain-optimization/</loc>
-  <lastmod>2018-01-13T00:19:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/data_science/categories/qlearning/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/posts/A-Bernoulli-Arm/</loc>
-  <lastmod>2018-01-13T00:17:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/posts/Epsilon-Greedy-with-Normal-Distribution-Payouts/</loc>
-  <lastmod>2018-01-13T00:17:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/posts/Optimistic-Initial-Values/</loc>
-  <lastmod>2018-01-13T00:17:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/posts/PyBrain-Optimization-Example/</loc>
-  <lastmod>2018-01-13T00:19:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/posts/The-Epsilon-Greedy-Algorithm/</loc>
-  <lastmod>2018-01-13T00:17:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/posts/assessing-the-performance/</loc>
-  <lastmod>2018-01-13T00:17:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/data_science/posts/finding-the-best-epsilon/</loc>
-  <lastmod>2018-01-13T00:17:00Z</lastmod>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/data_science/posts/one-dimensional-world/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
 </urlset>

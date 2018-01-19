@@ -14,6 +14,7 @@
 <link rel="canonical" href="https://necromuralist.github.io/data_science/posts/PyBrain-Optimization-Example/">
 <!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js"></script><meta name="author" content="necromuralist">
 <link rel="prev" href="../Epsilon-Greedy-with-Normal-Distribution-Payouts/" title="Epsilon Greedy with Normal-Distribution Payouts" type="text/html">
+<link rel="next" href="../one-dimensional-world/" title="One-Dimensional World" type="text/html">
 <meta property="og:site_name" content="Reinforcement Learning">
 <meta property="og:title" content="PyBrain Optimization Example">
 <meta property="og:url" content="https://necromuralist.github.io/data_science/posts/PyBrain-Optimization-Example/">
@@ -104,12 +105,12 @@
 <p>This is the <a class="reference external" href="http://www.pybrain.org/docs/tutorial/optimization.html#general-optimization-using-evolvable">general optimization example</a> from the pybrain documentation.</p>
 <div class="section" id="imports">
 <h2>1 Imports</h2>
-<pre class="code ipython"><a name="rest_code_70f3b346ab3a4000a0cb61dedff9e839-1"></a><span class="c1"># python standard library</span>
-<a name="rest_code_70f3b346ab3a4000a0cb61dedff9e839-2"></a><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">random</span>
-<a name="rest_code_70f3b346ab3a4000a0cb61dedff9e839-3"></a>
-<a name="rest_code_70f3b346ab3a4000a0cb61dedff9e839-4"></a><span class="c1"># pypi</span>
-<a name="rest_code_70f3b346ab3a4000a0cb61dedff9e839-5"></a><span class="kn">from</span> <span class="nn">pybrain.structure.evolvables.evolvable</span> <span class="kn">import</span> <span class="n">Evolvable</span>
-<a name="rest_code_70f3b346ab3a4000a0cb61dedff9e839-6"></a><span class="kn">from</span> <span class="nn">pybrain.optimization</span> <span class="kn">import</span> <span class="n">HillClimber</span>
+<pre class="code ipython"><a name="rest_code_5279abfd37a54e5192b58d979a1b259b-1"></a><span class="c1"># python standard library</span>
+<a name="rest_code_5279abfd37a54e5192b58d979a1b259b-2"></a><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">random</span>
+<a name="rest_code_5279abfd37a54e5192b58d979a1b259b-3"></a>
+<a name="rest_code_5279abfd37a54e5192b58d979a1b259b-4"></a><span class="c1"># pypi</span>
+<a name="rest_code_5279abfd37a54e5192b58d979a1b259b-5"></a><span class="kn">from</span> <span class="nn">pybrain.structure.evolvables.evolvable</span> <span class="kn">import</span> <span class="n">Evolvable</span>
+<a name="rest_code_5279abfd37a54e5192b58d979a1b259b-6"></a><span class="kn">from</span> <span class="nn">pybrain.optimization</span> <span class="kn">import</span> <span class="n">HillClimber</span>
 </pre>
 </div>
 <div class="section" id="the-evolvable">
@@ -130,69 +131,69 @@
 <div class="section" id="the-randomize-method">
 <h3>2.4 The Randomize Method</h3>
 <p>This is used to initialize the parameters to a random value. This is required but I'm pretty sure it doesn't get used in this case.</p>
-<pre class="code ipython"><a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-1"></a><span class="k">class</span> <span class="nc">Mutant</span><span class="p">(</span><span class="n">Evolvable</span><span class="p">):</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-2"></a>    <span class="sd">"""A simple evolvable class</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-3"></a>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-4"></a><span class="sd">    Args:</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-5"></a><span class="sd">     x: a starting value to mimic the fitness of the model</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-6"></a><span class="sd">     mininmum: smallest allowed value</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-7"></a><span class="sd">     maximum: biggest allowed value</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-8"></a><span class="sd">    """</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-9"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">minimum</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maximum</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-10"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">minimum</span> <span class="o">=</span> <span class="n">minimum</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-11"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span> <span class="o">=</span> <span class="n">maximum</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-12"></a>        <span class="c1"># minimum &lt;= x &lt;= maximum</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-13"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="bp">None</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-14"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-15"></a>        <span class="k">return</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-16"></a>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-17"></a>    <span class="nd">@property</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-18"></a>    <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-19"></a>        <span class="sd">"""The value to optimize</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-20"></a>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-21"></a><span class="sd">        Returns:</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-22"></a><span class="sd">         x (float): value to optimize</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-23"></a><span class="sd">        """</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-24"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-25"></a>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-26"></a>    <span class="nd">@x.setter</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-27"></a>    <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_x</span><span class="p">):</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-28"></a>        <span class="sd">"""sets x, constraining the value</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-29"></a>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-30"></a><span class="sd">        Args:</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-31"></a><span class="sd">         new_x: float from minimum to maximum</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-32"></a><span class="sd">        """</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-33"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minimum</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">new_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">))</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-34"></a>        <span class="k">return</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-35"></a>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-36"></a>    <span class="k">def</span> <span class="nf">mutate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-37"></a>        <span class="sd">"""Updates x with a random change</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-38"></a>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-39"></a><span class="sd">        Maintains the constraint of the value</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-40"></a><span class="sd">        """</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-41"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="p">(</span><span class="n">random</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.3</span><span class="p">)</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-42"></a>        <span class="k">return</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-43"></a>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-44"></a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-45"></a>        <span class="sd">"""Returns a new instance with the same x-value</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-46"></a>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-47"></a><span class="sd">        Returns:</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-48"></a><span class="sd">         Mutant: copy of this instance</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-49"></a><span class="sd">        """</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-50"></a>        <span class="k">return</span> <span class="n">Mutant</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-51"></a>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-52"></a>    <span class="k">def</span> <span class="nf">randomize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-53"></a>        <span class="sd">"""A method to randomize the x-value"""</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-54"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span> <span class="o">*</span> <span class="n">random</span><span class="p">()</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-55"></a>        <span class="k">return</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-56"></a>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-57"></a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-58"></a>        <span class="sd">"""String representation</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-59"></a>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-60"></a><span class="sd">        Returns:</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-61"></a><span class="sd">         str: formatted version of x</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-62"></a><span class="sd">        """</span>
-<a name="rest_code_4ae5ae2fdb8b41d08c97b816f8f5670c-63"></a>        <span class="k">return</span> <span class="s2">"&lt; {:.2f} (Maximized={})&gt;"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">)</span>
+<pre class="code ipython"><a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-1"></a><span class="k">class</span> <span class="nc">Mutant</span><span class="p">(</span><span class="n">Evolvable</span><span class="p">):</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-2"></a>    <span class="sd">"""A simple evolvable class</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-3"></a>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-4"></a><span class="sd">    Args:</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-5"></a><span class="sd">     x: a starting value to mimic the fitness of the model</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-6"></a><span class="sd">     mininmum: smallest allowed value</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-7"></a><span class="sd">     maximum: biggest allowed value</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-8"></a><span class="sd">    """</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-9"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">minimum</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maximum</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-10"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">minimum</span> <span class="o">=</span> <span class="n">minimum</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-11"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span> <span class="o">=</span> <span class="n">maximum</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-12"></a>        <span class="c1"># minimum &lt;= x &lt;= maximum</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-13"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-14"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-15"></a>        <span class="k">return</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-16"></a>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-17"></a>    <span class="nd">@property</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-18"></a>    <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-19"></a>        <span class="sd">"""The value to optimize</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-20"></a>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-21"></a><span class="sd">        Returns:</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-22"></a><span class="sd">         x (float): value to optimize</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-23"></a><span class="sd">        """</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-24"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-25"></a>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-26"></a>    <span class="nd">@x.setter</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-27"></a>    <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_x</span><span class="p">):</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-28"></a>        <span class="sd">"""sets x, constraining the value</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-29"></a>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-30"></a><span class="sd">        Args:</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-31"></a><span class="sd">         new_x: float from minimum to maximum</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-32"></a><span class="sd">        """</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-33"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minimum</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">new_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">))</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-34"></a>        <span class="k">return</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-35"></a>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-36"></a>    <span class="k">def</span> <span class="nf">mutate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-37"></a>        <span class="sd">"""Updates x with a random change</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-38"></a>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-39"></a><span class="sd">        Maintains the constraint of the value</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-40"></a><span class="sd">        """</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-41"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="p">(</span><span class="n">random</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.3</span><span class="p">)</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-42"></a>        <span class="k">return</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-43"></a>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-44"></a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-45"></a>        <span class="sd">"""Returns a new instance with the same x-value</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-46"></a>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-47"></a><span class="sd">        Returns:</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-48"></a><span class="sd">         Mutant: copy of this instance</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-49"></a><span class="sd">        """</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-50"></a>        <span class="k">return</span> <span class="n">Mutant</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-51"></a>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-52"></a>    <span class="k">def</span> <span class="nf">randomize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-53"></a>        <span class="sd">"""A method to randomize the x-value"""</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-54"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span> <span class="o">*</span> <span class="n">random</span><span class="p">()</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-55"></a>        <span class="k">return</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-56"></a>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-57"></a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-58"></a>        <span class="sd">"""String representation</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-59"></a>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-60"></a><span class="sd">        Returns:</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-61"></a><span class="sd">         str: formatted version of x</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-62"></a><span class="sd">        """</span>
+<a name="rest_code_551424c180cb472f8b8c391aa8e6ada3-63"></a>        <span class="k">return</span> <span class="s2">"&lt; {:.2f} (Maximized={})&gt;"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">)</span>
 </pre>
 </div>
 </div>
@@ -213,21 +214,21 @@
 <div class="section" id="the-evaluator-function">
 <h3>3.1 The Evaluator Function</h3>
 <p>In this case we're just going to return the x value of the object.</p>
-<pre class="code ipython"><a name="rest_code_1189c7f2acbf4094b17dca2838e610eb-1"></a><span class="k">def</span> <span class="nf">evaluator</span><span class="p">(</span><span class="n">mutant</span><span class="p">):</span>
-<a name="rest_code_1189c7f2acbf4094b17dca2838e610eb-2"></a>    <span class="k">return</span> <span class="n">mutant</span><span class="o">.</span><span class="n">x</span>
+<pre class="code ipython"><a name="rest_code_52144fa5e6b740dca28cf4230d343630-1"></a><span class="k">def</span> <span class="nf">evaluator</span><span class="p">(</span><span class="n">mutant</span><span class="p">):</span>
+<a name="rest_code_52144fa5e6b740dca28cf4230d343630-2"></a>    <span class="k">return</span> <span class="n">mutant</span><span class="o">.</span><span class="n">x</span>
 </pre>
 </div>
 <div class="section" id="the-instances">
 <h3>3.2 The Instances</h3>
-<pre class="code ipython"><a name="rest_code_b1ebf8b8afce44e09618f6c51aae1cf9-1"></a><span class="n">mutant</span> <span class="o">=</span> <span class="n">Mutant</span><span class="p">(</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span>
-<a name="rest_code_b1ebf8b8afce44e09618f6c51aae1cf9-2"></a><span class="n">climber</span> <span class="o">=</span> <span class="n">HillClimber</span><span class="p">(</span><span class="n">evaluator</span><span class="p">,</span> <span class="n">mutant</span><span class="p">,</span> <span class="n">maxEvaluations</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">desiredEvaluation</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<pre class="code ipython"><a name="rest_code_4e3addb230664a2ca7a92bb72f404363-1"></a><span class="n">mutant</span> <span class="o">=</span> <span class="n">Mutant</span><span class="p">(</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span>
+<a name="rest_code_4e3addb230664a2ca7a92bb72f404363-2"></a><span class="n">climber</span> <span class="o">=</span> <span class="n">HillClimber</span><span class="p">(</span><span class="n">evaluator</span><span class="p">,</span> <span class="n">mutant</span><span class="p">,</span> <span class="n">maxEvaluations</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">desiredEvaluation</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre>
 </div>
 <div class="section" id="the-optimization">
 <h3>3.3 The Optimization</h3>
 <p>The optimization classes get run using their <tt class="docutils literal">learn</tt> methods.</p>
-<pre class="code ipython"><a name="rest_code_6c70bab7ab0e4ab48387da06a292e535-1"></a><span class="n">outcome</span> <span class="o">=</span> <span class="n">climber</span><span class="o">.</span><span class="n">learn</span><span class="p">()</span>
-<a name="rest_code_6c70bab7ab0e4ab48387da06a292e535-2"></a><span class="k">print</span><span class="p">(</span><span class="n">outcome</span><span class="p">)</span>
+<pre class="code ipython"><a name="rest_code_8e1b940077f64c6984b996b78906b71b-1"></a><span class="n">outcome</span> <span class="o">=</span> <span class="n">climber</span><span class="o">.</span><span class="n">learn</span><span class="p">()</span>
+<a name="rest_code_8e1b940077f64c6984b996b78906b71b-2"></a><span class="k">print</span><span class="p">(</span><span class="n">outcome</span><span class="p">)</span>
 </pre>
 <pre class="literal-block">
 ('Step:', 0, 'best:', 6.780765339892317)
@@ -257,6 +258,9 @@
 <ul class="pager hidden-print">
 <li class="previous">
                 <a href="../Epsilon-Greedy-with-Normal-Distribution-Payouts/" rel="prev" title="Epsilon Greedy with Normal-Distribution Payouts">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../one-dimensional-world/" rel="next" title="One-Dimensional World">Next post</a>
             </li>
         </ul></nav></aside></article>
 </div>
