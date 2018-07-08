@@ -1,0 +1,4 @@
+#+TITLE: Reinforcement Learning Notes
+
+* What This Is
+  I decided to study reinforcement learning again, and these are my notes (sort of).
