@@ -1,0 +1,136 @@
+#+TITLE: Optimistic Initial Values
+* Introduction
+  This is one possible to the n-armed bandit problem. It is similar to the /Epsilon Greedy/ algorithm except that instead of using a conditional to decide whether to explore or exploit, the algorithm sets the estimated (mean) payout for each arm to 1 (the theoretical maximum for our case) and then always exploits. As things proceed, the arms will settle down to their actual payoff-rates and those that haven't been explored will be chosen because they are still too high.
+* The Tangle
+  This is the no-web template to build the final file.
+  
+#+BEGIN_SRC python :tangle optimistic_initial_values.py
+<<imports>>
+
+<<spec>>
+
+<<class-declaration>>
+
+    <<constructor>>
+    
+    <<select-arm>>
+    
+    <<pull-arm>>
+    
+    <<update-arm>>
+    
+    <<reset>>
+#+END_SRC
+
+* Imports
+  These are our external dependencies.
+
+#+BEGIN_SRC python :noweb-ref imports
+from numba import jitclass
+import numba
+import numpy
+#+END_SRC
+
+* The Spec
+  In order to use numba with the =OptimisticInitialValues= class you have to create a 'spec' that tells numba what the data-types are for each of its fields.
+
+#+BEGIN_SRC python :noweb-ref spec
+SPEC = [
+    ("arms", numba.double[:]),
+    ("counts", numba.double[:]),
+    ("rewards", numba.double[:]),
+    ("total_reward", numba.int64),
+    ("initial_reward", numba.double),
+]
+#+END_SRC
+
+* The Class Declaration 
+#+BEGIN_SRC python :noweb-ref class-declaration
+@jitclass(SPEC)
+class OptimisticInitialValues(object):
+    """Optimistic Initial Values greedy algorithm
+
+    Args:
+     numpy.array[float]: payout-probabilities for each arm
+    """    
+#+END_SRC
+* The Constructor
+  Here's our first change from the epsilon-greedy algorithm. We no longer have an =epsilon= value and instead of initializing the =rewards= as zeros we initialize them with an 'initial' reward. Also, although you can't see it here, the arms have to be a list of mean payout values (see the =pull_arm= method below).
+
+#+BEGIN_SRC python :noweb-ref constructor
+def __init__(self, arms, initial_reward):
+    self.arms = arms
+    self.counts = numpy.zeros(len(arms))
+    self.rewards = numpy.zeros(len(arms)) + initial_reward
+    self.total_reward = 0
+    self.initial_reward = initial_reward
+    return
+#+END_SRC
+
+* Select Arm
+  This chooses the next arm. Unlike the epsilon-greedy algorithm it will always pick the 'best' arm, choosing the first if there is a tie. Since the whole class is in the jit I'm also not using the external =find_first= method.
+
+#+BEGIN_SRC python :noweb-ref select-arm
+def select_arm(self):
+    """Index of the arm with the most reward
+
+    Returns:
+     integer: index of arm with highest average reward
+    """
+    item = self.rewards.max()
+    for index in range(len(self.rewards)):
+        if item == self.rewards[index]:
+            return index
+#+END_SRC
+
+* Pull Arm
+  This gets the reward for the arm. with a Bernoulli arm, there's a chance that an arm will be set to 0 on its first pull, at which point you will never explore it (since there's no exploration), so even the best arm might get wiped out. To fix this you need a different scheme. This one uses a population mean (selected =from self.arms=) which has noise added by selecting from the standard normal distribution.
+
+#+BEGIN_SRC python :noweb-ref pull-arm
+def pull_arm(self, arm):
+    """gets the reward
+        
+    Args:
+     arm (int): index for the arm population-mean array
+    Returns:
+     float: payout for the arm
+    """
+    return numpy.random.randn() + self.arms[arm]
+#+END_SRC
+
+* Update Arm
+  This pulls the arm and updates the reward. This works the same as the =epsilon-greedy= version does.
+#+BEGIN_SRC python :noweb-ref update-arm
+def update(self, arm):
+    """pulls the arm and updates the average reward
+    
+    also updates the total_reward the algorithm has earned so far
+    
+    Args:
+     arm (int): index of the arm to pull
+    """
+    self.counts[arm] += 1
+    count = self.counts[arm]
+    average_reward = self.rewards[arm]
+    reward = self.pull_arm(arm)
+    self.total_reward += reward
+    self.rewards[arm] = (((count - 1)/float(count)) * average_reward
+                         + (reward/float(count)))
+    return
+#+END_SRC
+
+* Reset
+  This resets the values so that you can re-use the algorithm. As with the constructor, it sets the =rewards= to all ones instead of zeros as was the case with the epsilon-greedy algorithm.
+
+#+BEGIN_SRC python :noweb-ref reset
+def reset(self):
+    """sets the counts, rewards, total_reward to 0s
+    
+    This lets you re-used the EpsilonGreedy
+    """
+    self.counts = numpy.zeros(len(self.arms))
+    self.rewards = numpy.zeros(len(self.arms)) + self.initial_reward
+    self.total_reward = 0
+    return
+#+END_SRC
+

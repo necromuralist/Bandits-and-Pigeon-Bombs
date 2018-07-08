@@ -1,14 +1,22 @@
 @import url('https://fonts.googleapis.com/css?family=Cinzel');
 @import url("https://fonts.googleapis.com/css?family=Goudy+Bookletter+1911:400,700");
 @font-face {
-    font-family: 'cinzel_decorativebold';
-    src: url('../fonts/cinzel/cinzeldecorative-bold-webfont.woff2') format('woff2'),
-         url('../fonts/cinzel/cinzeldecorative-bold-webfont.woff') format('woff');
+    font-family: 'chunkfiveroman';
+    src: url('ChunkFive/chunkfive-webfont.woff2') format('woff2'),
+         url('ChunkFive/chunkfive-webfont.woff') format('woff');
     font-weight: bold;
     font-style: normal;
 
 }
-.h6 {
+
+body {
+  font-family: "Goudy Bookletter 1911", "EB Garamond",  Georgia, "Times New Roman", Times, serif;
+  font-size: 2em;
+  line-height: 1.42857143;
+  color: #777777;
+  background-color: #ffffff;
+}
+h1, h6, .h1, .h6 {
   font-family: "chunkfiveroman", "Cinzel", "cinzel_decorativebold", serif;
   font-weight: 700;
   line-height: 1.1;
@@ -19,6 +27,7 @@
   font-size: 18px;
   font-family: "chunkfiveroman", "Cinzel", 'cinzel_decorativebold', "Arial Narrow Bold", sans-serif;
   font-weight: 700;
+  background: white;
 }
 .navbar-default .badge {
   background-color: #000;

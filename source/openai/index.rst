@@ -1,9 +1,9 @@
-OpenAI Gym Documentation
-========================
+OpenAI
+======
 
-The OpenAI Gym has some documentation `here <https://gym.openai.com/docs/>`__, but it is a little incomplete, to say the least. I'm going to try and add some of my stuff here.
+`OpenAI <https://openai.com/>`__ has open-sourced their platforms for reinforcement learning. I'll be using the `OpenAI Gym <https://gym.openai.com/>`__ and `OpenAI Retro <https://github.com/openai/retro>`__.
 
 .. toctree::
+   :maxdepth: 2
 
-   Core <core.rst>
-   Environments <environments/index.rst>
+   Gym <gym/index.rst>

@@ -12,7 +12,7 @@
 * Imports
   We need to import [[https://gym.openai.com/][openai-gym]] (as gym).
 
-#+BEGIN_SRC ipython :session robot :results none
+#+BEGIN_SRC python :session robot :results none
 # from pypi
 import gym
 #+END_SRC
@@ -24,24 +24,23 @@ import gym
 Reward is given for moving forward, total 300+ points up to the far end. If the robot falls, it gets -100. Applying motor torque costs a small amount of points, more optimal agent will get better score. State consists of hull angle speed, angular velocity, horizontal speed, vertical speed, position of joints and joints angular speed, legs contact with ground, and 10 lidar rangefinder measurements. There's no coordinates in the state vector.
 #+END_QUOTE
 
-#+BEGIN_SRC ipython :session robot :results none
+#+BEGIN_SRC python :session robot :results none
 environment = gym.make("BipedalWalker-v2")
 #+END_SRC
 
 * Running It
-  We're going to run this for 100 episodes (each run from start to finish is an episode), resetting the environment for each episode. Then within an episode we're going to have the environment run up to 10,000 steps (a time-step that updates the environment). If it falls down or walks off screen the environment will indicate that it's done.
+  We're going to run this for 10 episodes (each run from start to finish is an episode), resetting the environment for each episode. Then within an episode we're going to have the environment run up to 1,000 steps (a time-step that updates the environment). If it falls down or walks off screen the environment will indicate that it's done.
 
-#+BEGIN_SRC ipython :session robot :results none
-EPISODES = range(100)
-STEPS = range(10**4 + 1)
+#+BEGIN_SRC python :session robot :results none
+EPISODES = range(10)
+STEPS = 10**3 + 1
 #+END_SRC
 
-#+BEGIN_SRC ipython :session robot :results output
+#+BEGIN_SRC python :session robot :results output
 for episode in EPISODES:
     observation = environment.reset()
-    print(observation)
 
-    for step in STEPS:
+    for step in range(STEPS):
         environment.render()
         action = environment.action_space.sample()
         observation, reward, done, info = environment.step(action)
@@ -50,4 +49,11 @@ for episode in EPISODES:
             break
 #+END_SRC
 
-This will take a very long time. Note that I didn't implement any logic to teach the robot to walk, this is all run with built-in functionality.
+#+RESULTS:
+: It took 76 steps to finish this episode.
+: It took 44 steps to finish this episode.
+: It took 84 steps to finish this episode.
+: It took 42 steps to finish this episode.
+: It took 45 steps to finish this episode.
+
+It only finished five out of the ten times, probably by falling down each time. Note that I didn't implement any logic to teach the robot to walk, this is all run with built-in functionality.

@@ -1,0 +1,299 @@
+#+TITLE: The Epsilon Greedy Algorithm
+* Background
+  This is an implementation of the Epsilon Greedy algorithm to find solutions for the multi-arm-bandit problem.
+* Imports
+#+BEGIN_SRC python :noweb-ref imports
+# python
+import random
+
+# pypi
+from numba import jit
+import numpy
+#+END_SRC
+
+* Find First
+  This is a helper function to find the first matching item in an array-like collection.
+
+#+BEGIN_SRC python :noweb-ref find-first
+@jit
+def find_first(item, vector):
+    """find the first item in the vector
+
+    Args:
+     item: thing to match
+     vector: thing to search
+
+    Returns:
+     value: index of first matching item, -1 if not found
+    """
+    for index in range(len(vector)):
+        if item == vector[index]:
+            return index
+    return -1
+        
+#+END_SRC
+
+* Epsilon Greedy
+  The /epsilon-greedy/ algorithm tries to solve the exploitation-exploration dilemna by exploring a fraction of the time (set by /epsilon/) and using the best solution found so far the rest of the time. This implementation is based on the one in Bandit Algorithms for Website Optimization[fn:ba].
+
+#+BEGIN_SRC python :tangle epsilon_greedy.py
+<<imports>>
+
+<<find-first>>
+class EpsilonGreedy(object):
+    """The Epsilon Greedy Algorithm
+
+    Args:
+     epsilon (float): fraction of the time to explore
+     arms (list): collection of bandits to pull
+    """
+    <<constructor>>
+
+    <<best-arm>>
+
+    <<counts>>
+
+    <<rewards>>
+
+    <<select-arm>>
+
+    <<update>>
+
+    <<reset>>
+
+    <<call>>
+#+END_SRC
+** The Constructor
+   The constructor takes two arguments - /epsilon/ and /arms/. The /arms/ list should contain bandits that return a reward or penalty when pulled (called).
+
+#+BEGIN_SRC python :noweb-ref constructor
+def __init__(self, epsilon, arms):
+    self.epsilon = epsilon
+    self.arms = arms
+    self._counts = None
+    self._rewards = None
+    self.total_reward = None
+    return
+#+END_SRC
+
+** Best Arm
+   The =best_arm= property returns the index of the arm that has the highest average reward so far. It returns the index instead of the arm itself because it's used to get the matching counts and rewards in the =update= method.
+
+#+BEGIN_SRC python :noweb-ref best-arm
+@property
+def best_arm(self):
+    """Index of the arm with the most reward"""
+    item = self.rewards.max()
+    return find_first(item, self.rewards)
+#+END_SRC
+** Counts
+   The `counts` keeps track of the number of times each arm is pulled.
+
+#+BEGIN_SRC python :noweb-ref counts
+@property
+def counts(self):
+    """counts of times each arm is pulled
+
+    Returns:
+     numpy.array: array of counts
+    """
+    if self._counts is None:
+        self._counts = numpy.zeros(len(self.arms), dtype=int)
+    return self._counts
+#+END_SRC
+** Rewards
+   The =rewards= attributes holds the running average reward that each arm has returned.
+
+#+BEGIN_SRC python :noweb-ref rewards
+@property
+def rewards(self):
+    """array of running average of rewards for each arms
+
+    Returns:
+     numpy.array: running averages
+    """
+    if self._rewards is None:
+        self._rewards = numpy.zeros(len(self.arms))
+    return self._rewards
+#+END_SRC
+** Reset
+#+BEGIN_SRC python :noweb-ref reset
+def reset(self):
+    """sets the counts and rewards to None
+
+    This lets you re-used the EpsilonGreedy without re-constructing
+    the arms
+    """
+    self._counts = None
+    self._rewards = None
+    self.total_reward = 0
+    return
+#+END_SRC
+
+** Select Arm
+   The /select_arm/ method will choose either the best arm or a random one based on a randomly drawn value and how it compares to epsilon.
+
+#+BEGIN_SRC python :noweb-ref select-arm
+def select_arm(self):
+    """chooses the next arm to update
+
+    Returns:
+     int: index of the next arm to pull
+    """
+    if random.random() < self.epsilon:
+        return random.randrange(len(self.arms))
+    return self.best_arm
+#+END_SRC
+
+** Update
+   The update method pulls the arm whose index it is given and then updates the count and reward.
+
+#+BEGIN_SRC python :noweb-ref update
+def update(self, arm):
+    """pulls the arm and updates the value
+
+    Args:
+     arm (int): index of the arm to pull
+    """
+    self.counts[arm] += 1
+    count = self.counts[arm]
+    average_reward = self.rewards[arm]
+    reward = self.arms[arm]()
+    self.total_reward += reward
+    self.rewards[arm] = (((count - 1)/float(count)) * average_reward
+                        + (reward/float(count)))
+    return
+#+END_SRC
+** Call
+   The /__call__/ method will be the main update method that unifies the naming conventions found in the books.
+
+#+BEGIN_SRC python :noweb-ref call
+def __call__(self):
+    """chooses an arm and updates the rewards"""
+    arm = self.select_arm()
+    self.update(arm)
+    return
+#+END_SRC
+
+* Epsilon Greedy Optimized
+  This is an attempt to get a version working that will work in numba.
+#+BEGIN_SRC python :tangle epsilon_greedy_optimized.py
+<<optimized-imports>>
+
+<<spec>>
+
+<<find-first>>
+@jitclass(spec)
+class EpsilonGreedyOptimized(object):
+    """The Epsilon Greedy Algorithm
+
+    Args:
+     epsilon (float): fraction of the time to explore
+     arms (list): collection of probabilities for bandit arm
+    """
+    <<optimized-constructor>>
+
+    <<best-arm>>
+
+    <<select-arm>>
+
+    <<optimized-pull-arm>>
+
+    <<optimized-update>>
+
+    <<optimized-reset>>
+
+    <<call>>
+#+END_SRC
+
+** Optimized Imports
+#+BEGIN_SRC python :noweb-ref optimized-imports
+# python
+import random
+
+# pypi
+from numba import (
+    jit,
+    jitclass,
+    )
+import numba
+import numpy
+#+END_SRC
+** The Spec
+   This is how you tell numba what attributes the class will have.
+#+BEGIN_SRC python :noweb-ref spec
+spec = [
+    ("epsilon", numba.double),
+    ("arms", numba.double[:]),
+    ("counts", numba.double[:]),
+    ("rewards", numba.double[:]),
+    ("total_reward", numba.int64),
+]
+#+END_SRC
+
+** The Constructor
+   The constructor takes two arguments - /epsilon/ and /arms/. The /arms/ list should contain probabilities that a reward or penalty will be returned when pulled.
+
+#+BEGIN_SRC python :noweb-ref optimized-constructor
+def __init__(self, epsilon, arms):
+    self.epsilon = epsilon
+    self.arms = arms
+    self.counts = numpy.zeros(len(arms))
+    self.rewards = numpy.zeros(len(arms))
+    self.total_reward = 0
+    return
+#+END_SRC
+
+** Reset
+#+BEGIN_SRC python :noweb-ref optimized-reset
+def reset(self):
+    """sets the counts, rewards, total_reward to 0s
+
+    This lets you re-used the EpsilonGreedy
+    """
+    self.counts = numpy.zeros(len(self.arms))
+    self.rewards = numpy.zeros(len(self.arms))
+    self.total_reward = 0
+    return
+#+END_SRC
+
+** Pull Arm
+   Since we can't give user-defined objects as attributes of the class, this version will be both algorithm and bandit.
+
+#+BEGIN_SRC python :noweb-ref optimized-pull-arm
+def pull_arm(self, arm):
+    """gets the reward
+    
+    Args:
+     arm (int): index for the arm-probability array
+    Returns:
+     int: reward or no reward
+    """
+    if random.random() > self.arms[arm]:
+        return 0
+    return 1
+#+END_SRC
+   
+** Update
+   The update method pulls the arm whose index it is given and then updates the count and reward. Here we're calling the =pull_arm= method instead of using a =BernoulliArm= so we can't re-use the original method.
+
+#+BEGIN_SRC python :noweb-ref optimized-update
+def update(self, arm):
+    """pulls the arm and updates the value
+
+    Args:
+     arm (int): index of the arm to pull
+    """
+    self.counts[arm] += 1
+    count = self.counts[arm]
+    average_reward = self.rewards[arm]
+    reward = self.pull_arm(arm)
+    self.total_reward += reward
+    self.rewards[arm] = (((count - 1)/float(count)) * average_reward
+                        + (reward/float(count)))
+    return
+#+END_SRC
+
+* References
+
+[fn:ba] Bandit Algorithms for Website Optimization by John Myles White. Copyright 2013 John Myles White, 978-1-449-34133-6
