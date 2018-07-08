@@ -1,0 +1,8 @@
+.doit.db
+.venv
+__pycache__
+build/
+cache/
+output/
+.pyc
+files/sphinx/
