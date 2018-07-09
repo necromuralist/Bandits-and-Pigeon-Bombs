@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Reinforcement Learning Notes (Posts about pybrain optimization)</title><link>https://necromuralist.github.io/reinforcement_learning/</link><description></description><atom:link href="https://necromuralist.github.io/reinforcement_learning/categories/pybrain-optimization.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sun, 08 Jul 2018 23:58:00 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>PyBrain Optimization Example</title><link>https://necromuralist.github.io/reinforcement_learning/posts/PyBrain-Optimization-Example/</link><dc:creator>necromuralist</dc:creator><description>&lt;div&gt;&lt;p&gt;This is the &lt;a class="reference external" href="http://www.pybrain.org/docs/tutorial/optimization.html#general-optimization-using-evolvable"&gt;general optimization example&lt;/a&gt; from the pybrain documentation.&lt;/p&gt;
+&lt;div class="section" id="imports"&gt;
+&lt;h2&gt;1 Imports&lt;/h2&gt;
+&lt;pre class="code ipython"&gt;&lt;a name="rest_code_2f02fdb50d8b4f4bad83603001c8099f-1"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# python standard library&lt;/span&gt;
+&lt;a name="rest_code_2f02fdb50d8b4f4bad83603001c8099f-2"&gt;&lt;/a&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;random&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;random&lt;/span&gt;
+&lt;a name="rest_code_2f02fdb50d8b4f4bad83603001c8099f-3"&gt;&lt;/a&gt;
+&lt;a name="rest_code_2f02fdb50d8b4f4bad83603001c8099f-4"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# pypi&lt;/span&gt;
+&lt;a name="rest_code_2f02fdb50d8b4f4bad83603001c8099f-5"&gt;&lt;/a&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;pybrain.structure.evolvables.evolvable&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Evolvable&lt;/span&gt;
+&lt;a name="rest_code_2f02fdb50d8b4f4bad83603001c8099f-6"&gt;&lt;/a&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;pybrain.optimization&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;HillClimber&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="section" id="the-evolvable"&gt;
+&lt;h2&gt;2 The Evolvable&lt;/h2&gt;
+&lt;p&gt;To make an optimization that can take arbitrary values (not just continuous numbers), you can implement a sub-class of the PyBrain &lt;a class="reference external" href="http://www.pybrain.org/docs/api/structure/evolvables.html"&gt;Evolvable&lt;/a&gt; class.&lt;/p&gt;
+&lt;div class="section" id="the-constructor"&gt;
+&lt;h3&gt;2.1 The Constructor&lt;/h3&gt;
+&lt;p&gt;The &lt;tt class="docutils literal"&gt;Evolvable&lt;/tt&gt; class doesn't implement a constructor so you can create one with any parameters you need.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="the-mutate-method"&gt;
+&lt;h3&gt;2.2 The Mutate Method&lt;/h3&gt;
+&lt;p&gt;This is the method that is called after each round to change the parameters a little (a &lt;cite&gt;tweak&lt;/cite&gt;). It takes positional arguments, but I think it's called by the Hill Climber so I don't know where it gets passed in.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="the-copy-method"&gt;
+&lt;h3&gt;2.3 The Copy Method&lt;/h3&gt;
+&lt;p&gt;The tutorial says this is a required method, but the documentation for the API says it should default to a deep-copy. Anyway, I think this is only used if you use something like a Genetic Algorithm.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="the-randomize-method"&gt;
+&lt;h3&gt;2.4 The Randomize Method&lt;/h3&gt;
+&lt;p&gt;This is used to initialize the parameters to a random value. This is required but I'm pretty sure it doesn't get used in this case.&lt;/p&gt;
+&lt;pre class="code ipython"&gt;&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-1"&gt;&lt;/a&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Mutant&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Evolvable&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-2"&gt;&lt;/a&gt;    &lt;span class="sd"&gt;"""A simple evolvable class&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-3"&gt;&lt;/a&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-4"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    Args:&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-5"&gt;&lt;/a&gt;&lt;span class="sd"&gt;     x: a starting value to mimic the fitness of the model&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-6"&gt;&lt;/a&gt;&lt;span class="sd"&gt;     mininmum: smallest allowed value&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-7"&gt;&lt;/a&gt;&lt;span class="sd"&gt;     maximum: biggest allowed value&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-8"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    """&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-9"&gt;&lt;/a&gt;    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;minimum&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;maximum&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-10"&gt;&lt;/a&gt;        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;minimum&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;minimum&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-11"&gt;&lt;/a&gt;        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;maximum&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;maximum&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-12"&gt;&lt;/a&gt;        &lt;span class="c1"&gt;# minimum &amp;lt;= x &amp;lt;= maximum&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-13"&gt;&lt;/a&gt;        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-14"&gt;&lt;/a&gt;        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-15"&gt;&lt;/a&gt;        &lt;span class="k"&gt;return&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-16"&gt;&lt;/a&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-17"&gt;&lt;/a&gt;    &lt;span class="nd"&gt;@property&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-18"&gt;&lt;/a&gt;    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;x&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-19"&gt;&lt;/a&gt;        &lt;span class="sd"&gt;"""The value to optimize&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-20"&gt;&lt;/a&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-21"&gt;&lt;/a&gt;&lt;span class="sd"&gt;        Returns:&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-22"&gt;&lt;/a&gt;&lt;span class="sd"&gt;         x (float): value to optimize&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-23"&gt;&lt;/a&gt;&lt;span class="sd"&gt;        """&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-24"&gt;&lt;/a&gt;        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_x&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-25"&gt;&lt;/a&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-26"&gt;&lt;/a&gt;    &lt;span class="nd"&gt;@x.setter&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-27"&gt;&lt;/a&gt;    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;x&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;new_x&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-28"&gt;&lt;/a&gt;        &lt;span class="sd"&gt;"""sets x, constraining the value&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-29"&gt;&lt;/a&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-30"&gt;&lt;/a&gt;&lt;span class="sd"&gt;        Args:&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-31"&gt;&lt;/a&gt;&lt;span class="sd"&gt;         new_x: float from minimum to maximum&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-32"&gt;&lt;/a&gt;&lt;span class="sd"&gt;        """&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-33"&gt;&lt;/a&gt;        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;max&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;minimum&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;min&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;new_x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;maximum&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-34"&gt;&lt;/a&gt;        &lt;span class="k"&gt;return&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-35"&gt;&lt;/a&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-36"&gt;&lt;/a&gt;    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;mutate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-37"&gt;&lt;/a&gt;        &lt;span class="sd"&gt;"""Updates x with a random change&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-38"&gt;&lt;/a&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-39"&gt;&lt;/a&gt;&lt;span class="sd"&gt;        Maintains the constraint of the value&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-40"&gt;&lt;/a&gt;&lt;span class="sd"&gt;        """&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-41"&gt;&lt;/a&gt;        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mf"&gt;0.3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-42"&gt;&lt;/a&gt;        &lt;span class="k"&gt;return&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-43"&gt;&lt;/a&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-44"&gt;&lt;/a&gt;    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;copy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-45"&gt;&lt;/a&gt;        &lt;span class="sd"&gt;"""Returns a new instance with the same x-value&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-46"&gt;&lt;/a&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-47"&gt;&lt;/a&gt;&lt;span class="sd"&gt;        Returns:&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-48"&gt;&lt;/a&gt;&lt;span class="sd"&gt;         Mutant: copy of this instance&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-49"&gt;&lt;/a&gt;&lt;span class="sd"&gt;        """&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-50"&gt;&lt;/a&gt;        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;Mutant&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-51"&gt;&lt;/a&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-52"&gt;&lt;/a&gt;    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;randomize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-53"&gt;&lt;/a&gt;        &lt;span class="sd"&gt;"""A method to randomize the x-value"""&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-54"&gt;&lt;/a&gt;        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;maximum&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-55"&gt;&lt;/a&gt;        &lt;span class="k"&gt;return&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-56"&gt;&lt;/a&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-57"&gt;&lt;/a&gt;    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__repr__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-58"&gt;&lt;/a&gt;        &lt;span class="sd"&gt;"""String representation&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-59"&gt;&lt;/a&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-60"&gt;&lt;/a&gt;&lt;span class="sd"&gt;        Returns:&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-61"&gt;&lt;/a&gt;&lt;span class="sd"&gt;         str: formatted version of x&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-62"&gt;&lt;/a&gt;&lt;span class="sd"&gt;        """&lt;/span&gt;
+&lt;a name="rest_code_19a1f63604094cba9483258d3970580d-63"&gt;&lt;/a&gt;        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s2"&gt;"&amp;lt; {:.2f} (Maximized={})&amp;gt;"&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;maximum&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="hill-climbing"&gt;
+&lt;h2&gt;3 Hill Climbing&lt;/h2&gt;
+&lt;p&gt;The &lt;a class="reference external" href="http://www.pybrain.org/docs/api/optimization/optimization.html#module-pybrain.optimization"&gt;HillClimber&lt;/a&gt; is the simplest search - it assumes the first minima or maxima it finds is the global one. By default it tries to maximize the outcome. None of the arguments are required at instantiation, but in this case we're setting:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;an &lt;tt class="docutils literal"&gt;evaluator&lt;/tt&gt;: a callable that outputs how well the object to be evaluated did&lt;/li&gt;
+&lt;li&gt;an &lt;tt class="docutils literal"&gt;evaluable&lt;/tt&gt;: the object to be evaluated in this case our &lt;tt class="docutils literal"&gt;Mutant&lt;/tt&gt;&lt;/li&gt;
+&lt;li&gt;&lt;tt class="docutils literal"&gt;maxEvaluations&lt;/tt&gt;: The maximum number of times the &lt;tt class="docutils literal"&gt;evaluable&lt;/tt&gt; is evaluated&lt;/li&gt;
+&lt;li&gt;&lt;tt class="docutils literal"&gt;verbose&lt;/tt&gt;: print each step&lt;/li&gt;
+&lt;li&gt;&lt;tt class="docutils literal"&gt;desiredEvaluation&lt;/tt&gt;: the value that is good enough so the climber can stop&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="section" id="the-evaluator-function"&gt;
+&lt;h3&gt;3.1 The Evaluator Function&lt;/h3&gt;
+&lt;p&gt;In this case we're just going to return the x value of the object.&lt;/p&gt;
+&lt;pre class="code ipython"&gt;&lt;a name="rest_code_2c10287e073e4e1f934f808e2e113701-1"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;evaluator&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mutant&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_2c10287e073e4e1f934f808e2e113701-2"&gt;&lt;/a&gt;    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;mutant&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="section" id="the-instances"&gt;
+&lt;h3&gt;3.2 The Instances&lt;/h3&gt;
+&lt;pre class="code ipython"&gt;&lt;a name="rest_code_4ad8633146024de695ed7e61b38631f3-1"&gt;&lt;/a&gt;&lt;span class="n"&gt;mutant&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Mutant&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_4ad8633146024de695ed7e61b38631f3-2"&gt;&lt;/a&gt;&lt;span class="n"&gt;climber&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;HillClimber&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;evaluator&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mutant&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;maxEvaluations&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;verbose&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;desiredEvaluation&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="section" id="the-optimization"&gt;
+&lt;h3&gt;3.3 The Optimization&lt;/h3&gt;
+&lt;p&gt;The optimization classes get run using their &lt;tt class="docutils literal"&gt;learn&lt;/tt&gt; methods.&lt;/p&gt;
+&lt;pre class="code ipython"&gt;&lt;a name="rest_code_fd9b54e941cf4b60b7634b6c38103a17-1"&gt;&lt;/a&gt;&lt;span class="n"&gt;outcome&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;climber&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;a name="rest_code_fd9b54e941cf4b60b7634b6c38103a17-2"&gt;&lt;/a&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;outcome&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;pre class="literal-block"&gt;
+('Step:', 0, 'best:', 6.780765339892317)
+('Step:', 1, 'best:', 6.780765339892317)
+('Step:', 2, 'best:', 6.807553650921801)
+('Step:', 3, 'best:', 7.282574697921699)
+('Step:', 4, 'best:', 7.45592511459156)
+('Step:', 5, 'best:', 7.533694376079802)
+('Step:', 6, 'best:', 7.751507552794123)
+('Step:', 7, 'best:', 8.184303418505593)
+('Step:', 8, 'best:', 8.184303418505593)
+('Step:', 9, 'best:', 8.224264996606221)
+('Step:', 10, 'best:', 8.4835021736195)
+('Step:', 11, 'best:', 9.153976071682798)
+('Step:', 12, 'best:', 9.55795557780446)
+('Step:', 13, 'best:', 10)
+(&amp;lt; 10.00 (Maximized=True)&amp;gt;, 10)
+&lt;/pre&gt;
+&lt;p&gt;It managed to find the maximum in 13 steps.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>pybrain optimization</category><guid>https://necromuralist.github.io/reinforcement_learning/posts/PyBrain-Optimization-Example/</guid><pubDate>Sat, 13 Jan 2018 00:16:00 GMT</pubDate></item></channel></rss>

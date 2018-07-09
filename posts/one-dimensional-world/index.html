@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="A simple Q Learning example using a one-dimensional environment.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One-Dimensional World | Reinforcement Learning Notes</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="canonical" href="https://necromuralist.github.io/reinforcement_learning/posts/one-dimensional-world/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script><meta name="author" content="Cloistered Monkey">
+<link rel="prev" href="../PyBrain-Optimization-Example/" title="PyBrain Optimization Example" type="text/html">
+<link rel="next" href="../teaching-a-robot-to-walk/" title="Teaching A Robot To Walk" type="text/html">
+<meta property="og:site_name" content="Reinforcement Learning Notes">
+<meta property="og:title" content="One-Dimensional World">
+<meta property="og:url" content="https://necromuralist.github.io/reinforcement_learning/posts/one-dimensional-world/">
+<meta property="og:description" content="A simple Q Learning example using a one-dimensional environment.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-01-19T11:38:59-08:00">
+<meta property="article:tag" content="qlearning">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-default navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://necromuralist.github.io/reinforcement_learning/">
+
+                <span id="blog-title">Reinforcement Learning Notes</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../archive.html">Archive</a>
+                </li>
+<li>
+<a href="../../categories/">Tags</a>
+                </li>
+<li>
+<a href="../../rss.xml">RSS feed</a>
+                </li>
+<li>
+<a href="../../sphinx/index.html">Documentation</a>
+
+                
+            </li>
+</ul>
+<!-- Google custom search --><form method="get" action="https://www.google.com/search" class="navbar-form navbar-right" role="search">
+<div class="form-group">
+<input type="text" name="q" class="form-control" placeholder="Search">
+</div>
+<button type="submit" class="btn btn-primary">
+	<span class="glyphicon glyphicon-search"></span>
+</button>
+<input type="hidden" name="sitesearch" value="https://necromuralist.github.io/reinforcement_learning/">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.org" id="sourcelink">Source</a>
+    </li>
+
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">One-Dimensional World</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                    <a href="../../authors/cloistered-monkey/">Cloistered Monkey</a>
+            </span></p>
+            <p class="dateline"><a href="." rel="bookmark"><time class="published dt-published" datetime="2018-01-19T11:38:59-08:00" itemprop="datePublished" title="2018-01-19 11:38">2018-01-19 11:38</time></a></p>
+            
+        <p class="sourceline"><a href="index.org" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div id="outline-container-org5b49773" class="outline-2">
+<h2 id="org5b49773">Background</h2>
+<div class="outline-text-2" id="text-org5b49773">
+<p>
+This is take from MorvanZhou's <a href="https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow">github repository</a>. It uses Q-learning to train an agent to explore a one-dimensional world that has the reward-state at the end of the world.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb3113cb" class="outline-2">
+<h2 id="orgb3113cb">Tangle</h2>
+<div class="outline-text-2" id="text-orgb3113cb">
+<p>
+This is the no-web tangle block. It shows how the code is organized.
+</p>
+
+<div class="highlight"><pre><span></span><span class="o">&lt;&lt;</span><span class="n">imports</span><span class="o">&gt;&gt;</span>
+
+<span class="o">&lt;&lt;</span><span class="n">constants</span><span class="o">&gt;&gt;</span>
+
+<span class="o">&lt;&lt;</span><span class="n">Q</span><span class="o">-</span><span class="n">Learner</span><span class="o">&gt;&gt;</span>
+    <span class="o">&lt;&lt;</span><span class="n">episodes</span><span class="o">&gt;&gt;</span>
+
+    <span class="o">&lt;&lt;</span><span class="n">terminal</span><span class="o">&gt;&gt;</span>
+
+    <span class="o">&lt;&lt;</span><span class="n">q</span><span class="o">-</span><span class="n">environment</span><span class="o">&gt;&gt;</span>
+
+    <span class="o">&lt;&lt;</span><span class="n">q</span><span class="o">-</span><span class="n">agent</span><span class="o">&gt;&gt;</span>
+
+    <span class="o">&lt;&lt;</span><span class="n">q</span><span class="o">-</span><span class="n">call</span><span class="o">&gt;&gt;</span>
+
+<span class="o">&lt;&lt;</span><span class="n">environment</span><span class="o">&gt;&gt;</span>
+
+    <span class="o">&lt;&lt;</span><span class="n">evaluate</span><span class="o">-</span><span class="n">action</span><span class="o">&gt;&gt;</span>
+
+    <span class="o">&lt;&lt;</span><span class="n">update</span><span class="o">&gt;&gt;</span>
+
+    <span class="o">&lt;&lt;</span><span class="n">goal</span><span class="o">-</span><span class="n">reached</span><span class="o">&gt;&gt;</span>
+
+    <span class="o">&lt;&lt;</span><span class="n">reset</span><span class="o">&gt;&gt;</span>
+
+<span class="o">&lt;&lt;</span><span class="n">agent</span><span class="o">&gt;&gt;</span>
+
+    <span class="o">&lt;&lt;</span><span class="n">q</span><span class="o">-</span><span class="n">table</span><span class="o">&gt;&gt;</span>
+
+    <span class="o">&lt;&lt;</span><span class="n">action</span><span class="o">&gt;&gt;</span>
+
+    <span class="o">&lt;&lt;</span><span class="n">act</span><span class="o">&gt;&gt;</span>
+<span class="o">&lt;&lt;</span><span class="n">main</span><span class="o">&gt;&gt;</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org474dbc0" class="outline-2">
+<h2 id="org474dbc0">Imports</h2>
+<div class="outline-text-2" id="text-org474dbc0">
+<p>
+The only non-python-standard library requirements are numpy and pandas.
+</p>
+<div class="highlight"><pre><span></span><span class="c1"># python standard library</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="c1"># from pypi</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org61cd562" class="outline-2">
+<h2 id="org61cd562">Constants</h2>
+<div class="outline-text-2" id="text-org61cd562">
+<p>
+The <code>Actions</code> class holds the strings used for the choice of actions. I tend to change my mind about names so I made a central object to store the strings.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Actions</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Left'</span><span class="p">,</span> <span class="s1">'Right'</span><span class="p">]</span>
+    <span class="n">move_left</span> <span class="o">=</span> <span class="s1">'Left'</span>
+    <span class="n">move_right</span> <span class="o">=</span> <span class="s1">'Right'</span>
+</pre></div>
+</div>
+</div>
+<div id="outline-container-orgfbad3bd" class="outline-2">
+<h2 id="orgfbad3bd">Q-Learner</h2>
+<div class="outline-text-2" id="text-orgfbad3bd">
+<p>
+This is what will run the reinforcement learning.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">QLearner</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">"""Runs the reinforcement learning</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">     episodes: Number of time to repeat training</span>
+<span class="sd">     start_state (int): where to start the agent</span>
+<span class="sd">     states (int): total size for the environment</span>
+<span class="sd">     terminal (int): where the goal state is</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">start_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">states</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">terminal</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_episodes</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">episodes</span> <span class="o">=</span> <span class="n">episodes</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">start_state</span> <span class="o">=</span> <span class="n">start_state</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">states</span> <span class="o">=</span> <span class="n">states</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_terminal</span> <span class="o">=</span> <span class="n">terminal</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_environment</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_agent</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="k">return</span>
+</pre></div>
+</div>
+<div id="outline-container-orga28526a" class="outline-3">
+<h3 id="orga28526a">Terminal</h3>
+<div class="outline-text-3" id="text-orga28526a">
+<p>
+This is the goal state. If it isn't set then it will default to being the rightmost state.
+</p>
+
+<div class="highlight"><pre><span></span><span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">terminal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Goal state</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">     int: zero-based index of the goal-state</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_terminal</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_terminal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">states</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_terminal</span>
+</pre></div>
+</div>
+</div>
+<div id="outline-container-orga2b4f3b" class="outline-3">
+<h3 id="orga2b4f3b">Episodes</h3>
+<div class="outline-text-3" id="text-orga2b4f3b">
+<p>
+An 'episode' is a single session that is run until the agent reaches the goal. To improve its performance, you can run it over multiple episodes so it can keep learning.
+</p>
+
+<div class="highlight"><pre><span></span><span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">episodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""the episodes iterator</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">     range: (1, episodes + 1)</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_episodes</span>
+
+<span class="nd">@episodes.setter</span>
+<span class="k">def</span> <span class="nf">episodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">episode_count</span><span class="p">):</span>
+    <span class="sd">"""creates the episodes iterator</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">     episode_count(int): number of episodes to train the agent</span>
+<span class="sd">    """</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_episodes</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">episode_count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orgf86e99c" class="outline-3">
+<h3 id="orgf86e99c">The Q-Environment</h3>
+<div class="outline-text-3" id="text-orgf86e99c">
+<p>
+I couldn't decide who should build the agent and the environment so I had the Q-Learner do it.
+</p>
+
+<div class="highlight"><pre><span></span><span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">environment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""The Environment for the agent</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">     Environment: one-dimensional environment</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_environment</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_environment</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_state</span><span class="p">,</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">states</span><span class="p">,</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">terminal</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_environment</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org96bbf70" class="outline-3">
+<h3 id="org96bbf70">The Q-Agent</h3>
+<div class="outline-text-3" id="text-org96bbf70">
+<p>
+Since the Q-Learner is building the environment I'm going to make it build the Agent too.
+</p>
+
+<div class="highlight"><pre><span></span><span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">agent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""The agent that explores the environment</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">     Agent: agent built for the environment</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_agent</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_agent</span> <span class="o">=</span> <span class="n">Agent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">environment</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_agent</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org4478e46" class="outline-3">
+<h3 id="org4478e46">Call</h3>
+<div class="outline-text-3" id="text-org4478e46">
+<p>
+This runs the episodes.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""runs the episodes to train the agent in the environment</span>
+
+<span class="sd">    """</span>
+    <span class="k">for</span> <span class="n">episode</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">episodes</span><span class="p">:</span>
+	<span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">episode</span><span class="p">,</span> <span class="n">counter</span><span class="p">)</span>
+	<span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">goal_reached</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">act</span><span class="p">()</span>
+	    <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">episode</span><span class="p">,</span> <span class="n">counter</span><span class="p">)</span>
+    <span class="k">return</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3d38f7e" class="outline-2">
+<h2 id="org3d38f7e">The Environment</h2>
+<div class="outline-text-2" id="text-org3d38f7e">
+<p>
+This will hold the environment for the agent to explore.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Environment</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">"""The environment to explore</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">     start_state(int): where the agent will start</span>
+<span class="sd">     states (int): the size of the world</span>
+<span class="sd">     terminal (int): where the target state is</span>
+<span class="sd">     output_pause (float): seconds to sleep after printing to the screen</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_state</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">terminal</span><span class="p">,</span> <span class="n">output_pause</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">start_state</span> <span class="o">=</span> <span class="n">start_state</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">start_state</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">next_state</span> <span class="o">=</span> <span class="n">start_state</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">states</span> <span class="o">=</span> <span class="n">states</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">terminal</span> <span class="o">=</span> <span class="n">terminal</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">output_pause</span> <span class="o">=</span> <span class="n">output_pause</span>
+	<span class="k">return</span>
+</pre></div>
+</div>
+
+<div id="outline-container-orga31a631" class="outline-3">
+<h3 id="orga31a631">Goal Reached</h3>
+<div class="outline-text-3" id="text-orga31a631">
+<p>
+This is used both to update the q-table and to decide whether to quit the episode. Because updating the q-table requires both the current and next states, it is based on the next state, with the assumption that it will be updated before the next episode
+</p>
+
+<div class="highlight"><pre><span></span><span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">goal_reached</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Checks if the next-state is the goal</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">     bool: True if next-state is the goal</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_state</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminal</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orgb62d9b7" class="outline-3">
+<h3 id="orgb62d9b7">Evaluate Action</h3>
+<div class="outline-text-3" id="text-orgb62d9b7">
+<p>
+This will check if the <code>action</code> will lead to the goal and decide the reward to give for the action. It also sets the <code>next_state</code> property based on the current <code>state</code> and the chosen <code>action</code>.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+    <span class="sd">"""Checks if the action will lead to the goal</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">     action (str): one of the actions to explore the environment</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">     int: 1 if this will lead to the goal, 0 otherwise</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="n">Actions</span><span class="o">.</span><span class="n">move_right</span><span class="p">:</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">next_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">next_state</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">reward</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_state</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminal</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">reward</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orge2cc630" class="outline-3">
+<h3 id="orge2cc630">Update the Environment</h3>
+<div class="outline-text-3" id="text-orge2cc630">
+<p>
+This prints out the environment for the user and updates the state.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">episode</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
+    <span class="sd">"""Emits the updated environment to the user</span>
+
+<span class="sd">    also sets the state to the next state</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">     episode (int): what episode we're in</span>
+<span class="sd">     step (int): how long we've been running this episode</span>
+<span class="sd">    """</span>
+    <span class="n">environment</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'-'</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">states</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s1">'T'</span><span class="p">]</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">goal_reached</span><span class="p">:</span>
+	<span class="k">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Episode {}: Total Steps = {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">episode</span><span class="p">,</span> <span class="n">step</span><span class="p">))</span>
+	<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_pause</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+	<span class="n">environment</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">next_state</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'O'</span>
+	<span class="k">print</span><span class="p">(</span><span class="s2">"{}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">environment</span><span class="p">)))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_state</span>
+    <span class="k">return</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org1515e4e" class="outline-3">
+<h3 id="org1515e4e">Reset the environment</h3>
+<div class="outline-text-3" id="text-org1515e4e">
+<p>
+This sets the current <code>state</code> and the <code>next-state</code> to the <code>start state</code> so the environment can be re-used in different episodes.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Resets the states to the start state"""</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_state</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">next_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_state</span>
+    <span class="k">return</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org67f7e35" class="outline-2">
+<h2 id="org67f7e35">The Agent</h2>
+<div class="outline-text-2" id="text-org67f7e35">
+<p>
+This is the agent that will learn to find the reward.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Agent</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">"""This is the agent that will learn to find the treasure</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">     environment: The environment to explore</span>
+<span class="sd">     exploitation_rate: Fraction of the time to exploit (epsilon)</span>
+<span class="sd">     discount_factor: Discount factor (gamma)</span>
+<span class="sd">     learning_rate: how much to change the reward (alpha)</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environment</span><span class="p">,</span> <span class="n">exploitation_rate</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">discount_factor</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+		 <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">environment</span> <span class="o">=</span> <span class="n">environment</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">exploitation_rate</span> <span class="o">=</span> <span class="n">exploitation_rate</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">discount_factor</span> <span class="o">=</span> <span class="n">discount_factor</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_q_table</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="k">return</span>
+</pre></div>
+
+<p>
+Other than the environment, these are the values the <code>Agent</code> needs:
+</p>
+
+<ul class="org-ul">
+<li>
+<code>exploitation_rate</code>: What fraction of the time to use the best known action so far. Setting it to 0 means always use a random action, 1 means only use the best known action.</li>
+<li>
+<code>discount_factor</code>: The amount to discount the previously discovered reward. Setting it to less than 1 prevents infinite loops.</li>
+<li>
+<code>learning_rate</code>: How much to update the values in the table. 0 means don't update. 1 means use all of the new information.</li>
+</ul>
+</div>
+
+<div id="outline-container-org29dbd29" class="outline-3">
+<h3 id="org29dbd29">The Q-Table</h3>
+<div class="outline-text-3" id="text-org29dbd29">
+<p>
+The agent learns by building a table of 'Quality' estimates for any action chosen for the current state. Each state is a row in the table and each column is a possible action that can be taken. Initially the table is set to all zeros.
+</p>
+
+<div class="highlight"><pre><span></span><span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">q_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""The Quality Estimate table</span>
+
+<span class="sd">    Each cell is the quality-estimate for a given state, action pair</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">     DataFrame: rows are states, columns are actions</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_q_table</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_q_table</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+	    <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">states</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">Actions</span><span class="o">.</span><span class="n">actions</span><span class="p">))),</span>
+	    <span class="n">columns</span><span class="o">=</span><span class="n">Actions</span><span class="o">.</span><span class="n">actions</span><span class="p">,</span>
+	<span class="p">)</span>
+	<span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_table</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">states</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">Actions</span><span class="o">.</span><span class="n">actions</span><span class="p">))</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_q_table</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org17937a4" class="outline-3">
+<h3 id="org17937a4">Action</h3>
+<div class="outline-text-3" id="text-org17937a4">
+<p>
+Generates an action based on the current state. This is using an epsilon-greedy algorithm so it will explore if the value is above a certain threshold, otherwise it will exploit the best solution so far. It also will explore if the state has never lead to reaching the goal. This was confusing at first, but the updated reward for the current state is calculated based on the next state that this action leads to, so as the episodes continue, the rewards will fill in from the goal-state back to the start state.
+</p>
+
+<div class="highlight"><pre><span></span><span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Return the next chosen action</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">     str: the next action to take</span>
+<span class="sd">    """</span>
+    <span class="c1"># get the row in the q-table matching the current state</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="p">:]</span>
+
+    <span class="c1"># only explore if we generate a value over epsilon</span>
+    <span class="c1"># or none of the actions have a reward</span>
+    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">()</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">exploitation_rate</span> <span class="ow">or</span> <span class="n">state</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+	<span class="n">action</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">Actions</span><span class="o">.</span><span class="n">actions</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span> <span class="c1"># exploit</span>
+	<span class="c1"># get the column-name of the cell with the largest value</span>
+	<span class="n">action</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">action</span>
+</pre></div>
+</div>
+</div>
+<div id="outline-container-orgb6226c3" class="outline-3">
+<h3 id="orgb6226c3">Act</h3>
+<div class="outline-text-3" id="text-orgb6226c3">
+<p>
+This gets the next action to take, queries the environment for the reward (which also triggers storing the next state in the environment), then updates the q-table.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">act</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Updates the Q-table based on the reward from the last action"""</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span>
+    <span class="n">reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+    <span class="n">previous_quality</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_table</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">]</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">goal_reached</span><span class="p">:</span>
+	<span class="n">new_quality</span> <span class="o">=</span> <span class="n">reward</span>
+    <span class="k">else</span><span class="p">:</span>
+	<span class="n">new_quality</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">discount_factor</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">next_state</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">q_table</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">*</span> <span class="p">(</span><span class="n">new_quality</span> <span class="o">-</span> <span class="n">previous_quality</span><span class="p">)</span>
+    <span class="k">return</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org54fe58b" class="outline-2">
+<h2 id="org54fe58b">Main</h2>
+<div class="outline-text-2" id="text-org54fe58b">
+<p>
+Runs the simulation.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="n">learner</span> <span class="o">=</span> <span class="n">QLearner</span><span class="p">(</span><span class="n">states</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">learner</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">learner</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">q_table</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">learned-model with only exploitation set"</span><span class="p">)</span>
+    <span class="n">learner</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">exploitation_rate</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">learner</span><span class="o">.</span><span class="n">episodes</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">learner</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/qlearning/" rel="tag">qlearning</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../PyBrain-Optimization-Example/" rel="prev" title="PyBrain Optimization Example">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../teaching-a-robot-to-walk/" rel="next" title="Teaching A Robot To Walk">Next post</a>
+            </li>
+        </ul></nav></aside></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2018         <a href="mailto:necromuralist@protonmail.com">Cloistered Monkey</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png"></a><br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../assets/js/all-nocdn.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates -->
+</body>
+</html>
