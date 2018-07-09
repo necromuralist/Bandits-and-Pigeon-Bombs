@@ -61,12 +61,12 @@ def generate_probabilities(times=1000, trials=100):
         agent = EpsilonGreedy(epsilon, arms)
         probabilities = numpy.zeros(times)
         for trial in range(trials):
+            agent.reset()
             for time in range(times):
                 arm = agent.select_arm()
                 agent.update(arm)
                 if arm == best_arm:
                     probabilities[time] += 1
-            agent.reset()
         outcomes["Epsilon {:.02f}".format(epsilon)] = probabilities/times
     return outcomes
 #+END_SRC
@@ -87,43 +87,27 @@ probabilities.describe()
 #+END_SRC
 
 #+RESULTS:
-#+begin_example
-       Epsilon 0.05  Epsilon 0.10  Epsilon 0.20  Epsilon 0.30  Epsilon 0.40  \
-count    400.000000    400.000000    400.000000    400.000000    400.000000   
-mean       8.784956      9.971200      9.801344      9.084844      8.235194   
-std        3.064916      2.523568      1.775677      1.319447      0.998305   
-min        0.120000      0.275000      0.495000      0.757500      1.050000   
-25%        7.141875      9.740000     10.264375      9.390000      8.409375   
-50%        9.937500     11.187500     10.456250      9.475000      8.480000   
-75%       11.225000     11.457500     10.515000      9.530625      8.545000   
-max       11.720000     11.605000     10.727500      9.665000      8.712500   
-
-       Epsilon 0.50  
-count    400.000000  
-mean       7.310087  
-std        0.763259  
-min        1.190000  
-25%        7.406875  
-50%        7.473750  
-75%        7.535625  
-max        7.725000  
-#+end_example
+: Run Time: 0:02:22.627196
 
 #+BEGIN_SRC ipython :session epsilon :results none
 probabilities.to_csv("epsilon_greedy_accuracy.csv")
 #+END_SRC
 
-#+BEGIN_SRC ipython :session epsilon :file /tmp/epsilon_greedy_probablilities.png
-figure = plot.figure(figsize=(10, 6))
+#+BEGIN_SRC ipython :session epsilon :ipyfile /tmp/epsilon_greedy_probablilities.png :results raw drawer
+figure = plot.figure(figsize=(15, 8))
 axe = figure.gca()
 axe.set_title("Accuracy of the Epsilon Greedy Algorithm ({} trials)".format(TRIALS))
 axe.set_xlabel("Time (number of pulls on the arm)")
 axe.set_ylabel("Probability of retrieving the best arm")
-probabilities.plot(ax=axe)
+axe.set_xlim((0, 400))
+plot_fig = probabilities.plot(ax=axe)
 #+END_SRC
 
 #+RESULTS:
+:RESULTS:
+# Out[16]:
 [[file:/tmp/epsilon_greedy_probablilities.png]]
+:END:
 Looking at the plots, it appears that the epsilons greater than 0.05 converge faster that 0.05 (their curves are steeper at the beginning), as you would expect, but they also don't do as well in the long run, as you might also expect, since they're doing more exploration. In the long run, the more exploitation, the better the profit, but I suppose it depends on the window you have to work with, if you have a short one, then the more aggresive explorers might be better. Anything less than 350 would do better with 0.1 rather than 0.05, for instance.
 
 * Average Reward
@@ -168,19 +152,24 @@ averages = pandas.DataFrame.from_dict(averages)
 #+END_SRC
 
 #+RESULTS:
-: Run Time: 0:01:08.727723
+: Run Time: 0:00:25.489528
 
-#+BEGIN_SRC ipython :session epsilon :file /tmp/epsilon_averages.png
-figure = plot.figure(figsize=(10, 6))
+#+BEGIN_SRC ipython :session epsilon :ipyfile /tmp/epsilon_averages.png :results raw drawer
+figure = plot.figure(figsize=(16, 8))
 axe = figure.gca()
 axe.set_title("Reward of the Epsilon Greedy Algorithm ({} trials)".format(TRIALS))
 axe.set_xlabel("Time (number of pulls on the arm)")
 axe.set_ylabel("Average Reward")
+axe.set_xlim((0, 400))
 averages.plot(ax=axe, marker='.', linestyle="None")
 #+END_SRC
 
 #+RESULTS:
+:RESULTS:
+# Out[14]:
+: <matplotlib.axes._subplots.AxesSubplot at 0x7fc8cf031a90>
 [[file:/tmp/epsilon_averages.png]]
+:END:
 There's much more variablity and overlap here, as you might expect since I made the probabilities closer. Interestingly, the strongly exploratory agents seem to do worse, even from the beginning, while the more exploitative ones do better.  Although it looks like 0.2 might be doing as well or better than 0.1 once you get over 100.
 
 * Cumulative Reward
@@ -238,31 +227,41 @@ def plot_cumulative(cumulative):
     Args:
      cumulative (pandas.DataFrame): data to plot
     """
-    figure = plot.figure(figsize=(10, 6))
+    figure = plot.figure(figsize=(15, 8))
     axe = figure.gca()
     axe.set_title("Cumulative Reward of the Epsilon Greedy Algorithm ({} trials)".format(TRIALS))
     axe.set_xlabel("Time (number of pulls on the arm)")
     axe.set_ylabel("Cumulative Reward")
+    axe.set_xlim((0, 400))
     cumulative.plot(ax=axe)
     return
 #+END_SRC
 
-#+BEGIN_SRC ipython :session epsilon  :file /tmp/epsilon_greedy_cumulative.png :exports both
+#+BEGIN_SRC ipython :session epsilon :results none
 cumulative = generate_cumulative(numpy.arange(0.1, 0.6, 0.1))
+#+END_SRC
+
+#+BEGIN_SRC ipython :session epsilon  :ipyfile /tmp/epsilon_greedy_cumulative.png :results raw drawer
 plot_cumulative(cumulative)
 #+END_SRC
 
 #+RESULTS:
+:RESULTS:
+# Out[24]:
 [[file:/tmp/epsilon_greedy_cumulative.png]]
+:END:
 Because of the randomness this will change everytime you run it, but we can see that in this case, the average cumulative reward was better for the 0.3 and 0.5 epsilon values that the more conservative values up until around 275, and the second most conservative case (0.2) actually did worse on average than the more exploratory cases did.
 
 ** Imbalanced Case
    I'll re-run this again with more arms and a only one clear good arm to see if this changes things.
 
-#+BEGIN_SRC ipython :session epsilon :file /tmp/epsilon_cumulative_2.png :exports both
+#+BEGIN_SRC ipython :session epsilon :ipyfile /tmp/epsilon_cumulative_2.png :results raw drawer
 plot_cumulative(generate_cumulative(numpy.array([0.1] * 10 + [0.9])))
 #+END_SRC
 
 #+RESULTS:
+:RESULTS:
+# Out[25]:
 [[file:/tmp/epsilon_cumulative_2.png]]
+:END:
 In this case, the most exploitive agent did much worse than the other agents. It looks like it didn't find the best arm until around the 240th pull. In this case, when most arms pay off poorly and one arm pays off much better, the exploratory arms accumulate more reward within our time frame. I'm guessing that the 0.10 epsilon would, given enough time, pull ahead, and you can in fact see that the most exploratory argent has already been surpassed by the 0.2 agent, so eventually exploration would probably take a back seat to exploitation, but not in this case. It's important to note, however, that if the most exploitive agent had happened to find the best arm at the start, he would likely have ended up the best, it's just the nature of randomization that you aren't guaranteed that this would be the case.

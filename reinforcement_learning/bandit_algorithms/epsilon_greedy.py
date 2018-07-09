@@ -33,14 +33,14 @@ class EpsilonGreedy(object):
         self.arms = arms
         self._counts = None
         self._rewards = None
-        self.total_reward = None
+        self.total_reward = 0
         return
 
     @property
     def best_arm(self):
         """Index of the arm with the most reward"""
-        index = self.rewards.max()
-        return find_first(index, self.rewards)
+        item = self.rewards.max()
+        return find_first(item, self.rewards)
 
     @property
     def counts(self):

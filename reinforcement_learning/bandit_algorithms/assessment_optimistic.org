@@ -72,13 +72,11 @@ TRIALS = 5000
 TIMES = 400
 similar_payout_rates = numpy.arange(1.0, 6.0)
 numpy.random.shuffle(similar_payout_rates)
-one_good_arm_rates = numpy.array([1.0] * 10 + [9.0])
-numpy.random.shuffle(one_good_arm_rates)
 #+END_SRC
 
 ** Similar Arms
    This will create a range where each arm only differs by 0.1
-#+BEGIN_SRC ipython :session optimistic  :file /tmp/optimistic_similar_cumulative.png :exports both
+#+BEGIN_SRC ipython :session optimistic  :ipyfile /tmp/optimistic_similar_cumulative.png :exports both :results raw drawer
 optimistic_agent = OptimisticInitialValues(similar_payout_rates, 10.0)
 data = {}
 data["Optimistic Initial Values"] = cumulative_reward(optimistic_agent, trials=TRIALS, times=TIMES)
@@ -89,13 +87,18 @@ plot_cumulative(data)
 #+END_SRC
 
 #+RESULTS:
+:RESULTS:
+# Out[25]:
 [[file:/tmp/optimistic_similar_cumulative.png]]
+:END:
 The Optimistic Initial Values agent does better than the Epsilon Greedy, as you would expect (since it eventually stops exploring). But it looks suspisciously linear.
 
 ** One Good Arm
    Lets see how it goes when one arm dominates the payouts.
 
-#+BEGIN_SRC ipython :session optimistic  :file /tmp/optimistic_cumulative_one_good_arm.png :exports both
+#+BEGIN_SRC ipython :session optimistic  :ipyfile /tmp/optimistic_cumulative_one_good_arm.png :exports both :results raw drawer
+one_good_arm_rates = numpy.array([1.0] * 10 + [9.0])
+
 numpy.random.shuffle(one_good_arm_rates)
 optimistic_agent = OptimisticInitialValues(one_good_arm_rates, 10.)
 data = {}
@@ -107,9 +110,15 @@ plot_cumulative(data)
 #+END_SRC
 
 #+RESULTS:
+:RESULTS:
+# Out[26]:
 [[file:/tmp/optimistic_cumulative_one_good_arm.png]]
+:END:
 
 It looks like the optimistic agent does even better with one dominant arm. Likely because it found it quick enough that always exploiting it gives it a huge advantage over the epsilon greedy, which never stops exploring.
+
+* Average Reward
+  Next we can look at how the agents do on average when we repeatedly run them. In this case I'll average 100 trials.
 
 #+BEGIN_SRC ipython :session optimistic :results none
 @jit
@@ -143,16 +152,19 @@ data["Epsilon 0.1"] = average_reward(epsilon_agent, TIMES, TRIALS)
 averages = pandas.DataFrame.from_dict(data)
 #+END_SRC
 
-#+BEGIN_SRC ipython :session optimistic :file /tmp/optimistic_averages.png
+#+BEGIN_SRC ipython :session optimistic :ipyfile /tmp/optimistic_averages.png :results raw drawer
 figure = plot.figure(figsize=(10, 6))
 axe = figure.gca()
 axe.set_title("Average Reward (One Dominant Arm)")
 axe.set_xlabel("Time (number of pulls on the arm)")
 axe.set_ylabel("Average Reward")
-averages.plot(ax=axe, marker='.', linestyle="None")
+plots = averages.plot(ax=axe, marker='.', linestyle="None")
 #+END_SRC
 
 #+RESULTS:
+:RESULTS:
+# Out[30]:
 [[file:/tmp/optimistic_averages.png]]
+:END:
 
 It looks like there was a brief period where the Epsilon Greedy did better, but the Optimistic agent settled in fairly quickly.

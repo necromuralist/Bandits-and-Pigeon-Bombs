@@ -52,8 +52,8 @@ class EpsilonGreedyOptimized(object):
     @property
     def best_arm(self):
         """Index of the arm with the most reward"""
-        index = self.rewards.max()
-        return find_first(index, self.rewards)
+        item = self.rewards.max()
+        return find_first(item, self.rewards)
 
     def select_arm(self):
         """chooses the next arm to update

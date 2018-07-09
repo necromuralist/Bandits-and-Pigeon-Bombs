@@ -1,4 +1,4 @@
 #+TITLE: Reinforcement Learning Notes
 
 * What This Is
-  I decided to study reinforcement learning again, and these are my notes (sort of).
+  I decided to study reinforcement learning again, and these are my notes (sort of). The built HTML is [[https://necromuralist.github.io/reinforcement_learning/][here]]. Most of the stuff will be rendered as blog posts, but I'm also adding some documentation for the code I'm using in =Documentation= dropdown in the navbar.

@@ -72,7 +72,7 @@ def __init__(self, epsilon, arms):
     self.arms = arms
     self._counts = None
     self._rewards = None
-    self.total_reward = None
+    self.total_reward = 0
     return
 #+END_SRC
 
