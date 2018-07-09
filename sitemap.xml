@@ -7,7 +7,7 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>https://necromuralist.github.io/reinforcement_learning/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
+  <lastmod>2018-07-09T01:08:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/reinforcement_learning/2017/</loc>
@@ -19,7 +19,7 @@
  </url>
  <url>
   <loc>https://necromuralist.github.io/reinforcement_learning/archive.html</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
+  <lastmod>2018-07-09T02:45:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/reinforcement_learning/authors/</loc>
@@ -43,7 +43,7 @@
  </url>
  <url>
   <loc>https://necromuralist.github.io/reinforcement_learning/categories/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
+  <lastmod>2018-07-09T02:49:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/reinforcement_learning/categories/algorithm-reinforcementlearning/</loc>
@@ -58,12 +58,20 @@
   <lastmod>2018-07-08T23:58:00Z</lastmod>
  </url>
  <url>
+  <loc>https://necromuralist.github.io/reinforcement_learning/categories/cat_openai/</loc>
+  <lastmod>2018-07-09T02:49:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://necromuralist.github.io/reinforcement_learning/categories/cat_qlearning/</loc>
   <lastmod>2018-07-08T23:58:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/reinforcement_learning/categories/cat_tutorial/</loc>
   <lastmod>2018-07-07T21:38:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/reinforcement_learning/categories/openai-retro-reinforcementlearning/</loc>
+  <lastmod>2018-07-09T02:49:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/reinforcement_learning/categories/openai/</loc>
@@ -110,8 +118,12 @@
   <lastmod>2018-07-08T23:58:00Z</lastmod>
  </url>
  <url>
+  <loc>https://necromuralist.github.io/reinforcement_learning/posts/openai-retro-introduction/</loc>
+  <lastmod>2018-07-09T02:49:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://necromuralist.github.io/reinforcement_learning/posts/teaching-a-robot-to-walk/</loc>
-  <lastmod>2018-07-07T21:38:00Z</lastmod>
+  <lastmod>2018-07-09T02:52:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/</loc>

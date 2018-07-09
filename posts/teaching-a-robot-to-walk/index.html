@@ -15,6 +15,7 @@
 <!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
 </script><meta name="author" content="Cloistered Monkey">
 <link rel="prev" href="../one-dimensional-world/" title="One-Dimensional World" type="text/html">
+<link rel="next" href="../openai-retro-introduction/" title="OpenAI Retro Introduction" type="text/html">
 <meta property="og:site_name" content="Reinforcement Learning Notes">
 <meta property="og:title" content="Teaching A Robot To Walk">
 <meta property="og:url" content="https://necromuralist.github.io/reinforcement_learning/posts/teaching-a-robot-to-walk/">
@@ -103,9 +104,9 @@
         
 
     </header><div class="e-content entry-content" itemprop="articleBody text">
-    <div id="outline-container-org6b5e40d" class="outline-2">
-<h2 id="org6b5e40d">Imports</h2>
-<div class="outline-text-2" id="text-org6b5e40d">
+    <div id="outline-container-org5cadcab" class="outline-2">
+<h2 id="org5cadcab">Imports</h2>
+<div class="outline-text-2" id="text-org5cadcab">
 <p>
 We need to import <a href="https://gym.openai.com/">openai-gym</a> (as gym).
 </p>
@@ -116,9 +117,9 @@ We need to import <a href="https://gym.openai.com/">openai-gym</a> (as gym).
 </div>
 </div>
 
-<div id="outline-container-org1a5fd34" class="outline-2">
-<h2 id="org1a5fd34">Setting Up the Environment</h2>
-<div class="outline-text-2" id="text-org1a5fd34">
+<div id="outline-container-org87056fe" class="outline-2">
+<h2 id="org87056fe">Setting Up the Environment</h2>
+<div class="outline-text-2" id="text-org87056fe">
 <p>
 You build the environment with <code>gym.make</code>. In this case we're going to use the <a href="https://gym.openai.com/envs/BipedalWalker-v2/">BipedalWalker-v2</a>, which the documentation describes like this:
 </p>
@@ -134,9 +135,9 @@ Reward is given for moving forward, total 300+ points up to the far end. If the 
 </div>
 </div>
 
-<div id="outline-container-orgc9a2f4f" class="outline-2">
-<h2 id="orgc9a2f4f">Running It</h2>
-<div class="outline-text-2" id="text-orgc9a2f4f">
+<div id="outline-container-org3b381a8" class="outline-2">
+<h2 id="org3b381a8">Running It</h2>
+<div class="outline-text-2" id="text-org3b381a8">
 <p>
 We're going to run this for 10 episodes (each run from start to finish is an episode), resetting the environment for each episode. Then within an episode we're going to have the environment run up to 1,000 steps (a time-step that updates the environment). If it falls down or walks off screen the environment will indicate that it's done.
 </p>
@@ -160,6 +161,15 @@ We're going to run this for 10 episodes (each run from start to finish is an epi
 <p>
 It only finished five out of the ten times, probably by falling down each time. Note that I didn't implement any logic to teach the robot to walk, this is all run with built-in functionality.
 </p>
+
+<p>
+When you run it it will open a window so you can see what's happening.
+</p>
+
+
+<div class="figure">
+<p><img src="robot-walker.png" alt="robot-walker.png"></p>
+</div>
 </div>
 </div>
     </div>
@@ -169,6 +179,9 @@ It only finished five out of the ten times, probably by falling down each time. 
 <ul class="pager hidden-print">
 <li class="previous">
                 <a href="../one-dimensional-world/" rel="prev" title="One-Dimensional World">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../openai-retro-introduction/" rel="next" title="OpenAI Retro Introduction">Next post</a>
             </li>
         </ul></nav></aside></article>
 </div>

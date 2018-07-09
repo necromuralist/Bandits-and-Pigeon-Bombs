@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Reinforcement Learning Notes (Posts about tutorial)</title><link>https://necromuralist.github.io/reinforcement_learning/</link><description></description><atom:link href="https://necromuralist.github.io/reinforcement_learning/categories/cat_tutorial.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sun, 08 Jul 2018 23:51:18 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Teaching A Robot To Walk</title><link>https://necromuralist.github.io/reinforcement_learning/posts/teaching-a-robot-to-walk/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org6b5e40d" class="outline-2"&gt;
-&lt;h2 id="org6b5e40d"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org6b5e40d"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Reinforcement Learning Notes (Posts about tutorial)</title><link>https://necromuralist.github.io/reinforcement_learning/</link><description></description><atom:link href="https://necromuralist.github.io/reinforcement_learning/categories/cat_tutorial.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 09 Jul 2018 02:54:17 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Teaching A Robot To Walk</title><link>https://necromuralist.github.io/reinforcement_learning/posts/teaching-a-robot-to-walk/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org5cadcab" class="outline-2"&gt;
+&lt;h2 id="org5cadcab"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org5cadcab"&gt;
 &lt;p&gt;
 We need to import &lt;a href="https://gym.openai.com/"&gt;openai-gym&lt;/a&gt; (as gym).
 &lt;/p&gt;
@@ -12,9 +12,9 @@ We need to import &lt;a href="https://gym.openai.com/"&gt;openai-gym&lt;/a&gt; (
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org1a5fd34" class="outline-2"&gt;
-&lt;h2 id="org1a5fd34"&gt;Setting Up the Environment&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org1a5fd34"&gt;
+&lt;div id="outline-container-org87056fe" class="outline-2"&gt;
+&lt;h2 id="org87056fe"&gt;Setting Up the Environment&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org87056fe"&gt;
 &lt;p&gt;
 You build the environment with &lt;code&gt;gym.make&lt;/code&gt;. In this case we're going to use the &lt;a href="https://gym.openai.com/envs/BipedalWalker-v2/"&gt;BipedalWalker-v2&lt;/a&gt;, which the documentation describes like this:
 &lt;/p&gt;
@@ -30,9 +30,9 @@ Reward is given for moving forward, total 300+ points up to the far end. If the 
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgc9a2f4f" class="outline-2"&gt;
-&lt;h2 id="orgc9a2f4f"&gt;Running It&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc9a2f4f"&gt;
+&lt;div id="outline-container-org3b381a8" class="outline-2"&gt;
+&lt;h2 id="org3b381a8"&gt;Running It&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org3b381a8"&gt;
 &lt;p&gt;
 We're going to run this for 10 episodes (each run from start to finish is an episode), resetting the environment for each episode. Then within an episode we're going to have the environment run up to 1,000 steps (a time-step that updates the environment). If it falls down or walks off screen the environment will indicate that it's done.
 &lt;/p&gt;
@@ -56,5 +56,15 @@ We're going to run this for 10 episodes (each run from start to finish is an epi
 &lt;p&gt;
 It only finished five out of the ten times, probably by falling down each time. Note that I didn't implement any logic to teach the robot to walk, this is all run with built-in functionality.
 &lt;/p&gt;
+
+&lt;p&gt;
+When you run it it will open a window so you can see what's happening.
+&lt;/p&gt;
+
+
+&lt;div class="figure"&gt;
+&lt;p&gt;&lt;img src="https://necromuralist.github.io/reinforcement_learning/posts/teaching-a-robot-to-walk/robot-walker.png" alt="robot-walker.png"&gt;
+&lt;/p&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description><category>openai</category><guid>https://necromuralist.github.io/reinforcement_learning/posts/teaching-a-robot-to-walk/</guid><pubDate>Sat, 07 Jul 2018 20:42:15 GMT</pubDate></item></channel></rss>

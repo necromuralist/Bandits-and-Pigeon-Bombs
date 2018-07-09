@@ -11,7 +11,7 @@
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/reinforcement_learning/authors/cloistered-monkey.xml</loc>
-  <lastmod>2018-07-09T00:15:00Z</lastmod>
+  <lastmod>2018-07-09T02:52:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/reinforcement_learning/authors/hades.xml</loc>
@@ -34,16 +34,24 @@
   <lastmod>2018-07-09T00:15:00Z</lastmod>
  </sitemap>
  <sitemap>
+  <loc>https://necromuralist.github.io/reinforcement_learning/categories/cat_openai.xml</loc>
+  <lastmod>2018-07-09T02:52:00Z</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>https://necromuralist.github.io/reinforcement_learning/categories/cat_qlearning.xml</loc>
   <lastmod>2018-07-09T00:15:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/reinforcement_learning/categories/cat_tutorial.xml</loc>
-  <lastmod>2018-07-08T23:51:00Z</lastmod>
+  <lastmod>2018-07-09T02:52:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://necromuralist.github.io/reinforcement_learning/categories/openai-retro-reinforcementlearning.xml</loc>
+  <lastmod>2018-07-09T02:52:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/reinforcement_learning/categories/openai.xml</loc>
-  <lastmod>2018-07-08T23:51:00Z</lastmod>
+  <lastmod>2018-07-09T02:52:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/reinforcement_learning/categories/pybrain-optimization.xml</loc>
@@ -55,10 +63,10 @@
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/reinforcement_learning/rss.xml</loc>
-  <lastmod>2018-07-09T00:33:00Z</lastmod>
+  <lastmod>2018-07-09T02:52:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/reinforcement_learning/sitemap.xml</loc>
-  <lastmod>2018-07-09T00:33:00Z</lastmod>
+  <lastmod>2018-07-09T02:52:00Z</lastmod>
  </sitemap>
 </sitemapindex>

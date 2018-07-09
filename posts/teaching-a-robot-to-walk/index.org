@@ -57,3 +57,8 @@ for episode in EPISODES:
 : It took 45 steps to finish this episode.
 
 It only finished five out of the ten times, probably by falling down each time. Note that I didn't implement any logic to teach the robot to walk, this is all run with built-in functionality.
+
+When you run it it will open a window so you can see what's happening.
+
+#+ATTR_HTML: style="center"
+[[file:robot-walker.png]]

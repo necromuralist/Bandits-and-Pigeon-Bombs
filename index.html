@@ -13,7 +13,7 @@
 <link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <link rel="canonical" href="https://necromuralist.github.io/reinforcement_learning/">
 <!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
-</script><link rel="prefetch" href="posts/teaching-a-robot-to-walk/" type="text/html">
+</script><link rel="prefetch" href="posts/openai-retro-introduction/" type="text/html">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -81,7 +81,108 @@
 
     
 <div class="postindex">
-    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/teaching-a-robot-to-walk/" class="u-url">Teaching A Robot To Walk</a></h1>
+    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/openai-retro-introduction/" class="u-url">OpenAI Retro Introduction</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                <a href="authors/cloistered-monkey/">Cloistered Monkey</a>
+            </span></p>
+            <p class="dateline"><a href="posts/openai-retro-introduction/" rel="bookmark"><time class="published dt-published" datetime="2018-07-08T19:27:27-07:00" title="2018-07-08 19:27">2018-07-08 19:27</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="outline-container-org5201e16" class="outline-2">
+<h2 id="org5201e16">Introduction</h2>
+<div class="outline-text-2" id="text-org5201e16">
+<p>
+<a href="https://github.com/openai/retro">OpenAI Retro</a> turns video game emulators into gym environments. This allows you to train a learner using video games from supported consoles (like the Atari 2600).
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgaa2a5ac" class="outline-2">
+<h2 id="orgaa2a5ac">Imports</h2>
+<div class="outline-text-2" id="text-orgaa2a5ac">
+<p>
+Instead of importing <code>gym</code> in this case you import <code>retro</code>.
+</p>
+
+<div class="highlight"><pre><span></span><span class="c1"># from pypi</span>
+<span class="kn">import</span> <span class="nn">retro</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orgc614035" class="outline-2">
+<h2 id="orgc614035">The Environment</h2>
+<div class="outline-text-2" id="text-orgc614035">
+<p>
+It looks a lot like the way you run <code>gym</code>. First you make the environment and reset it.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">environment</span> <span class="o">=</span> <span class="n">retro</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">game</span><span class="o">=</span><span class="s2">"Airstriker-Genesis"</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s2">"Level1"</span><span class="p">)</span>
+<span class="n">observation</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</pre></div>
+
+<p>
+You can see all the available games using <code>retro.list_games()</code>.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">game</span> <span class="ow">in</span> <span class="n">retro</span><span class="o">.</span><span class="n">list_games</span><span class="p">()[:</span><span class="mi">5</span><span class="p">]:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+</pre></div>
+
+<pre class="example">
+: BankHeist-Atari2600
+: SuperThunderBlade-Genesis
+: DynamiteHeaddy-Genesis
+: GalaxyForceII-Genesis
+: SonicTheHedgehog-Genesis
+</pre>
+
+<p>
+To see the available initial states you use <code>retro.list_states</code>.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">retro</span><span class="o">.</span><span class="n">list_states</span><span class="p">(</span><span class="s2">"Airstriker-Genesis"</span><span class="p">))</span>
+</pre></div>
+
+<pre class="example">
+: ['Level1']
+</pre>
+
+<p>
+So in this case there's only one option for us.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf6455b9" class="outline-2">
+<h2 id="orgf6455b9">Running It</h2>
+<div class="outline-text-2" id="text-orgf6455b9">
+<p>
+As with the <code>gym</code> environments, with retro you sample the environment to get the next action and then pass it to the <code>step</code> method.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="o">**</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">environment</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+    <span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
+	<span class="k">print</span><span class="p">(</span><span class="s2">"It took {} steps to finish this episode"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">step</span><span class="p">))</span>
+	<span class="k">break</span>
+</pre></div>
+
+<p>
+When you run it it will pop up a screen showing the game being played (sped up four times).
+</p>
+
+
+<div class="figure">
+<p><img src="posts/openai-retro-introduction/airstriker-genesis.png" alt="airstriker-genesis.png"></p>
+</div>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/teaching-a-robot-to-walk/" class="u-url">Teaching A Robot To Walk</a></h1>
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 <a href="authors/cloistered-monkey/">Cloistered Monkey</a>
@@ -89,9 +190,9 @@
             <p class="dateline"><a href="posts/teaching-a-robot-to-walk/" rel="bookmark"><time class="published dt-published" datetime="2018-07-07T13:42:15-07:00" title="2018-07-07 13:42">2018-07-07 13:42</time></a></p>
         </div>
     </header><div class="e-content entry-content">
-    <div id="outline-container-org6b5e40d" class="outline-2">
-<h2 id="org6b5e40d">Imports</h2>
-<div class="outline-text-2" id="text-org6b5e40d">
+    <div id="outline-container-org5cadcab" class="outline-2">
+<h2 id="org5cadcab">Imports</h2>
+<div class="outline-text-2" id="text-org5cadcab">
 <p>
 We need to import <a href="https://gym.openai.com/">openai-gym</a> (as gym).
 </p>
@@ -102,9 +203,9 @@ We need to import <a href="https://gym.openai.com/">openai-gym</a> (as gym).
 </div>
 </div>
 
-<div id="outline-container-org1a5fd34" class="outline-2">
-<h2 id="org1a5fd34">Setting Up the Environment</h2>
-<div class="outline-text-2" id="text-org1a5fd34">
+<div id="outline-container-org87056fe" class="outline-2">
+<h2 id="org87056fe">Setting Up the Environment</h2>
+<div class="outline-text-2" id="text-org87056fe">
 <p>
 You build the environment with <code>gym.make</code>. In this case we're going to use the <a href="https://gym.openai.com/envs/BipedalWalker-v2/">BipedalWalker-v2</a>, which the documentation describes like this:
 </p>
@@ -120,9 +221,9 @@ Reward is given for moving forward, total 300+ points up to the far end. If the 
 </div>
 </div>
 
-<div id="outline-container-orgc9a2f4f" class="outline-2">
-<h2 id="orgc9a2f4f">Running It</h2>
-<div class="outline-text-2" id="text-orgc9a2f4f">
+<div id="outline-container-org3b381a8" class="outline-2">
+<h2 id="org3b381a8">Running It</h2>
+<div class="outline-text-2" id="text-org3b381a8">
 <p>
 We're going to run this for 10 episodes (each run from start to finish is an episode), resetting the environment for each episode. Then within an episode we're going to have the environment run up to 1,000 steps (a time-step that updates the environment). If it falls down or walks off screen the environment will indicate that it's done.
 </p>
@@ -146,6 +247,15 @@ We're going to run this for 10 episodes (each run from start to finish is an epi
 <p>
 It only finished five out of the ten times, probably by falling down each time. Note that I didn't implement any logic to teach the robot to walk, this is all run with built-in functionality.
 </p>
+
+<p>
+When you run it it will open a window so you can see what's happening.
+</p>
+
+
+<div class="figure">
+<p><img src="posts/teaching-a-robot-to-walk/robot-walker.png" alt="robot-walker.png"></p>
+</div>
 </div>
 </div>
     </div>
