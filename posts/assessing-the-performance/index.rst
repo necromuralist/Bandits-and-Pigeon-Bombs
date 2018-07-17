@@ -5,7 +5,7 @@
 .. link: 
 .. description: Comparing the Optimistic Initial Values algorithm with Epsilon Greedy
 .. type: text
-.. author: hades
+.. author: Brunhilde
 
 
 

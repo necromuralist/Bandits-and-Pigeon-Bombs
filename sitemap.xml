@@ -6,239 +6,95 @@
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/</loc>
-  <lastmod>2018-07-09T01:08:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/2017/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/2017/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/2018/</loc>
-  <lastmod>2018-07-07T21:38:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/2018/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/archive.html</loc>
-  <lastmod>2018-07-09T02:45:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/archive.html</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/authors/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/authors/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/authors/brunhilde/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/authors/brunhilde/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/authors/cloistered-monkey/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/authors/hades/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/authors/hades/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/authors/necromuralist/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/authors/necromuralist/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/categories/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/categories/</loc>
-  <lastmod>2018-07-09T02:49:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/categories/algorithm-reinforcementlearning/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/categories/algorithm-reinforcementlearning/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/categories/algorithm/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/categories/algorithm/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/categories/bandits-reinforcementlearning/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/categories/bandits-reinforcementlearning/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/categories/cat_qlearning/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/categories/cat_openai/</loc>
-  <lastmod>2018-07-09T02:49:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/categories/pybrain-optimization/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/categories/cat_qlearning/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/categories/qlearning/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/categories/cat_tutorial/</loc>
-  <lastmod>2018-07-07T21:38:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/posts/A-Bernoulli-Arm/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/categories/openai-retro-reinforcementlearning/</loc>
-  <lastmod>2018-07-09T02:49:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/posts/Epsilon-Greedy-with-Normal-Distribution-Payouts/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/categories/openai/</loc>
-  <lastmod>2018-07-07T21:38:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/posts/Optimistic-Initial-Values/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/categories/pybrain-optimization/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/posts/PyBrain-Optimization-Example/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/categories/qlearning/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/posts/The-Epsilon-Greedy-Algorithm/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/posts/A-Bernoulli-Arm/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/posts/assessing-the-performance/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/posts/Epsilon-Greedy-with-Normal-Distribution-Payouts/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/posts/finding-the-best-epsilon/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/posts/Optimistic-Initial-Values/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/posts/PyBrain-Optimization-Example/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/posts/The-Epsilon-Greedy-Algorithm/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/posts/assessing-the-performance/</loc>
-  <lastmod>2018-07-09T00:15:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/posts/finding-the-best-epsilon/</loc>
-  <lastmod>2018-07-09T00:30:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/posts/one-dimensional-world/</loc>
-  <lastmod>2018-07-08T23:58:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/posts/openai-retro-introduction/</loc>
-  <lastmod>2018-07-09T02:49:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/posts/teaching-a-robot-to-walk/</loc>
-  <lastmod>2018-07-09T02:52:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/</loc>
-  <lastmod>2018-07-07T22:54:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/_modules/</loc>
-  <lastmod>2018-07-07T21:44:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/_modules/gym/core.html</loc>
-  <lastmod>2018-07-08T22:14:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/_modules/gym/envs/box2d/bipedal_walker.html</loc>
-  <lastmod>2018-07-08T22:14:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/_modules/gym/envs/registration.html</loc>
-  <lastmod>2018-07-08T22:14:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/</loc>
-  <lastmod>2018-07-08T22:14:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/autogenerated/gym.core.Env.html</loc>
-  <lastmod>2018-07-07T21:44:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/autogenerated/gym.core.GoalEnv.html</loc>
-  <lastmod>2018-07-07T21:44:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/autogenerated/gym.core.Space.html</loc>
-  <lastmod>2018-07-07T21:44:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/core.html</loc>
-  <lastmod>2018-07-08T21:59:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/environments/</loc>
-  <lastmod>2018-07-08T22:14:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/environments/autogenerated/gym.envs.registration.EnvRegistry.html</loc>
-  <lastmod>2018-07-07T21:44:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/environments/autogenerated/gym.envs.registration.EnvSpec.html</loc>
-  <lastmod>2018-07-07T21:44:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/environments/box2d/</loc>
-  <lastmod>2018-07-08T22:14:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/environments/registration.html</loc>
-  <lastmod>2018-07-07T21:44:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/gym/</loc>
-  <lastmod>2018-07-08T22:14:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/gym/autogenerated/gym.core.Env.html</loc>
-  <lastmod>2018-07-08T22:13:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/gym/autogenerated/gym.core.GoalEnv.html</loc>
-  <lastmod>2018-07-08T22:13:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/gym/autogenerated/gym.core.Space.html</loc>
-  <lastmod>2018-07-08T22:13:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/gym/core.html</loc>
-  <lastmod>2018-07-08T22:13:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/gym/environments/</loc>
-  <lastmod>2018-07-08T22:14:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/gym/environments/autogenerated/gym.envs.registration.EnvRegistry.html</loc>
-  <lastmod>2018-07-08T22:13:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/gym/environments/autogenerated/gym.envs.registration.EnvSpec.html</loc>
-  <lastmod>2018-07-08T22:13:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/gym/environments/box2d/</loc>
-  <lastmod>2018-07-08T22:14:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/gym/environments/box2d/autogenerated/gym.envs.box2d.bipedal_walker.BipedalWalker.html</loc>
-  <lastmod>2018-07-08T22:13:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/gym/environments/box2d/autogenerated/gym.envs.box2d.bipedal_walker.BipedalWalkerHardcore.html</loc>
-  <lastmod>2018-07-08T22:13:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/gym/environments/box2d/autogenerated/gym.envs.box2d.bipedal_walker.ContactDetector.html</loc>
-  <lastmod>2018-07-08T22:13:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/openai/gym/environments/registration.html</loc>
-  <lastmod>2018-07-08T22:13:00Z</lastmod>
- </url>
- <url>
-  <loc>https://necromuralist.github.io/reinforcement_learning/sphinx/search.html</loc>
-  <lastmod>2018-07-08T22:14:00Z</lastmod>
+  <loc>https://necromuralist.github.io/data_science/posts/one-dimensional-world/</loc>
+  <lastmod>2018-01-19T19:42:00Z</lastmod>
  </url>
 </urlset>

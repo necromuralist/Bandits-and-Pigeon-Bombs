@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Reinforcement Learning Notes (Posts about qlearning)</title><link>https://necromuralist.github.io/reinforcement_learning/</link><description></description><atom:link href="https://necromuralist.github.io/reinforcement_learning/categories/qlearning.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 09 Jul 2018 00:15:19 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>One-Dimensional World</title><link>https://necromuralist.github.io/reinforcement_learning/posts/one-dimensional-world/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org5b49773" class="outline-2"&gt;
-&lt;h2 id="org5b49773"&gt;Background&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org5b49773"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Reinforcement Learning (Posts about qlearning)</title><link>https://necromuralist.github.io/data_science/</link><description></description><atom:link href="https://necromuralist.github.io/data_science/categories/qlearning.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2018 &lt;a href="mailto:necromuralist@gmail.com"&gt;necromuralist&lt;/a&gt; 
+&lt;a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;
+&lt;img alt="Creative Commons License BY-NC-SA"
+style="border-width:0; margin-bottom:12px;"
+src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"&gt;&lt;/a&gt;</copyright><lastBuildDate>Fri, 19 Jan 2018 22:09:24 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>One-Dimensional World</title><link>https://necromuralist.github.io/data_science/posts/one-dimensional-world/</link><dc:creator>necromuralist</dc:creator><description>&lt;div id="outline-container-org54e0af1" class="outline-2"&gt;
+&lt;h2 id="org54e0af1"&gt;Background&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org54e0af1"&gt;
 &lt;p&gt;
-This is take from MorvanZhou's &lt;a href="https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow"&gt;github repository&lt;/a&gt;. It uses Q-learning to train an agent to explore a one-dimensional world that has the reward-state at the end of the world.
+This is take from MorvanZhou's `github repository &lt;a href="https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow"&gt;https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow&lt;/a&gt;`__. It uses Q-learning to train an agent to explore a one-dimensional world that has the reward-state at the end of the world.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgb3113cb" class="outline-2"&gt;
-&lt;h2 id="orgb3113cb"&gt;Tangle&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb3113cb"&gt;
-&lt;p&gt;
-This is the no-web tangle block. It shows how the code is organized.
-&lt;/p&gt;
-
+&lt;div id="outline-container-orgfc1fb84" class="outline-2"&gt;
+&lt;h2 id="orgfc1fb84"&gt;Tangle&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgfc1fb84"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;imports&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;
 
 &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;constants&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;
@@ -52,9 +52,9 @@ This is the no-web tangle block. It shows how the code is organized.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org474dbc0" class="outline-2"&gt;
-&lt;h2 id="org474dbc0"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org474dbc0"&gt;
+&lt;div id="outline-container-org548e6be" class="outline-2"&gt;
+&lt;h2 id="org548e6be"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org548e6be"&gt;
 &lt;p&gt;
 The only non-python-standard library requirements are numpy and pandas.
 &lt;/p&gt;
@@ -68,9 +68,9 @@ The only non-python-standard library requirements are numpy and pandas.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org61cd562" class="outline-2"&gt;
-&lt;h2 id="org61cd562"&gt;Constants&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org61cd562"&gt;
+&lt;div id="outline-container-org4bd0169" class="outline-2"&gt;
+&lt;h2 id="org4bd0169"&gt;Constants&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org4bd0169"&gt;
 &lt;p&gt;
 The &lt;code&gt;Actions&lt;/code&gt; class holds the strings used for the choice of actions. I tend to change my mind about names so I made a central object to store the strings.
 &lt;/p&gt;
@@ -82,9 +82,9 @@ The &lt;code&gt;Actions&lt;/code&gt; class holds the strings used for the choice
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfbad3bd" class="outline-2"&gt;
-&lt;h2 id="orgfbad3bd"&gt;Q-Learner&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgfbad3bd"&gt;
+&lt;div id="outline-container-org63269df" class="outline-2"&gt;
+&lt;h2 id="org63269df"&gt;Q-Learner&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org63269df"&gt;
 &lt;p&gt;
 This is what will run the reinforcement learning.
 &lt;/p&gt;
@@ -109,9 +109,9 @@ This is what will run the reinforcement learning.
 	&lt;span class="k"&gt;return&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga28526a" class="outline-3"&gt;
-&lt;h3 id="orga28526a"&gt;Terminal&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga28526a"&gt;
+&lt;div id="outline-container-org724fba8" class="outline-3"&gt;
+&lt;h3 id="org724fba8"&gt;Terminal&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org724fba8"&gt;
 &lt;p&gt;
 This is the goal state. If it isn't set then it will default to being the rightmost state.
 &lt;/p&gt;
@@ -129,9 +129,9 @@ This is the goal state. If it isn't set then it will default to being the rightm
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga2b4f3b" class="outline-3"&gt;
-&lt;h3 id="orga2b4f3b"&gt;Episodes&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga2b4f3b"&gt;
+&lt;div id="outline-container-org7e09a74" class="outline-3"&gt;
+&lt;h3 id="org7e09a74"&gt;Episodes&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org7e09a74"&gt;
 &lt;p&gt;
 An 'episode' is a single session that is run until the agent reaches the goal. To improve its performance, you can run it over multiple episodes so it can keep learning.
 &lt;/p&gt;
@@ -158,9 +158,9 @@ An 'episode' is a single session that is run until the agent reaches the goal. T
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgf86e99c" class="outline-3"&gt;
-&lt;h3 id="orgf86e99c"&gt;The Q-Environment&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf86e99c"&gt;
+&lt;div id="outline-container-orgfba0494" class="outline-3"&gt;
+&lt;h3 id="orgfba0494"&gt;The Q-Environment&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgfba0494"&gt;
 &lt;p&gt;
 I couldn't decide who should build the agent and the environment so I had the Q-Learner do it.
 &lt;/p&gt;
@@ -181,9 +181,9 @@ I couldn't decide who should build the agent and the environment so I had the Q-
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org96bbf70" class="outline-3"&gt;
-&lt;h3 id="org96bbf70"&gt;The Q-Agent&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org96bbf70"&gt;
+&lt;div id="outline-container-org3335ffc" class="outline-3"&gt;
+&lt;h3 id="org3335ffc"&gt;The Q-Agent&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3335ffc"&gt;
 &lt;p&gt;
 Since the Q-Learner is building the environment I'm going to make it build the Agent too.
 &lt;/p&gt;
@@ -202,9 +202,9 @@ Since the Q-Learner is building the environment I'm going to make it build the A
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org4478e46" class="outline-3"&gt;
-&lt;h3 id="org4478e46"&gt;Call&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org4478e46"&gt;
+&lt;div id="outline-container-org35258c9" class="outline-3"&gt;
+&lt;h3 id="org35258c9"&gt;Call&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org35258c9"&gt;
 &lt;p&gt;
 This runs the episodes.
 &lt;/p&gt;
@@ -227,9 +227,9 @@ This runs the episodes.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org3d38f7e" class="outline-2"&gt;
-&lt;h2 id="org3d38f7e"&gt;The Environment&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org3d38f7e"&gt;
+&lt;div id="outline-container-orga50fca2" class="outline-2"&gt;
+&lt;h2 id="orga50fca2"&gt;The Environment&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga50fca2"&gt;
 &lt;p&gt;
 This will hold the environment for the agent to explore.
 &lt;/p&gt;
@@ -254,9 +254,9 @@ This will hold the environment for the agent to explore.
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orga31a631" class="outline-3"&gt;
-&lt;h3 id="orga31a631"&gt;Goal Reached&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga31a631"&gt;
+&lt;div id="outline-container-orgd9d4015" class="outline-3"&gt;
+&lt;h3 id="orgd9d4015"&gt;Goal Reached&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd9d4015"&gt;
 &lt;p&gt;
 This is used both to update the q-table and to decide whether to quit the episode. Because updating the q-table requires both the current and next states, it is based on the next state, with the assumption that it will be updated before the next episode
 &lt;/p&gt;
@@ -273,9 +273,9 @@ This is used both to update the q-table and to decide whether to quit the episod
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgb62d9b7" class="outline-3"&gt;
-&lt;h3 id="orgb62d9b7"&gt;Evaluate Action&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb62d9b7"&gt;
+&lt;div id="outline-container-orgc863c3c" class="outline-3"&gt;
+&lt;h3 id="orgc863c3c"&gt;Evaluate Action&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc863c3c"&gt;
 &lt;p&gt;
 This will check if the &lt;code&gt;action&lt;/code&gt; will lead to the goal and decide the reward to give for the action. It also sets the &lt;code&gt;next_state&lt;/code&gt; property based on the current &lt;code&gt;state&lt;/code&gt; and the chosen &lt;code&gt;action&lt;/code&gt;.
 &lt;/p&gt;
@@ -299,9 +299,9 @@ This will check if the &lt;code&gt;action&lt;/code&gt; will lead to the goal and
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge2cc630" class="outline-3"&gt;
-&lt;h3 id="orge2cc630"&gt;Update the Environment&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge2cc630"&gt;
+&lt;div id="outline-container-org56ad80d" class="outline-3"&gt;
+&lt;h3 id="org56ad80d"&gt;Update the Environment&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org56ad80d"&gt;
 &lt;p&gt;
 This prints out the environment for the user and updates the state.
 &lt;/p&gt;
@@ -328,9 +328,9 @@ This prints out the environment for the user and updates the state.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org1515e4e" class="outline-3"&gt;
-&lt;h3 id="org1515e4e"&gt;Reset the environment&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1515e4e"&gt;
+&lt;div id="outline-container-org0dbb2cc" class="outline-3"&gt;
+&lt;h3 id="org0dbb2cc"&gt;Reset the environment&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0dbb2cc"&gt;
 &lt;p&gt;
 This sets the current &lt;code&gt;state&lt;/code&gt; and the &lt;code&gt;next-state&lt;/code&gt; to the &lt;code&gt;start state&lt;/code&gt; so the environment can be re-used in different episodes.
 &lt;/p&gt;
@@ -345,9 +345,9 @@ This sets the current &lt;code&gt;state&lt;/code&gt; and the &lt;code&gt;next-st
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org67f7e35" class="outline-2"&gt;
-&lt;h2 id="org67f7e35"&gt;The Agent&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org67f7e35"&gt;
+&lt;div id="outline-container-org8188b07" class="outline-2"&gt;
+&lt;h2 id="org8188b07"&gt;The Agent&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8188b07"&gt;
 &lt;p&gt;
 This is the agent that will learn to find the reward.
 &lt;/p&gt;
@@ -382,9 +382,9 @@ Other than the environment, these are the values the &lt;code&gt;Agent&lt;/code&
 &lt;/ul&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org29dbd29" class="outline-3"&gt;
-&lt;h3 id="org29dbd29"&gt;The Q-Table&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org29dbd29"&gt;
+&lt;div id="outline-container-org04dad25" class="outline-3"&gt;
+&lt;h3 id="org04dad25"&gt;The Q-Table&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org04dad25"&gt;
 &lt;p&gt;
 The agent learns by building a table of 'Quality' estimates for any action chosen for the current state. Each state is a row in the table and each column is a possible action that can be taken. Initially the table is set to all zeros.
 &lt;/p&gt;
@@ -409,9 +409,9 @@ The agent learns by building a table of 'Quality' estimates for any action chose
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org17937a4" class="outline-3"&gt;
-&lt;h3 id="org17937a4"&gt;Action&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org17937a4"&gt;
+&lt;div id="outline-container-org911fe3d" class="outline-3"&gt;
+&lt;h3 id="org911fe3d"&gt;Action&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org911fe3d"&gt;
 &lt;p&gt;
 Generates an action based on the current state. This is using an epsilon-greedy algorithm so it will explore if the value is above a certain threshold, otherwise it will exploit the best solution so far. It also will explore if the state has never lead to reaching the goal. This was confusing at first, but the updated reward for the current state is calculated based on the next state that this action leads to, so as the episodes continue, the rewards will fill in from the goal-state back to the start state.
 &lt;/p&gt;
@@ -437,9 +437,9 @@ Generates an action based on the current state. This is using an epsilon-greedy 
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb6226c3" class="outline-3"&gt;
-&lt;h3 id="orgb6226c3"&gt;Act&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb6226c3"&gt;
+&lt;div id="outline-container-orgfa4a37c" class="outline-3"&gt;
+&lt;h3 id="orgfa4a37c"&gt;Act&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgfa4a37c"&gt;
 &lt;p&gt;
 This gets the next action to take, queries the environment for the reward (which also triggers storing the next state in the environment), then updates the q-table.
 &lt;/p&gt;
@@ -460,9 +460,9 @@ This gets the next action to take, queries the environment for the reward (which
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org54fe58b" class="outline-2"&gt;
-&lt;h2 id="org54fe58b"&gt;Main&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org54fe58b"&gt;
+&lt;div id="outline-container-orge6e456c" class="outline-2"&gt;
+&lt;h2 id="orge6e456c"&gt;Main&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orge6e456c"&gt;
 &lt;p&gt;
 Runs the simulation.
 &lt;/p&gt;
@@ -477,4 +477,4 @@ Runs the simulation.
     &lt;span class="n"&gt;learner&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>qlearning</category><guid>https://necromuralist.github.io/reinforcement_learning/posts/one-dimensional-world/</guid><pubDate>Fri, 19 Jan 2018 19:38:59 GMT</pubDate></item></channel></rss>
+&lt;/div&gt;</description><category>qlearning</category><guid>https://necromuralist.github.io/data_science/posts/one-dimensional-world/</guid><pubDate>Fri, 19 Jan 2018 19:38:59 GMT</pubDate></item></channel></rss>

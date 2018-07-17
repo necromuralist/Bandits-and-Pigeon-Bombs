@@ -11,10 +11,9 @@
 
 * Background
 
-This is take from MorvanZhou's [[https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow][github repository]]. It uses Q-learning to train an agent to explore a one-dimensional world that has the reward-state at the end of the world.
+This is take from MorvanZhou's `github repository <https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow>`__. It uses Q-learning to train an agent to explore a one-dimensional world that has the reward-state at the end of the world.
 
 * Tangle
-  This is the no-web tangle block. It shows how the code is organized.
 
 #+BEGIN_SRC python :tangle one_dimensional_world.py
 <<imports>>

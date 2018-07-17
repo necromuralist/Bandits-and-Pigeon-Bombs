@@ -283,7 +283,7 @@ The previous two metrics turn out to be useful, but somewhat unfair to the aggre
 
 .. image:: epsilon_greedy_cumulative.png
 
-Because of the randomness this will change everytime you run it, but we can see that in this case, the average cumulative reward was better for the 0.3 and 0.5 epsilon values than the more conservative values up until around 275, and the second most conservative case (0.2) actually did worse on average than the more exploratory cases did.
+Because of the randomness this will change everytime you run it, but we can see that in this case, the average cumulative reward was better for the 0.3 and 0.5 epsilon values that the more conservative values up until around 275, and the second most conservative case (0.2) actually did worse on average than the more exploratory cases did.
 
 6.1 Imbalanced Case
 ~~~~~~~~~~~~~~~~~~~
