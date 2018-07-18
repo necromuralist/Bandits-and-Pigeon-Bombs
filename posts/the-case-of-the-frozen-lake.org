@@ -1,0 +1,23 @@
+#+BEGIN_COMMENT
+.. title: The Case of the Frozen Lake
+.. slug: the-case-of-the-frozen-lake
+.. date: 2018-07-17 16:58:44 UTC-07:00
+.. tags: markov tutorial
+.. category: tutorial
+.. link: 
+.. description: Solving the Frozen Lake problem using Markov Decision Processes. 
+.. type: text
+#+END_COMMENT
+
+* Introduction
+  A person want to walk home (his goal) across a frozen lake, but the lake has holes in it that he can fall into. Our goal is to create a Markov Decision Process to get him across the lake to his home without falling into the lake.
+
+#+BEGIN_SRC ditaa :file frozen_lake.png :exports none
++-------+
+|S F F F|
++-------+
+#+END_SRC
+
+#+RESULTS:
+[[file:frozen_lake.png]]
+[[file:frozen_lake.png]]
