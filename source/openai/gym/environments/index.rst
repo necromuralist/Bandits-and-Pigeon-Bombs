@@ -7,3 +7,4 @@ This is the `environments <https://github.com/openai/gym/tree/master/gym/envs>`_
 
    Registration <registration.rst>
    Box2D <box2d/index.rst>
+   Toy Text <toy_text/index.rst>
