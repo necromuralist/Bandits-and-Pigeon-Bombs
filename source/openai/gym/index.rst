@@ -7,3 +7,4 @@ The OpenAI Gym has some documentation `here <https://gym.openai.com/docs/>`__, b
 
    Core <core.rst>
    Environments <environments/index.rst>
+   Spaces <spaces/index.rst>

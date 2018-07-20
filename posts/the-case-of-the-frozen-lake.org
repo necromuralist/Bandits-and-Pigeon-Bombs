@@ -38,9 +38,11 @@ So we can restate our agent's goal as  /to get from state *S* to state *G* using
 # from pypi
 import gym
 import numpy
+import tensorflow
 #+END_SRC
 
 * The Environment
+  The OpenAI Gym provides a Frozen Lake environment. This is the general description for this type of environment.
 
 #+BEGIN_EXAMPLE
 Type:            TimeLimit
@@ -73,13 +75,13 @@ non-underscored versions are wrapper methods to which we may add
 functionality over time.
 #+END_EXAMPLE
 
-#+BEGIN_SRC ipython :session frozen :results output
-print(environment?)
-#+END_SRC
+We'll make it.
 
 #+BEGIN_SRC ipython :session frozen :results none
 environment = gym.make('FrozenLake-v0')
 #+END_SRC
+
+The =observation_space= for the environment is the lake. Here's its size.
 
 #+BEGIN_SRC ipython :session frozen :results output
 print(environment.observation_space.n)
@@ -87,6 +89,8 @@ print(environment.observation_space.n)
 
 #+RESULTS:
 : 16
+
+It's 16 because we're using a 4 x 4 grid.
 
 #+BEGIN_SRC ipython :session frozen :results output
 print(environment.action_space.n)
