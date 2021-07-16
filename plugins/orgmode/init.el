@@ -106,7 +106,9 @@ contextual information."
           (code (org-element-property :value src-block))
           (code-html (org-html-format-code src-block info)))
       (if nikola-use-pygments
-          (pygmentize (downcase lang) (org-html-decode-plain-text code))
+          (progn
+            (unless lang (setq lang ""))
+            (pygmentize (downcase lang) (org-html-decode-plain-text code)))
         code-html))))
 
 ;; Export images with custom link type
@@ -115,6 +117,22 @@ contextual information."
    ((eq format 'html)
     (format "<img src=\"%s\" alt=\"%s\"/>" path desc))))
 (org-add-link-type "img-url" nil 'org-custom-link-img-url-export)
+
+;; Export images with built-in file scheme
+(defun org-file-link-img-url-export (path desc format)
+  (cond
+   ((eq format 'html)
+    (format "<img src=\"/%s\" alt=\"%s\"/>" path desc))))
+(org-add-link-type "file" nil 'org-file-link-img-url-export)
+
+;; Support for magic links (link:// scheme)
+(org-link-set-parameters
+  "link"
+  :export (lambda (path desc backend)
+             (cond
+               ((eq 'html backend)
+                (format "<a href=\"link:%s\">%s</a>"
+                        path (or desc path))))))
 
 ;; Export function used by Nikola.
 (defun nikola-html-export (infile outfile)

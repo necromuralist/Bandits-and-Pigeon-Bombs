@@ -12,7 +12,7 @@ This is the `general optimization example <http://www.pybrain.org/docs/tutorial/
 1 Imports
 ---------
 
-.. code:: ipython
+.. code:: python
 
     # python standard library
     from random import random
@@ -46,7 +46,7 @@ The tutorial says this is a required method, but the documentation for the API s
 
 This is used to initialize the parameters to a random value. This is required but I'm pretty sure it doesn't get used in this case.
 
-.. code:: ipython
+.. code:: python
 
     class Mutant(Evolvable):
         """A simple evolvable class
@@ -132,7 +132,7 @@ The `HillClimber <http://www.pybrain.org/docs/api/optimization/optimization.html
 
 In this case we're just going to return the x value of the object.
 
-.. code:: ipython
+.. code:: python
 
     def evaluator(mutant):
         return mutant.x
@@ -140,7 +140,7 @@ In this case we're just going to return the x value of the object.
 3.2 The Instances
 ~~~~~~~~~~~~~~~~~
 
-.. code:: ipython
+.. code:: python
 
     mutant = Mutant(random() * 10)
     climber = HillClimber(evaluator, mutant, maxEvaluations=50, verbose=True, desiredEvaluation=10)
@@ -150,7 +150,7 @@ In this case we're just going to return the x value of the object.
 
 The optimization classes get run using their ``learn`` methods.
 
-.. code:: ipython
+.. code:: python
 
     outcome = climber.learn()
     print(outcome)
