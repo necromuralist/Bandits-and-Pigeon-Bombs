@@ -6,95 +6,151 @@
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
-  <loc>https://necromuralist.github.io/data_science/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/</loc>
+  <lastmod>2021-07-16T22:26:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/2017/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/2017/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/2018/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/2018/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/archive.html</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/2021/</loc>
+  <lastmod>2021-07-16T22:26:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/authors/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/archive.html</loc>
+  <lastmod>2021-07-16T22:26:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/authors/brunhilde/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/authors/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/authors/hades/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/authors/brunhilde/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/authors/necromuralist/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/authors/cloistered-monkey/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/categories/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/authors/hades/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/categories/algorithm-reinforcementlearning/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/authors/necromuralist/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/categories/algorithm/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/</loc>
+  <lastmod>2021-07-16T22:26:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/categories/bandits-reinforcementlearning/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/algorithm-reinforcementlearning/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/categories/cat_qlearning/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/algorithm/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/categories/pybrain-optimization/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/bandits-reinforcementlearning/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/categories/qlearning/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/bibliography/</loc>
+  <lastmod>2021-07-16T22:26:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/posts/A-Bernoulli-Arm/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/cat_citation/</loc>
+  <lastmod>2021-07-16T22:26:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/posts/Epsilon-Greedy-with-Normal-Distribution-Payouts/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/cat_openai/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/posts/Optimistic-Initial-Values/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/cat_qlearning/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/posts/PyBrain-Optimization-Example/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/cat_tutorial/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/posts/The-Epsilon-Greedy-Algorithm/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/openai-retro-reinforcementlearning/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/posts/assessing-the-performance/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/openai/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/posts/finding-the-best-epsilon/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/pybrain-optimization/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
  </url>
  <url>
-  <loc>https://necromuralist.github.io/data_science/posts/one-dimensional-world/</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/qlearning/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/reference/</loc>
+  <lastmod>2021-07-16T22:26:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/textbook/</loc>
+  <lastmod>2021-07-16T22:26:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/index-1.html</loc>
+  <lastmod>2021-07-16T22:26:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/posts/A-Bernoulli-Arm/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/posts/Epsilon-Greedy-with-Normal-Distribution-Payouts/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/posts/Optimistic-Initial-Values/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/posts/PyBrain-Optimization-Example/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/posts/The-Epsilon-Greedy-Algorithm/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/posts/assessing-the-performance/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/posts/finding-the-best-epsilon/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/posts/one-dimensional-world/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/posts/openai-retro-introduction/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/posts/reference-reinforcement-learning/</loc>
+  <lastmod>2021-07-16T22:26:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/posts/teaching-a-robot-to-walk/</loc>
+  <lastmod>2021-07-16T21:41:00Z</lastmod>
  </url>
 </urlset>

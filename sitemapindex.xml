@@ -6,47 +6,83 @@
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
-  <loc>https://necromuralist.github.io/data_science/authors/brunhilde.xml</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/authors/brunhilde.xml</loc>
+  <lastmod>2021-07-16T22:14:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>https://necromuralist.github.io/data_science/authors/hades.xml</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/authors/cloistered-monkey.xml</loc>
+  <lastmod>2021-07-16T22:26:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>https://necromuralist.github.io/data_science/authors/necromuralist.xml</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/authors/hades.xml</loc>
+  <lastmod>2021-07-16T22:14:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>https://necromuralist.github.io/data_science/categories/algorithm-reinforcementlearning.xml</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/authors/necromuralist.xml</loc>
+  <lastmod>2021-07-16T22:16:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>https://necromuralist.github.io/data_science/categories/algorithm.xml</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/algorithm-reinforcementlearning.xml</loc>
+  <lastmod>2021-07-16T22:14:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>https://necromuralist.github.io/data_science/categories/bandits-reinforcementlearning.xml</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/algorithm.xml</loc>
+  <lastmod>2021-07-16T22:14:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>https://necromuralist.github.io/data_science/categories/cat_qlearning.xml</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/bandits-reinforcementlearning.xml</loc>
+  <lastmod>2021-07-16T22:14:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>https://necromuralist.github.io/data_science/categories/pybrain-optimization.xml</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/bibliography.xml</loc>
+  <lastmod>2021-07-16T22:26:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>https://necromuralist.github.io/data_science/categories/qlearning.xml</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/cat_citation.xml</loc>
+  <lastmod>2021-07-16T22:26:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>https://necromuralist.github.io/data_science/rss.xml</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/cat_openai.xml</loc>
+  <lastmod>2021-07-16T22:14:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>https://necromuralist.github.io/data_science/sitemap.xml</loc>
-  <lastmod>2018-01-19T19:42:00Z</lastmod>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/cat_qlearning.xml</loc>
+  <lastmod>2021-07-16T22:14:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/cat_tutorial.xml</loc>
+  <lastmod>2021-07-16T22:14:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/openai-retro-reinforcementlearning.xml</loc>
+  <lastmod>2021-07-16T22:14:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/openai.xml</loc>
+  <lastmod>2021-07-16T22:14:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/pybrain-optimization.xml</loc>
+  <lastmod>2021-07-16T22:16:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/qlearning.xml</loc>
+  <lastmod>2021-07-16T22:14:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/reference.xml</loc>
+  <lastmod>2021-07-16T22:26:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/textbook.xml</loc>
+  <lastmod>2021-07-16T22:26:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/rss.xml</loc>
+  <lastmod>2021-07-16T22:26:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/sitemap.xml</loc>
+  <lastmod>2021-07-16T22:26:00Z</lastmod>
  </sitemap>
 </sitemapindex>

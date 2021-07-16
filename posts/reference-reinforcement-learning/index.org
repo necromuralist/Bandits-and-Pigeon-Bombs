@@ -1,0 +1,12 @@
+#+BEGIN_COMMENT
+.. title: Reference: Reinforcement Learning
+.. slug: reference-reinforcement-learning
+.. date: 2021-07-16 15:20:02 UTC-07:00
+.. tags: reference,bibliography,textbook
+.. category: Citation
+.. link: 
+.. description: Sutton and Barto's Reinforcement Learning Text
+.. type: text
+
+#+END_COMMENT
+Sutton RS, Barto AG. Reinforcement learning: an introduction. Second edition. Cambridge, Massachusetts: The MIT Press; 2018. 526 p. (Adaptive computation and machine learning series). 

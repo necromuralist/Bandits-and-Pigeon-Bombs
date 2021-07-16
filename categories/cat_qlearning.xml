@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Reinforcement Learning (Posts about QLearning)</title><link>https://necromuralist.github.io/data_science/</link><description></description><atom:link href="https://necromuralist.github.io/data_science/categories/cat_qlearning.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2018 &lt;a href="mailto:necromuralist@gmail.com"&gt;necromuralist&lt;/a&gt; 
-&lt;a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;
-&lt;img alt="Creative Commons License BY-NC-SA"
-style="border-width:0; margin-bottom:12px;"
-src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"&gt;&lt;/a&gt;</copyright><lastBuildDate>Fri, 19 Jan 2018 22:09:24 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>One-Dimensional World</title><link>https://necromuralist.github.io/data_science/posts/one-dimensional-world/</link><dc:creator>necromuralist</dc:creator><description>&lt;div id="outline-container-org54e0af1" class="outline-2"&gt;
-&lt;h2 id="org54e0af1"&gt;Background&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org54e0af1"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bandits &amp; Pigeon Bombs (Posts about QLearning)</title><link>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/</link><description></description><atom:link href="https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/categories/cat_qlearning.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Fri, 16 Jul 2021 22:14:37 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>One-Dimensional World</title><link>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/posts/one-dimensional-world/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org4f5a93a" class="outline-2"&gt;
+&lt;h2 id="org4f5a93a"&gt;Background&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org4f5a93a"&gt;
 &lt;p&gt;
-This is take from MorvanZhou's `github repository &lt;a href="https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow"&gt;https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow&lt;/a&gt;`__. It uses Q-learning to train an agent to explore a one-dimensional world that has the reward-state at the end of the world.
+This is take from MorvanZhou's &lt;a href="https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow"&gt;github repository&lt;/a&gt;. It uses Q-learning to train an agent to explore a one-dimensional world that has the reward-state at the end of the world.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgfc1fb84" class="outline-2"&gt;
-&lt;h2 id="orgfc1fb84"&gt;Tangle&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgfc1fb84"&gt;
+&lt;div id="outline-container-orgae45c52" class="outline-2"&gt;
+&lt;h2 id="orgae45c52"&gt;Tangle&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgae45c52"&gt;
+&lt;p&gt;
+This is the no-web tangle block. It shows how the code is organized.
+&lt;/p&gt;
+
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;imports&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;
 
 &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;constants&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;
@@ -52,9 +52,9 @@ This is take from MorvanZhou's `github repository &lt;a href="https://github.com
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org548e6be" class="outline-2"&gt;
-&lt;h2 id="org548e6be"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org548e6be"&gt;
+&lt;div id="outline-container-org58ea4dd" class="outline-2"&gt;
+&lt;h2 id="org58ea4dd"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org58ea4dd"&gt;
 &lt;p&gt;
 The only non-python-standard library requirements are numpy and pandas.
 &lt;/p&gt;
@@ -68,9 +68,9 @@ The only non-python-standard library requirements are numpy and pandas.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org4bd0169" class="outline-2"&gt;
-&lt;h2 id="org4bd0169"&gt;Constants&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org4bd0169"&gt;
+&lt;div id="outline-container-orgf6fc704" class="outline-2"&gt;
+&lt;h2 id="orgf6fc704"&gt;Constants&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgf6fc704"&gt;
 &lt;p&gt;
 The &lt;code&gt;Actions&lt;/code&gt; class holds the strings used for the choice of actions. I tend to change my mind about names so I made a central object to store the strings.
 &lt;/p&gt;
@@ -82,9 +82,9 @@ The &lt;code&gt;Actions&lt;/code&gt; class holds the strings used for the choice
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org63269df" class="outline-2"&gt;
-&lt;h2 id="org63269df"&gt;Q-Learner&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org63269df"&gt;
+&lt;div id="outline-container-org39efd0d" class="outline-2"&gt;
+&lt;h2 id="org39efd0d"&gt;Q-Learner&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org39efd0d"&gt;
 &lt;p&gt;
 This is what will run the reinforcement learning.
 &lt;/p&gt;
@@ -98,20 +98,20 @@ This is what will run the reinforcement learning.
 &lt;span class="sd"&gt;     states (int): total size for the environment&lt;/span&gt;
 &lt;span class="sd"&gt;     terminal (int): where the goal state is&lt;/span&gt;
 &lt;span class="sd"&gt;    """&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;episodes&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;start_state&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;states&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;terminal&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_episodes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;episodes&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;start_state&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;states&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;terminal&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_episodes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;
 	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;episodes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;episodes&lt;/span&gt;
 	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;start_state&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;start_state&lt;/span&gt;
 	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;states&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;states&lt;/span&gt;
 	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_terminal&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;terminal&lt;/span&gt;
-	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_environment&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
-	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_agent&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
+	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_environment&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;
+	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_agent&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;
 	&lt;span class="k"&gt;return&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org724fba8" class="outline-3"&gt;
-&lt;h3 id="org724fba8"&gt;Terminal&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org724fba8"&gt;
+&lt;div id="outline-container-orgc4858e4" class="outline-3"&gt;
+&lt;h3 id="orgc4858e4"&gt;Terminal&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc4858e4"&gt;
 &lt;p&gt;
 This is the goal state. If it isn't set then it will default to being the rightmost state.
 &lt;/p&gt;
@@ -123,15 +123,15 @@ This is the goal state. If it isn't set then it will default to being the rightm
 &lt;span class="sd"&gt;    Returns:&lt;/span&gt;
 &lt;span class="sd"&gt;     int: zero-based index of the goal-state&lt;/span&gt;
 &lt;span class="sd"&gt;    """&lt;/span&gt;
-    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_terminal&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_terminal&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_terminal&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;states&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_terminal&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7e09a74" class="outline-3"&gt;
-&lt;h3 id="org7e09a74"&gt;Episodes&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org7e09a74"&gt;
+&lt;div id="outline-container-org5ac7f62" class="outline-3"&gt;
+&lt;h3 id="org5ac7f62"&gt;Episodes&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org5ac7f62"&gt;
 &lt;p&gt;
 An 'episode' is a single session that is run until the agent reaches the goal. To improve its performance, you can run it over multiple episodes so it can keep learning.
 &lt;/p&gt;
@@ -145,7 +145,7 @@ An 'episode' is a single session that is run until the agent reaches the goal. T
 &lt;span class="sd"&gt;    """&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_episodes&lt;/span&gt;
 
-&lt;span class="nd"&gt;@episodes.setter&lt;/span&gt;
+&lt;span class="nd"&gt;@episodes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setter&lt;/span&gt;
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;episodes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;episode_count&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="sd"&gt;"""creates the episodes iterator&lt;/span&gt;
 
@@ -158,9 +158,9 @@ An 'episode' is a single session that is run until the agent reaches the goal. T
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgfba0494" class="outline-3"&gt;
-&lt;h3 id="orgfba0494"&gt;The Q-Environment&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgfba0494"&gt;
+&lt;div id="outline-container-orge1da135" class="outline-3"&gt;
+&lt;h3 id="orge1da135"&gt;The Q-Environment&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge1da135"&gt;
 &lt;p&gt;
 I couldn't decide who should build the agent and the environment so I had the Q-Learner do it.
 &lt;/p&gt;
@@ -172,7 +172,7 @@ I couldn't decide who should build the agent and the environment so I had the Q-
 &lt;span class="sd"&gt;    Returns:&lt;/span&gt;
 &lt;span class="sd"&gt;     Environment: one-dimensional environment&lt;/span&gt;
 &lt;span class="sd"&gt;    """&lt;/span&gt;
-    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_environment&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_environment&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_environment&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Environment&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;start_state&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 					&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;states&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 					&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;terminal&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -181,9 +181,9 @@ I couldn't decide who should build the agent and the environment so I had the Q-
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org3335ffc" class="outline-3"&gt;
-&lt;h3 id="org3335ffc"&gt;The Q-Agent&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3335ffc"&gt;
+&lt;div id="outline-container-org3c754db" class="outline-3"&gt;
+&lt;h3 id="org3c754db"&gt;The Q-Agent&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3c754db"&gt;
 &lt;p&gt;
 Since the Q-Learner is building the environment I'm going to make it build the Agent too.
 &lt;/p&gt;
@@ -195,16 +195,16 @@ Since the Q-Learner is building the environment I'm going to make it build the A
 &lt;span class="sd"&gt;    Returns:&lt;/span&gt;
 &lt;span class="sd"&gt;     Agent: agent built for the environment&lt;/span&gt;
 &lt;span class="sd"&gt;    """&lt;/span&gt;
-    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_agent&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_agent&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_agent&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Agent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_agent&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org35258c9" class="outline-3"&gt;
-&lt;h3 id="org35258c9"&gt;Call&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org35258c9"&gt;
+&lt;div id="outline-container-org0680bde" class="outline-3"&gt;
+&lt;h3 id="org0680bde"&gt;Call&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0680bde"&gt;
 &lt;p&gt;
 This runs the episodes.
 &lt;/p&gt;
@@ -227,9 +227,9 @@ This runs the episodes.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orga50fca2" class="outline-2"&gt;
-&lt;h2 id="orga50fca2"&gt;The Environment&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga50fca2"&gt;
+&lt;div id="outline-container-orgd4a0fc4" class="outline-2"&gt;
+&lt;h2 id="orgd4a0fc4"&gt;The Environment&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd4a0fc4"&gt;
 &lt;p&gt;
 This will hold the environment for the agent to explore.
 &lt;/p&gt;
@@ -254,9 +254,9 @@ This will hold the environment for the agent to explore.
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd9d4015" class="outline-3"&gt;
-&lt;h3 id="orgd9d4015"&gt;Goal Reached&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd9d4015"&gt;
+&lt;div id="outline-container-org75e1ff7" class="outline-3"&gt;
+&lt;h3 id="org75e1ff7"&gt;Goal Reached&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org75e1ff7"&gt;
 &lt;p&gt;
 This is used both to update the q-table and to decide whether to quit the episode. Because updating the q-table requires both the current and next states, it is based on the next state, with the assumption that it will be updated before the next episode
 &lt;/p&gt;
@@ -273,9 +273,9 @@ This is used both to update the q-table and to decide whether to quit the episod
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgc863c3c" class="outline-3"&gt;
-&lt;h3 id="orgc863c3c"&gt;Evaluate Action&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgc863c3c"&gt;
+&lt;div id="outline-container-org6de59f7" class="outline-3"&gt;
+&lt;h3 id="org6de59f7"&gt;Evaluate Action&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org6de59f7"&gt;
 &lt;p&gt;
 This will check if the &lt;code&gt;action&lt;/code&gt; will lead to the goal and decide the reward to give for the action. It also sets the &lt;code&gt;next_state&lt;/code&gt; property based on the current &lt;code&gt;state&lt;/code&gt; and the chosen &lt;code&gt;action&lt;/code&gt;.
 &lt;/p&gt;
@@ -299,9 +299,9 @@ This will check if the &lt;code&gt;action&lt;/code&gt; will lead to the goal and
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org56ad80d" class="outline-3"&gt;
-&lt;h3 id="org56ad80d"&gt;Update the Environment&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org56ad80d"&gt;
+&lt;div id="outline-container-org6287144" class="outline-3"&gt;
+&lt;h3 id="org6287144"&gt;Update the Environment&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org6287144"&gt;
 &lt;p&gt;
 This prints out the environment for the user and updates the state.
 &lt;/p&gt;
@@ -317,20 +317,20 @@ This prints out the environment for the user and updates the state.
 &lt;span class="sd"&gt;    """&lt;/span&gt;
     &lt;span class="n"&gt;environment&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'-'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;states&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'T'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
     &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;goal_reached&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-	&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s2"&gt;Episode {}: Total Steps = {}"&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;episode&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;step&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+	&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s2"&gt;Episode &lt;/span&gt;&lt;span class="si"&gt;{}&lt;/span&gt;&lt;span class="s2"&gt;: Total Steps = &lt;/span&gt;&lt;span class="si"&gt;{}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;episode&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;step&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 	&lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sleep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;output_pause&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 	&lt;span class="n"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;next_state&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'O'&lt;/span&gt;
-	&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"{}"&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;""&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+	&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;{}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;""&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
     &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;state&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;next_state&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org0dbb2cc" class="outline-3"&gt;
-&lt;h3 id="org0dbb2cc"&gt;Reset the environment&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0dbb2cc"&gt;
+&lt;div id="outline-container-org70e4539" class="outline-3"&gt;
+&lt;h3 id="org70e4539"&gt;Reset the environment&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org70e4539"&gt;
 &lt;p&gt;
 This sets the current &lt;code&gt;state&lt;/code&gt; and the &lt;code&gt;next-state&lt;/code&gt; to the &lt;code&gt;start state&lt;/code&gt; so the environment can be re-used in different episodes.
 &lt;/p&gt;
@@ -345,9 +345,9 @@ This sets the current &lt;code&gt;state&lt;/code&gt; and the &lt;code&gt;next-st
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org8188b07" class="outline-2"&gt;
-&lt;h2 id="org8188b07"&gt;The Agent&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org8188b07"&gt;
+&lt;div id="outline-container-org7d7f134" class="outline-2"&gt;
+&lt;h2 id="org7d7f134"&gt;The Agent&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org7d7f134"&gt;
 &lt;p&gt;
 This is the agent that will learn to find the reward.
 &lt;/p&gt;
@@ -367,7 +367,7 @@ This is the agent that will learn to find the reward.
 	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exploitation_rate&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;exploitation_rate&lt;/span&gt;
 	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;discount_factor&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;discount_factor&lt;/span&gt;
 	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;learning_rate&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;learning_rate&lt;/span&gt;
-	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_q_table&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
+	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_q_table&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;
 	&lt;span class="k"&gt;return&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -382,9 +382,9 @@ Other than the environment, these are the values the &lt;code&gt;Agent&lt;/code&
 &lt;/ul&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org04dad25" class="outline-3"&gt;
-&lt;h3 id="org04dad25"&gt;The Q-Table&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org04dad25"&gt;
+&lt;div id="outline-container-org39cb3fd" class="outline-3"&gt;
+&lt;h3 id="org39cb3fd"&gt;The Q-Table&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org39cb3fd"&gt;
 &lt;p&gt;
 The agent learns by building a table of 'Quality' estimates for any action chosen for the current state. Each state is a row in the table and each column is a possible action that can be taken. Initially the table is set to all zeros.
 &lt;/p&gt;
@@ -398,7 +398,7 @@ The agent learns by building a table of 'Quality' estimates for any action chose
 &lt;span class="sd"&gt;    Returns:&lt;/span&gt;
 &lt;span class="sd"&gt;     DataFrame: rows are states, columns are actions&lt;/span&gt;
 &lt;span class="sd"&gt;    """&lt;/span&gt;
-    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_q_table&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_q_table&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_q_table&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pandas&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DataFrame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
 	    &lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;environment&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;states&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Actions&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;actions&lt;/span&gt;&lt;span class="p"&gt;))),&lt;/span&gt;
 	    &lt;span class="n"&gt;columns&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;Actions&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;actions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -409,9 +409,9 @@ The agent learns by building a table of 'Quality' estimates for any action chose
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org911fe3d" class="outline-3"&gt;
-&lt;h3 id="org911fe3d"&gt;Action&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org911fe3d"&gt;
+&lt;div id="outline-container-orgd0a0f31" class="outline-3"&gt;
+&lt;h3 id="orgd0a0f31"&gt;Action&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd0a0f31"&gt;
 &lt;p&gt;
 Generates an action based on the current state. This is using an epsilon-greedy algorithm so it will explore if the value is above a certain threshold, otherwise it will exploit the best solution so far. It also will explore if the state has never lead to reaching the goal. This was confusing at first, but the updated reward for the current state is calculated based on the next state that this action leads to, so as the episodes continue, the rewards will fill in from the goal-state back to the start state.
 &lt;/p&gt;
@@ -437,9 +437,9 @@ Generates an action based on the current state. This is using an epsilon-greedy 
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfa4a37c" class="outline-3"&gt;
-&lt;h3 id="orgfa4a37c"&gt;Act&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgfa4a37c"&gt;
+&lt;div id="outline-container-orgc810a9f" class="outline-3"&gt;
+&lt;h3 id="orgc810a9f"&gt;Act&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc810a9f"&gt;
 &lt;p&gt;
 This gets the next action to take, queries the environment for the reward (which also triggers storing the next state in the environment), then updates the q-table.
 &lt;/p&gt;
@@ -460,9 +460,9 @@ This gets the next action to take, queries the environment for the reward (which
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge6e456c" class="outline-2"&gt;
-&lt;h2 id="orge6e456c"&gt;Main&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge6e456c"&gt;
+&lt;div id="outline-container-org567c3e2" class="outline-2"&gt;
+&lt;h2 id="org567c3e2"&gt;Main&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org567c3e2"&gt;
 &lt;p&gt;
 Runs the simulation.
 &lt;/p&gt;
@@ -470,11 +470,11 @@ Runs the simulation.
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vm"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;"__main__"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="n"&gt;learner&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;QLearner&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;states&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="n"&gt;learner&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;learner&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;agent&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;q_table&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s2"&gt;learned-model with only exploitation set"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;learner&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;agent&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;q_table&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s2"&gt;learned-model with only exploitation set"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="n"&gt;learner&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;agent&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exploitation_rate&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
     &lt;span class="n"&gt;learner&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;episodes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
     &lt;span class="n"&gt;learner&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>qlearning</category><guid>https://necromuralist.github.io/data_science/posts/one-dimensional-world/</guid><pubDate>Fri, 19 Jan 2018 19:38:59 GMT</pubDate></item></channel></rss>
+&lt;/div&gt;</description><category>qlearning</category><guid>https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/posts/one-dimensional-world/</guid><pubDate>Fri, 19 Jan 2018 19:38:59 GMT</pubDate></item></channel></rss>

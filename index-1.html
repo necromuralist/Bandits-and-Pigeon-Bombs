@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Notes while learning reinforcement learning.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bandits &amp; Pigeon Bombs (old posts, page 1) | Bandits &amp; Pigeon Bombs</title>
+<link href="assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="rss.xml">
+<link rel="canonical" href="https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/index-1.html">
+<link rel="prev" href="." type="text/html">
+<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-expand-md static-top mb-4
+navbar-light
+bg-light
+"><div class="container">
+<!-- This keeps the margins nice -->
+        <a class="navbar-brand" href=".">
+
+            <span id="blog-title">Bandits &amp; Pigeon Bombs</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="bs-navbar">
+            <ul class="navbar-nav mr-auto">
+<li class="nav-item">
+<a href="archive.html" class="nav-link">Archive</a>
+                </li>
+<li class="nav-item">
+<a href="categories/" class="nav-link">Tags</a>
+                </li>
+<li class="nav-item">
+<a href="rss.xml" class="nav-link">RSS feed</a>
+                </li>
+<li class="nav-item">
+<a href="sphinx/index.html" class="nav-link">Documentation</a>
+
+                
+            </li>
+</ul>
+<!-- DuckDuckGo custom search --><form method="get" id="search" action="https://duckduckgo.com/" class="navbar-form pull-left">
+<input type="hidden" name="sites" value="https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/"><input type="hidden" name="k8" value="#444444"><input type="hidden" name="k9" value="#D51920"><input type="hidden" name="kt" value="h"><input type="text" name="q" maxlength="255" placeholder="Search…" class="span2" style="margin-top: 4px;"><input type="submit" value="DuckDuckGo Search" style="visibility: hidden;">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="navbar-nav navbar-right"></ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+
+    
+
+
+    
+<div class="postindex">
+    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/The-Epsilon-Greedy-Algorithm/" class="u-url">The Epsilon Greedy Algorithm</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                <a href="authors/hades/">hades</a>
+            </span></p>
+            <p class="dateline">
+            <a href="posts/The-Epsilon-Greedy-Algorithm/" rel="bookmark">
+            <time class="published dt-published" datetime="2017-07-30T18:22:00-07:00" itemprop="datePublished" title="2017-07-30 18:22">2017-07-30 18:22</time></a>
+            </p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div>
+<section id="background"><h2>1 Background</h2>
+<p>This is an implementation of the Epsilon Greedy algorithm to find solutions for the multi-arm-bandit problem.</p>
+</section><section id="imports"><h2>2 Imports</h2>
+<pre class="code python"><a id="rest_code_ecd54e4c2c744fc7aff54de6c02ddf22-1" name="rest_code_ecd54e4c2c744fc7aff54de6c02ddf22-1"></a><span class="c1"># python</span>
+<a id="rest_code_ecd54e4c2c744fc7aff54de6c02ddf22-2" name="rest_code_ecd54e4c2c744fc7aff54de6c02ddf22-2"></a><span class="kn">import</span> <span class="nn">random</span>
+<a id="rest_code_ecd54e4c2c744fc7aff54de6c02ddf22-3" name="rest_code_ecd54e4c2c744fc7aff54de6c02ddf22-3"></a>
+<a id="rest_code_ecd54e4c2c744fc7aff54de6c02ddf22-4" name="rest_code_ecd54e4c2c744fc7aff54de6c02ddf22-4"></a><span class="c1"># pypi</span>
+<a id="rest_code_ecd54e4c2c744fc7aff54de6c02ddf22-5" name="rest_code_ecd54e4c2c744fc7aff54de6c02ddf22-5"></a><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
+<a id="rest_code_ecd54e4c2c744fc7aff54de6c02ddf22-6" name="rest_code_ecd54e4c2c744fc7aff54de6c02ddf22-6"></a><span class="kn">import</span> <span class="nn">numpy</span>
+</pre></section><section id="find-first"><h2>3 Find First</h2>
+<p>This is a helper function to find the first matching item in an array-like collection.</p>
+<pre class="code python"><a id="rest_code_868c84a3c3454949adb89ddd9b742f61-1" name="rest_code_868c84a3c3454949adb89ddd9b742f61-1"></a><span class="nd">@jit</span>
+<a id="rest_code_868c84a3c3454949adb89ddd9b742f61-2" name="rest_code_868c84a3c3454949adb89ddd9b742f61-2"></a><span class="k">def</span> <span class="nf">find_first</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+<a id="rest_code_868c84a3c3454949adb89ddd9b742f61-3" name="rest_code_868c84a3c3454949adb89ddd9b742f61-3"></a>    <span class="sd">"""find the first item in the vector</span>
+<a id="rest_code_868c84a3c3454949adb89ddd9b742f61-4" name="rest_code_868c84a3c3454949adb89ddd9b742f61-4"></a>
+<a id="rest_code_868c84a3c3454949adb89ddd9b742f61-5" name="rest_code_868c84a3c3454949adb89ddd9b742f61-5"></a><span class="sd">    Args:</span>
+<a id="rest_code_868c84a3c3454949adb89ddd9b742f61-6" name="rest_code_868c84a3c3454949adb89ddd9b742f61-6"></a><span class="sd">     item: thing to match</span>
+<a id="rest_code_868c84a3c3454949adb89ddd9b742f61-7" name="rest_code_868c84a3c3454949adb89ddd9b742f61-7"></a><span class="sd">     vector: thing to search</span>
+<a id="rest_code_868c84a3c3454949adb89ddd9b742f61-8" name="rest_code_868c84a3c3454949adb89ddd9b742f61-8"></a>
+<a id="rest_code_868c84a3c3454949adb89ddd9b742f61-9" name="rest_code_868c84a3c3454949adb89ddd9b742f61-9"></a><span class="sd">    Returns:</span>
+<a id="rest_code_868c84a3c3454949adb89ddd9b742f61-10" name="rest_code_868c84a3c3454949adb89ddd9b742f61-10"></a><span class="sd">     value: index of first matching item, -1 if not found</span>
+<a id="rest_code_868c84a3c3454949adb89ddd9b742f61-11" name="rest_code_868c84a3c3454949adb89ddd9b742f61-11"></a><span class="sd">    """</span>
+<a id="rest_code_868c84a3c3454949adb89ddd9b742f61-12" name="rest_code_868c84a3c3454949adb89ddd9b742f61-12"></a>    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vector</span><span class="p">)):</span>
+<a id="rest_code_868c84a3c3454949adb89ddd9b742f61-13" name="rest_code_868c84a3c3454949adb89ddd9b742f61-13"></a>        <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="n">vector</span><span class="p">[</span><span class="n">index</span><span class="p">]:</span>
+<a id="rest_code_868c84a3c3454949adb89ddd9b742f61-14" name="rest_code_868c84a3c3454949adb89ddd9b742f61-14"></a>            <span class="k">return</span> <span class="n">index</span>
+<a id="rest_code_868c84a3c3454949adb89ddd9b742f61-15" name="rest_code_868c84a3c3454949adb89ddd9b742f61-15"></a>    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</pre></section><section id="epsilon-greedy"><h2>4 Epsilon Greedy</h2>
+<p>The <em>epsilon-greedy</em> algorithm tries to solve the exploitation-exploration dilemna by exploring a fraction of the time (set by <em>epsilon</em>) and using the best solution found so far the rest of the time. This implementation is based on the one in Bandit Algorithms for Website Optimization <a class="footnote-reference brackets" href="posts/The-Epsilon-Greedy-Algorithm/#id5" id="id1">1</a> .</p>
+<pre class="code python"><a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-1" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-1"></a><span class="o">&lt;&lt;</span><span class="n">imports</span><span class="o">&gt;&gt;</span>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-2" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-2"></a>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-3" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-3"></a><span class="o">&lt;&lt;</span><span class="n">find</span><span class="o">-</span><span class="n">first</span><span class="o">&gt;&gt;</span>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-4" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-4"></a><span class="k">class</span> <span class="nc">EpsilonGreedy</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-5" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-5"></a>    <span class="sd">"""The Epsilon Greedy Algorithm</span>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-6" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-6"></a>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-7" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-7"></a><span class="sd">    Args:</span>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-8" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-8"></a><span class="sd">     epsilon (float): fraction of the time to explore</span>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-9" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-9"></a><span class="sd">     arms (list): collection of bandits to pull</span>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-10" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-10"></a><span class="sd">    """</span>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-11" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-11"></a>    <span class="o">&lt;&lt;</span><span class="n">constructor</span><span class="o">&gt;&gt;</span>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-12" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-12"></a>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-13" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-13"></a>    <span class="o">&lt;&lt;</span><span class="n">best</span><span class="o">-</span><span class="n">arm</span><span class="o">&gt;&gt;</span>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-14" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-14"></a>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-15" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-15"></a>    <span class="o">&lt;&lt;</span><span class="n">counts</span><span class="o">&gt;&gt;</span>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-16" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-16"></a>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-17" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-17"></a>    <span class="o">&lt;&lt;</span><span class="n">rewards</span><span class="o">&gt;&gt;</span>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-18" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-18"></a>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-19" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-19"></a>    <span class="o">&lt;&lt;</span><span class="n">select</span><span class="o">-</span><span class="n">arm</span><span class="o">&gt;&gt;</span>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-20" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-20"></a>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-21" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-21"></a>    <span class="o">&lt;&lt;</span><span class="n">update</span><span class="o">&gt;&gt;</span>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-22" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-22"></a>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-23" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-23"></a>    <span class="o">&lt;&lt;</span><span class="n">reset</span><span class="o">&gt;&gt;</span>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-24" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-24"></a>
+<a id="rest_code_c0664ab7f04344e3ae2bfe42729285da-25" name="rest_code_c0664ab7f04344e3ae2bfe42729285da-25"></a>    <span class="o">&lt;&lt;</span><span class="n">call</span><span class="o">&gt;&gt;</span>
+</pre>
+<section id="the-constructor"><h3>4.1 The Constructor</h3>
+<p>The constructor takes two arguments - <em>epsilon</em> and <em>arms</em>. The <em>arms</em> list should contain bandits that return a reward or penalty when pulled (called).</p>
+<pre class="code python"><a id="rest_code_89bda47ae7164949b16d86851c8cc1cd-1" name="rest_code_89bda47ae7164949b16d86851c8cc1cd-1"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">arms</span><span class="p">):</span>
+<a id="rest_code_89bda47ae7164949b16d86851c8cc1cd-2" name="rest_code_89bda47ae7164949b16d86851c8cc1cd-2"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="n">epsilon</span>
+<a id="rest_code_89bda47ae7164949b16d86851c8cc1cd-3" name="rest_code_89bda47ae7164949b16d86851c8cc1cd-3"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">arms</span> <span class="o">=</span> <span class="n">arms</span>
+<a id="rest_code_89bda47ae7164949b16d86851c8cc1cd-4" name="rest_code_89bda47ae7164949b16d86851c8cc1cd-4"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_counts</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="rest_code_89bda47ae7164949b16d86851c8cc1cd-5" name="rest_code_89bda47ae7164949b16d86851c8cc1cd-5"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_rewards</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="rest_code_89bda47ae7164949b16d86851c8cc1cd-6" name="rest_code_89bda47ae7164949b16d86851c8cc1cd-6"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">total_reward</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="rest_code_89bda47ae7164949b16d86851c8cc1cd-7" name="rest_code_89bda47ae7164949b16d86851c8cc1cd-7"></a>    <span class="k">return</span>
+</pre></section><section id="best-arm"><h3>4.2 Best Arm</h3>
+<p>The <code class="docutils literal">best_arm</code> property returns the index of the arm that has the highest average reward so far. It returns the index instead of the arm itself because it's used to get the matching counts and rewards in the <code class="docutils literal">update</code> method.</p>
+<pre class="code python"><a id="rest_code_32f1761261cc453ebc6af8f2fe301ea0-1" name="rest_code_32f1761261cc453ebc6af8f2fe301ea0-1"></a><span class="nd">@property</span>
+<a id="rest_code_32f1761261cc453ebc6af8f2fe301ea0-2" name="rest_code_32f1761261cc453ebc6af8f2fe301ea0-2"></a><span class="k">def</span> <span class="nf">best_arm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="rest_code_32f1761261cc453ebc6af8f2fe301ea0-3" name="rest_code_32f1761261cc453ebc6af8f2fe301ea0-3"></a>    <span class="sd">"""Index of the arm with the most reward"""</span>
+<a id="rest_code_32f1761261cc453ebc6af8f2fe301ea0-4" name="rest_code_32f1761261cc453ebc6af8f2fe301ea0-4"></a>    <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<a id="rest_code_32f1761261cc453ebc6af8f2fe301ea0-5" name="rest_code_32f1761261cc453ebc6af8f2fe301ea0-5"></a>    <span class="k">return</span> <span class="n">find_first</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="p">)</span>
+</pre></section><section id="counts"><h3>4.3 Counts</h3>
+<p>The `counts` keeps track of the number of times each arm is pulled.</p>
+<pre class="code python"><a id="rest_code_8f8efd5dbf16439297b82899dfd9759a-1" name="rest_code_8f8efd5dbf16439297b82899dfd9759a-1"></a><span class="nd">@property</span>
+<a id="rest_code_8f8efd5dbf16439297b82899dfd9759a-2" name="rest_code_8f8efd5dbf16439297b82899dfd9759a-2"></a><span class="k">def</span> <span class="nf">counts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="rest_code_8f8efd5dbf16439297b82899dfd9759a-3" name="rest_code_8f8efd5dbf16439297b82899dfd9759a-3"></a>    <span class="sd">"""counts of times each arm is pulled</span>
+<a id="rest_code_8f8efd5dbf16439297b82899dfd9759a-4" name="rest_code_8f8efd5dbf16439297b82899dfd9759a-4"></a>
+<a id="rest_code_8f8efd5dbf16439297b82899dfd9759a-5" name="rest_code_8f8efd5dbf16439297b82899dfd9759a-5"></a><span class="sd">    Returns:</span>
+<a id="rest_code_8f8efd5dbf16439297b82899dfd9759a-6" name="rest_code_8f8efd5dbf16439297b82899dfd9759a-6"></a><span class="sd">     numpy.array: array of counts</span>
+<a id="rest_code_8f8efd5dbf16439297b82899dfd9759a-7" name="rest_code_8f8efd5dbf16439297b82899dfd9759a-7"></a><span class="sd">    """</span>
+<a id="rest_code_8f8efd5dbf16439297b82899dfd9759a-8" name="rest_code_8f8efd5dbf16439297b82899dfd9759a-8"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_counts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="rest_code_8f8efd5dbf16439297b82899dfd9759a-9" name="rest_code_8f8efd5dbf16439297b82899dfd9759a-9"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_counts</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arms</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<a id="rest_code_8f8efd5dbf16439297b82899dfd9759a-10" name="rest_code_8f8efd5dbf16439297b82899dfd9759a-10"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_counts</span>
+</pre></section><section id="rewards"><h3>4.4 Rewards</h3>
+<p>The <code class="docutils literal">rewards</code> attributes holds the running average reward that each arm has returned.</p>
+<pre class="code python"><a id="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-1" name="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-1"></a><span class="nd">@property</span>
+<a id="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-2" name="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-2"></a><span class="k">def</span> <span class="nf">rewards</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-3" name="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-3"></a>    <span class="sd">"""array of running average of rewards for each arms</span>
+<a id="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-4" name="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-4"></a>
+<a id="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-5" name="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-5"></a><span class="sd">    Returns:</span>
+<a id="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-6" name="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-6"></a><span class="sd">     numpy.array: running averages</span>
+<a id="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-7" name="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-7"></a><span class="sd">    """</span>
+<a id="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-8" name="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-8"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rewards</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-9" name="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-9"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_rewards</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arms</span><span class="p">))</span>
+<a id="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-10" name="rest_code_c3baf85d2f9041279cc4fee2b77d9bfa-10"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rewards</span>
+</pre></section><section id="reset"><h3>4.5 Reset</h3>
+<pre class="code python"><a id="rest_code_b27b8511556544abb728790a26bb1b8e-1" name="rest_code_b27b8511556544abb728790a26bb1b8e-1"></a><span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="rest_code_b27b8511556544abb728790a26bb1b8e-2" name="rest_code_b27b8511556544abb728790a26bb1b8e-2"></a>    <span class="sd">"""sets the counts and rewards to None</span>
+<a id="rest_code_b27b8511556544abb728790a26bb1b8e-3" name="rest_code_b27b8511556544abb728790a26bb1b8e-3"></a>
+<a id="rest_code_b27b8511556544abb728790a26bb1b8e-4" name="rest_code_b27b8511556544abb728790a26bb1b8e-4"></a><span class="sd">    This lets you re-used the EpsilonGreedy without re-constructing</span>
+<a id="rest_code_b27b8511556544abb728790a26bb1b8e-5" name="rest_code_b27b8511556544abb728790a26bb1b8e-5"></a><span class="sd">    the arms</span>
+<a id="rest_code_b27b8511556544abb728790a26bb1b8e-6" name="rest_code_b27b8511556544abb728790a26bb1b8e-6"></a><span class="sd">    """</span>
+<a id="rest_code_b27b8511556544abb728790a26bb1b8e-7" name="rest_code_b27b8511556544abb728790a26bb1b8e-7"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_counts</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="rest_code_b27b8511556544abb728790a26bb1b8e-8" name="rest_code_b27b8511556544abb728790a26bb1b8e-8"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_rewards</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="rest_code_b27b8511556544abb728790a26bb1b8e-9" name="rest_code_b27b8511556544abb728790a26bb1b8e-9"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">total_reward</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="rest_code_b27b8511556544abb728790a26bb1b8e-10" name="rest_code_b27b8511556544abb728790a26bb1b8e-10"></a>    <span class="k">return</span>
+</pre></section><section id="select-arm"><h3>4.6 Select Arm</h3>
+<p>The <em>select_arm</em> method will choose either the best arm or a random one based on a randomly drawn value and how it compares to epsilon.</p>
+<pre class="code python"><a id="rest_code_495f89c934b24b3391b6cf4693d600d7-1" name="rest_code_495f89c934b24b3391b6cf4693d600d7-1"></a><span class="k">def</span> <span class="nf">select_arm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="rest_code_495f89c934b24b3391b6cf4693d600d7-2" name="rest_code_495f89c934b24b3391b6cf4693d600d7-2"></a>    <span class="sd">"""chooses the next arm to update</span>
+<a id="rest_code_495f89c934b24b3391b6cf4693d600d7-3" name="rest_code_495f89c934b24b3391b6cf4693d600d7-3"></a>
+<a id="rest_code_495f89c934b24b3391b6cf4693d600d7-4" name="rest_code_495f89c934b24b3391b6cf4693d600d7-4"></a><span class="sd">    Returns:</span>
+<a id="rest_code_495f89c934b24b3391b6cf4693d600d7-5" name="rest_code_495f89c934b24b3391b6cf4693d600d7-5"></a><span class="sd">     int: index of the next arm to pull</span>
+<a id="rest_code_495f89c934b24b3391b6cf4693d600d7-6" name="rest_code_495f89c934b24b3391b6cf4693d600d7-6"></a><span class="sd">    """</span>
+<a id="rest_code_495f89c934b24b3391b6cf4693d600d7-7" name="rest_code_495f89c934b24b3391b6cf4693d600d7-7"></a>    <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span><span class="p">:</span>
+<a id="rest_code_495f89c934b24b3391b6cf4693d600d7-8" name="rest_code_495f89c934b24b3391b6cf4693d600d7-8"></a>        <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arms</span><span class="p">))</span>
+<a id="rest_code_495f89c934b24b3391b6cf4693d600d7-9" name="rest_code_495f89c934b24b3391b6cf4693d600d7-9"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_arm</span>
+</pre></section><section id="update"><h3>4.7 Update</h3>
+<p>The update method pulls the arm whose index it is given and then updates the count and reward.</p>
+<pre class="code python"><a id="rest_code_47647fb97db5474daa92ea11ad1813dd-1" name="rest_code_47647fb97db5474daa92ea11ad1813dd-1"></a><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="p">):</span>
+<a id="rest_code_47647fb97db5474daa92ea11ad1813dd-2" name="rest_code_47647fb97db5474daa92ea11ad1813dd-2"></a>    <span class="sd">"""pulls the arm and updates the value</span>
+<a id="rest_code_47647fb97db5474daa92ea11ad1813dd-3" name="rest_code_47647fb97db5474daa92ea11ad1813dd-3"></a>
+<a id="rest_code_47647fb97db5474daa92ea11ad1813dd-4" name="rest_code_47647fb97db5474daa92ea11ad1813dd-4"></a><span class="sd">    Args:</span>
+<a id="rest_code_47647fb97db5474daa92ea11ad1813dd-5" name="rest_code_47647fb97db5474daa92ea11ad1813dd-5"></a><span class="sd">     arm (int): index of the arm to pull</span>
+<a id="rest_code_47647fb97db5474daa92ea11ad1813dd-6" name="rest_code_47647fb97db5474daa92ea11ad1813dd-6"></a><span class="sd">    """</span>
+<a id="rest_code_47647fb97db5474daa92ea11ad1813dd-7" name="rest_code_47647fb97db5474daa92ea11ad1813dd-7"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">counts</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+<a id="rest_code_47647fb97db5474daa92ea11ad1813dd-8" name="rest_code_47647fb97db5474daa92ea11ad1813dd-8"></a>    <span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">counts</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span>
+<a id="rest_code_47647fb97db5474daa92ea11ad1813dd-9" name="rest_code_47647fb97db5474daa92ea11ad1813dd-9"></a>    <span class="n">average_reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span>
+<a id="rest_code_47647fb97db5474daa92ea11ad1813dd-10" name="rest_code_47647fb97db5474daa92ea11ad1813dd-10"></a>    <span class="n">reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arms</span><span class="p">[</span><span class="n">arm</span><span class="p">]()</span>
+<a id="rest_code_47647fb97db5474daa92ea11ad1813dd-11" name="rest_code_47647fb97db5474daa92ea11ad1813dd-11"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">total_reward</span> <span class="o">+=</span> <span class="n">reward</span>
+<a id="rest_code_47647fb97db5474daa92ea11ad1813dd-12" name="rest_code_47647fb97db5474daa92ea11ad1813dd-12"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="p">(((</span><span class="n">count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">count</span><span class="p">))</span> <span class="o">*</span> <span class="n">average_reward</span>
+<a id="rest_code_47647fb97db5474daa92ea11ad1813dd-13" name="rest_code_47647fb97db5474daa92ea11ad1813dd-13"></a>                        <span class="o">+</span> <span class="p">(</span><span class="n">reward</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">count</span><span class="p">)))</span>
+<a id="rest_code_47647fb97db5474daa92ea11ad1813dd-14" name="rest_code_47647fb97db5474daa92ea11ad1813dd-14"></a>    <span class="k">return</span>
+</pre></section><section id="call"><h3>4.8 Call</h3>
+<p>The <em>__call__</em> method will be the main update method that unifies the naming conventions found in the books.</p>
+<pre class="code python"><a id="rest_code_55e97db74d894f119fd985c741e44ea3-1" name="rest_code_55e97db74d894f119fd985c741e44ea3-1"></a><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="rest_code_55e97db74d894f119fd985c741e44ea3-2" name="rest_code_55e97db74d894f119fd985c741e44ea3-2"></a>    <span class="sd">"""chooses an arm and updates the rewards"""</span>
+<a id="rest_code_55e97db74d894f119fd985c741e44ea3-3" name="rest_code_55e97db74d894f119fd985c741e44ea3-3"></a>    <span class="n">arm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_arm</span><span class="p">()</span>
+<a id="rest_code_55e97db74d894f119fd985c741e44ea3-4" name="rest_code_55e97db74d894f119fd985c741e44ea3-4"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">arm</span><span class="p">)</span>
+<a id="rest_code_55e97db74d894f119fd985c741e44ea3-5" name="rest_code_55e97db74d894f119fd985c741e44ea3-5"></a>    <span class="k">return</span>
+</pre></section></section><section id="epsilon-greedy-optimized"><h2>5 Epsilon Greedy Optimized</h2>
+<p>It turns out that while the implementation above works correctly, it can be rather slow, given that we need to train it thousands of times to get meaningful results. This is a numba-compatible version that drops the testing time from around 11 minutes to a minute or less. One of the restrictions of using classes in numba is that you have to declare the types of all the attributes of the class (this happens in the <cite>spec</cite> passed to the <cite>jitclass</cite> decorator). This means that I can't pass in <cite>BernoulliArm</cite> objects to the constructor, because <cite>numba</cite> has no idea what they are, so this solution is a hybrid greedy algorithm and bandit arm mashed together.</p>
+<p>The documentation for <cite>numba</cite> states that you have to initialize the attributes in the <cite>__init__</cite> method so I'm getting rid of the properties that build the numpy arrays and moving their creation to the constructor. In addition, the code that no longer expects the =BernoulliArm= objects will have to be re-implemented. In the tangle code anything with the <cite>optimized-</cite> prefix is re-implemented (other than the <cite>spec</cite>), otherwise the code is being pulled in from the original <cite>EpsilonGreedy</cite> implementation.</p>
+<pre class="code python"><a id="rest_code_172fbbbcc03840eda295f97745d4b26b-1" name="rest_code_172fbbbcc03840eda295f97745d4b26b-1"></a><span class="o">&lt;&lt;</span><span class="n">optimized</span><span class="o">-</span><span class="n">imports</span><span class="o">&gt;&gt;</span>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-2" name="rest_code_172fbbbcc03840eda295f97745d4b26b-2"></a>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-3" name="rest_code_172fbbbcc03840eda295f97745d4b26b-3"></a><span class="o">&lt;&lt;</span><span class="n">spec</span><span class="o">&gt;&gt;</span>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-4" name="rest_code_172fbbbcc03840eda295f97745d4b26b-4"></a>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-5" name="rest_code_172fbbbcc03840eda295f97745d4b26b-5"></a><span class="o">&lt;&lt;</span><span class="n">find</span><span class="o">-</span><span class="n">first</span><span class="o">&gt;&gt;</span>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-6" name="rest_code_172fbbbcc03840eda295f97745d4b26b-6"></a><span class="nd">@jitclass</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-7" name="rest_code_172fbbbcc03840eda295f97745d4b26b-7"></a><span class="k">class</span> <span class="nc">EpsilonGreedyOptimized</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-8" name="rest_code_172fbbbcc03840eda295f97745d4b26b-8"></a>    <span class="sd">"""The Epsilon Greedy Algorithm</span>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-9" name="rest_code_172fbbbcc03840eda295f97745d4b26b-9"></a>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-10" name="rest_code_172fbbbcc03840eda295f97745d4b26b-10"></a><span class="sd">    Args:</span>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-11" name="rest_code_172fbbbcc03840eda295f97745d4b26b-11"></a><span class="sd">     epsilon (float): fraction of the time to explore</span>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-12" name="rest_code_172fbbbcc03840eda295f97745d4b26b-12"></a><span class="sd">     arms (list): collection of probabilities for bandit arm</span>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-13" name="rest_code_172fbbbcc03840eda295f97745d4b26b-13"></a><span class="sd">    """</span>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-14" name="rest_code_172fbbbcc03840eda295f97745d4b26b-14"></a>    <span class="o">&lt;&lt;</span><span class="n">optimized</span><span class="o">-</span><span class="n">constructor</span><span class="o">&gt;&gt;</span>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-15" name="rest_code_172fbbbcc03840eda295f97745d4b26b-15"></a>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-16" name="rest_code_172fbbbcc03840eda295f97745d4b26b-16"></a>    <span class="o">&lt;&lt;</span><span class="n">best</span><span class="o">-</span><span class="n">arm</span><span class="o">&gt;&gt;</span>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-17" name="rest_code_172fbbbcc03840eda295f97745d4b26b-17"></a>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-18" name="rest_code_172fbbbcc03840eda295f97745d4b26b-18"></a>    <span class="o">&lt;&lt;</span><span class="n">select</span><span class="o">-</span><span class="n">arm</span><span class="o">&gt;&gt;</span>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-19" name="rest_code_172fbbbcc03840eda295f97745d4b26b-19"></a>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-20" name="rest_code_172fbbbcc03840eda295f97745d4b26b-20"></a>    <span class="o">&lt;&lt;</span><span class="n">optimized</span><span class="o">-</span><span class="n">pull</span><span class="o">-</span><span class="n">arm</span><span class="o">&gt;&gt;</span>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-21" name="rest_code_172fbbbcc03840eda295f97745d4b26b-21"></a>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-22" name="rest_code_172fbbbcc03840eda295f97745d4b26b-22"></a>    <span class="o">&lt;&lt;</span><span class="n">optimized</span><span class="o">-</span><span class="n">update</span><span class="o">&gt;&gt;</span>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-23" name="rest_code_172fbbbcc03840eda295f97745d4b26b-23"></a>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-24" name="rest_code_172fbbbcc03840eda295f97745d4b26b-24"></a>    <span class="o">&lt;&lt;</span><span class="n">optimized</span><span class="o">-</span><span class="n">reset</span><span class="o">&gt;&gt;</span>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-25" name="rest_code_172fbbbcc03840eda295f97745d4b26b-25"></a>
+<a id="rest_code_172fbbbcc03840eda295f97745d4b26b-26" name="rest_code_172fbbbcc03840eda295f97745d4b26b-26"></a>    <span class="o">&lt;&lt;</span><span class="n">call</span><span class="o">&gt;&gt;</span>
+</pre>
+<section id="optimized-imports"><h3>5.1 Optimized Imports</h3>
+<pre class="code python"><a id="rest_code_545a38dc711b4160b5053c4cb2d896a4-1" name="rest_code_545a38dc711b4160b5053c4cb2d896a4-1"></a><span class="c1"># python</span>
+<a id="rest_code_545a38dc711b4160b5053c4cb2d896a4-2" name="rest_code_545a38dc711b4160b5053c4cb2d896a4-2"></a><span class="kn">import</span> <span class="nn">random</span>
+<a id="rest_code_545a38dc711b4160b5053c4cb2d896a4-3" name="rest_code_545a38dc711b4160b5053c4cb2d896a4-3"></a>
+<a id="rest_code_545a38dc711b4160b5053c4cb2d896a4-4" name="rest_code_545a38dc711b4160b5053c4cb2d896a4-4"></a><span class="c1"># pypi</span>
+<a id="rest_code_545a38dc711b4160b5053c4cb2d896a4-5" name="rest_code_545a38dc711b4160b5053c4cb2d896a4-5"></a><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="p">(</span>
+<a id="rest_code_545a38dc711b4160b5053c4cb2d896a4-6" name="rest_code_545a38dc711b4160b5053c4cb2d896a4-6"></a>    <span class="n">jit</span><span class="p">,</span>
+<a id="rest_code_545a38dc711b4160b5053c4cb2d896a4-7" name="rest_code_545a38dc711b4160b5053c4cb2d896a4-7"></a>    <span class="n">jitclass</span><span class="p">,</span>
+<a id="rest_code_545a38dc711b4160b5053c4cb2d896a4-8" name="rest_code_545a38dc711b4160b5053c4cb2d896a4-8"></a>    <span class="p">)</span>
+<a id="rest_code_545a38dc711b4160b5053c4cb2d896a4-9" name="rest_code_545a38dc711b4160b5053c4cb2d896a4-9"></a><span class="kn">import</span> <span class="nn">numba</span>
+<a id="rest_code_545a38dc711b4160b5053c4cb2d896a4-10" name="rest_code_545a38dc711b4160b5053c4cb2d896a4-10"></a><span class="kn">import</span> <span class="nn">numpy</span>
+</pre></section><section id="the-spec"><h3>5.2 The Spec</h3>
+<p>This is how you tell numba what attributes the class will have. This is where most of the errors were when I first tried this. The error-messages aren't particularly helpful. Just be aware that this is the first place you should look if things crash.</p>
+<pre class="code python"><a id="rest_code_d26f1895cc404d6291ef36256866b3d3-1" name="rest_code_d26f1895cc404d6291ef36256866b3d3-1"></a><span class="n">spec</span> <span class="o">=</span> <span class="p">[</span>
+<a id="rest_code_d26f1895cc404d6291ef36256866b3d3-2" name="rest_code_d26f1895cc404d6291ef36256866b3d3-2"></a>    <span class="p">(</span><span class="s2">"epsilon"</span><span class="p">,</span> <span class="n">numba</span><span class="o">.</span><span class="n">double</span><span class="p">),</span>
+<a id="rest_code_d26f1895cc404d6291ef36256866b3d3-3" name="rest_code_d26f1895cc404d6291ef36256866b3d3-3"></a>    <span class="p">(</span><span class="s2">"arms"</span><span class="p">,</span> <span class="n">numba</span><span class="o">.</span><span class="n">double</span><span class="p">[:]),</span>
+<a id="rest_code_d26f1895cc404d6291ef36256866b3d3-4" name="rest_code_d26f1895cc404d6291ef36256866b3d3-4"></a>    <span class="p">(</span><span class="s2">"counts"</span><span class="p">,</span> <span class="n">numba</span><span class="o">.</span><span class="n">double</span><span class="p">[:]),</span>
+<a id="rest_code_d26f1895cc404d6291ef36256866b3d3-5" name="rest_code_d26f1895cc404d6291ef36256866b3d3-5"></a>    <span class="p">(</span><span class="s2">"rewards"</span><span class="p">,</span> <span class="n">numba</span><span class="o">.</span><span class="n">double</span><span class="p">[:]),</span>
+<a id="rest_code_d26f1895cc404d6291ef36256866b3d3-6" name="rest_code_d26f1895cc404d6291ef36256866b3d3-6"></a>    <span class="p">(</span><span class="s2">"total_reward"</span><span class="p">,</span> <span class="n">numba</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+<a id="rest_code_d26f1895cc404d6291ef36256866b3d3-7" name="rest_code_d26f1895cc404d6291ef36256866b3d3-7"></a><span class="p">]</span>
+</pre></section><section id="id2"><h3>5.3 The Constructor</h3>
+<p>The constructor takes two arguments - <em>epsilon</em> and <em>arms</em>. The <em>arms</em> list should contain probabilities that a reward or penalty will be returned when pulled.</p>
+<pre class="code python"><a id="rest_code_b805c8f25b5c49c39f33b7497908ec81-1" name="rest_code_b805c8f25b5c49c39f33b7497908ec81-1"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">arms</span><span class="p">):</span>
+<a id="rest_code_b805c8f25b5c49c39f33b7497908ec81-2" name="rest_code_b805c8f25b5c49c39f33b7497908ec81-2"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="n">epsilon</span>
+<a id="rest_code_b805c8f25b5c49c39f33b7497908ec81-3" name="rest_code_b805c8f25b5c49c39f33b7497908ec81-3"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">arms</span> <span class="o">=</span> <span class="n">arms</span>
+<a id="rest_code_b805c8f25b5c49c39f33b7497908ec81-4" name="rest_code_b805c8f25b5c49c39f33b7497908ec81-4"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">counts</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arms</span><span class="p">))</span>
+<a id="rest_code_b805c8f25b5c49c39f33b7497908ec81-5" name="rest_code_b805c8f25b5c49c39f33b7497908ec81-5"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arms</span><span class="p">))</span>
+<a id="rest_code_b805c8f25b5c49c39f33b7497908ec81-6" name="rest_code_b805c8f25b5c49c39f33b7497908ec81-6"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">total_reward</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="rest_code_b805c8f25b5c49c39f33b7497908ec81-7" name="rest_code_b805c8f25b5c49c39f33b7497908ec81-7"></a>    <span class="k">return</span>
+</pre></section><section id="id3"><h3>5.4 Reset</h3>
+<pre class="code python"><a id="rest_code_c680a14e2797444d9d1e3b047b3fce29-1" name="rest_code_c680a14e2797444d9d1e3b047b3fce29-1"></a><span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="rest_code_c680a14e2797444d9d1e3b047b3fce29-2" name="rest_code_c680a14e2797444d9d1e3b047b3fce29-2"></a>    <span class="sd">"""sets the counts, rewards, total_reward to 0s</span>
+<a id="rest_code_c680a14e2797444d9d1e3b047b3fce29-3" name="rest_code_c680a14e2797444d9d1e3b047b3fce29-3"></a>
+<a id="rest_code_c680a14e2797444d9d1e3b047b3fce29-4" name="rest_code_c680a14e2797444d9d1e3b047b3fce29-4"></a><span class="sd">    This lets you re-used the EpsilonGreedy</span>
+<a id="rest_code_c680a14e2797444d9d1e3b047b3fce29-5" name="rest_code_c680a14e2797444d9d1e3b047b3fce29-5"></a><span class="sd">    """</span>
+<a id="rest_code_c680a14e2797444d9d1e3b047b3fce29-6" name="rest_code_c680a14e2797444d9d1e3b047b3fce29-6"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">counts</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arms</span><span class="p">))</span>
+<a id="rest_code_c680a14e2797444d9d1e3b047b3fce29-7" name="rest_code_c680a14e2797444d9d1e3b047b3fce29-7"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arms</span><span class="p">))</span>
+<a id="rest_code_c680a14e2797444d9d1e3b047b3fce29-8" name="rest_code_c680a14e2797444d9d1e3b047b3fce29-8"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">total_reward</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="rest_code_c680a14e2797444d9d1e3b047b3fce29-9" name="rest_code_c680a14e2797444d9d1e3b047b3fce29-9"></a>    <span class="k">return</span>
+</pre></section><section id="pull-arm"><h3>5.5 Pull Arm</h3>
+<p>Since we can't give user-defined objects as attributes of the class, this version will be both algorithm and bandit.</p>
+<pre class="code python"><a id="rest_code_f224c17122d549b0993b211e7c9d6aad-1" name="rest_code_f224c17122d549b0993b211e7c9d6aad-1"></a><span class="k">def</span> <span class="nf">pull_arm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="p">):</span>
+<a id="rest_code_f224c17122d549b0993b211e7c9d6aad-2" name="rest_code_f224c17122d549b0993b211e7c9d6aad-2"></a>    <span class="sd">"""gets the reward</span>
+<a id="rest_code_f224c17122d549b0993b211e7c9d6aad-3" name="rest_code_f224c17122d549b0993b211e7c9d6aad-3"></a>
+<a id="rest_code_f224c17122d549b0993b211e7c9d6aad-4" name="rest_code_f224c17122d549b0993b211e7c9d6aad-4"></a><span class="sd">    Args:</span>
+<a id="rest_code_f224c17122d549b0993b211e7c9d6aad-5" name="rest_code_f224c17122d549b0993b211e7c9d6aad-5"></a><span class="sd">     arm (int): index for the arm-probability array</span>
+<a id="rest_code_f224c17122d549b0993b211e7c9d6aad-6" name="rest_code_f224c17122d549b0993b211e7c9d6aad-6"></a><span class="sd">    Returns:</span>
+<a id="rest_code_f224c17122d549b0993b211e7c9d6aad-7" name="rest_code_f224c17122d549b0993b211e7c9d6aad-7"></a><span class="sd">     int: reward or no reward</span>
+<a id="rest_code_f224c17122d549b0993b211e7c9d6aad-8" name="rest_code_f224c17122d549b0993b211e7c9d6aad-8"></a><span class="sd">    """</span>
+<a id="rest_code_f224c17122d549b0993b211e7c9d6aad-9" name="rest_code_f224c17122d549b0993b211e7c9d6aad-9"></a>    <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">arms</span><span class="p">[</span><span class="n">arm</span><span class="p">]:</span>
+<a id="rest_code_f224c17122d549b0993b211e7c9d6aad-10" name="rest_code_f224c17122d549b0993b211e7c9d6aad-10"></a>        <span class="k">return</span> <span class="mi">0</span>
+<a id="rest_code_f224c17122d549b0993b211e7c9d6aad-11" name="rest_code_f224c17122d549b0993b211e7c9d6aad-11"></a>    <span class="k">return</span> <span class="mi">1</span>
+</pre></section><section id="id4"><h3>5.6 Update</h3>
+<p>The update method pulls the arm whose index it is given and then updates the count and reward. Here we're calling the <code class="docutils literal">pull_arm</code> method instead of using a <code class="docutils literal">BernoulliArm</code> so we can't re-use the original method.</p>
+<pre class="code python"><a id="rest_code_b38215c0f4254868901ae8487ccc4254-1" name="rest_code_b38215c0f4254868901ae8487ccc4254-1"></a><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="p">):</span>
+<a id="rest_code_b38215c0f4254868901ae8487ccc4254-2" name="rest_code_b38215c0f4254868901ae8487ccc4254-2"></a>    <span class="sd">"""pulls the arm and updates the value</span>
+<a id="rest_code_b38215c0f4254868901ae8487ccc4254-3" name="rest_code_b38215c0f4254868901ae8487ccc4254-3"></a>
+<a id="rest_code_b38215c0f4254868901ae8487ccc4254-4" name="rest_code_b38215c0f4254868901ae8487ccc4254-4"></a><span class="sd">    Args:</span>
+<a id="rest_code_b38215c0f4254868901ae8487ccc4254-5" name="rest_code_b38215c0f4254868901ae8487ccc4254-5"></a><span class="sd">     arm (int): index of the arm to pull</span>
+<a id="rest_code_b38215c0f4254868901ae8487ccc4254-6" name="rest_code_b38215c0f4254868901ae8487ccc4254-6"></a><span class="sd">    """</span>
+<a id="rest_code_b38215c0f4254868901ae8487ccc4254-7" name="rest_code_b38215c0f4254868901ae8487ccc4254-7"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">counts</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+<a id="rest_code_b38215c0f4254868901ae8487ccc4254-8" name="rest_code_b38215c0f4254868901ae8487ccc4254-8"></a>    <span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">counts</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span>
+<a id="rest_code_b38215c0f4254868901ae8487ccc4254-9" name="rest_code_b38215c0f4254868901ae8487ccc4254-9"></a>    <span class="n">average_reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span>
+<a id="rest_code_b38215c0f4254868901ae8487ccc4254-10" name="rest_code_b38215c0f4254868901ae8487ccc4254-10"></a>    <span class="n">reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pull_arm</span><span class="p">(</span><span class="n">arm</span><span class="p">)</span>
+<a id="rest_code_b38215c0f4254868901ae8487ccc4254-11" name="rest_code_b38215c0f4254868901ae8487ccc4254-11"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">total_reward</span> <span class="o">+=</span> <span class="n">reward</span>
+<a id="rest_code_b38215c0f4254868901ae8487ccc4254-12" name="rest_code_b38215c0f4254868901ae8487ccc4254-12"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="p">(((</span><span class="n">count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">count</span><span class="p">))</span> <span class="o">*</span> <span class="n">average_reward</span>
+<a id="rest_code_b38215c0f4254868901ae8487ccc4254-13" name="rest_code_b38215c0f4254868901ae8487ccc4254-13"></a>                        <span class="o">+</span> <span class="p">(</span><span class="n">reward</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">count</span><span class="p">)))</span>
+<a id="rest_code_b38215c0f4254868901ae8487ccc4254-14" name="rest_code_b38215c0f4254868901ae8487ccc4254-14"></a>    <span class="k">return</span>
+</pre></section></section><section id="references"><h2>6 References</h2>
+<dl class="footnote brackets">
+<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="posts/The-Epsilon-Greedy-Algorithm/#id1">1</a></span></dt>
+<dd>
+<p>Bandit Algorithms for Website Optimization by John Myles White. Copyright 2013 John Myles White, 978-1-449-34133-6</p>
+</dd>
+</dl></section>
+</div>
+    </div>
+    </article>
+</div>
+
+        <ul class="pager postindexpager clearfix">
+<li class="previous"><a href="." rel="prev">Newer posts</a></li>
+        </ul>
+<!--End of body content--><footer id="footer">
+            Contents © 2021         <a href="mailto:necromuralist@protonmail.com">Cloistered Monkey</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png"></a><br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+            
+            
+        </footer>
+</div>
+</div>
+
+
+        <script src="assets/js/all-nocdn.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>
