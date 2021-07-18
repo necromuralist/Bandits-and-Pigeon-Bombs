@@ -1,0 +1,21 @@
+#+BEGIN_COMMENT
+.. title: The Average Rewards Method
+.. slug: the-average-rewards-method
+.. date: 2021-07-17 17:34:31 UTC-07:00
+.. tags: slipnote,action-value methods
+.. category: Action-Value Method
+.. link: 
+.. description: 
+.. type: text
+.. has_math: True
+#+END_COMMENT
+The *Average Reward Method* calculates the mean of the rewards given for the possible actions and picks an action based on it. For a particular action, the expected value would be:
+
+\begin{align}
+Q_t(a) & \doteq \frac{\text{sum of rewards for action } \textit{a} \text{ before time }\textit{t}} {\text{number of times action } \textit{a} \text{ was taken before time } \textit{t}}\\
+&= \frac{\sum_{i=1}^{t-1} R_i \times \unicode{x1D7D9}_{A_i=a}}{\sum_{i=1}^{t-1} \unicode{x1D7D9}_{A_i=a}}
+\end{align}
+
+Where \(Q_t(a)\) is the expected value, \(R_i\) is the actual reward and \(\unicode{x1D7D9}_{A_i=a}\) means it's a \(1\) if the action chosen at time /i/ (/a/) was the proposed action (/A/) and a \(0\) if it wasn't. According to {{% lancelot title="Sutton and Barto" %}}reinforcement-learning-sutton-barto{{% /lancelot %}} \(\doteq\) means it's an equality relationship by definition.
+
+Since the action might never have been picked before the denominator can sometimes be \(0\) in which case a default value is used for \(Q_t(a)\) (e.g. 0).

@@ -1,0 +1,43 @@
+#+BEGIN_COMMENT
+.. title: K-Armed Bandits
+.. slug: k-armed-bandits
+.. date: 2021-07-16 15:31:44 UTC-07:00
+.. tags: bandits,tabular model
+.. category: Bandits
+.. link: 
+.. description: Another version of the k-armed bandit.
+.. type: text
+
+#+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 3
+#+PROPERTY: header-args :session ~/.local/share/jupyter/runtime/kernel-5185c0ac-0474-4aab-a419-b4975377855b.json
+
+#+BEGIN_SRC python :results none :exports none
+%load_ext autoreload
+%autoreload 2
+#+END_SRC
+* Beginning
+** Tangle
+#+begin_src python :tangle ../reinforcement_learning/bandit_algorithms/k_armed_bandit.py
+<<imports>>
+
+<<the-arm>>
+#+end_src
+** Imports
+#+begin_src python :noweb-ref imports
+# from pypi
+import numpy
+#+end_src
+** Set Up
+*** Random Number Generator
+#+begin_src python :results none
+generator = numpy.random.default_rng()
+#+end_src
+* Middle
+** The Arm
+#+begin_src python :noweb-ref the-arm
+
+#+end_src
+* End
+  - {{% lancelot title="Reinforcement Learning by Sutton and Barto" %}}reference-reinforcement-learning{{% /lancelot %}}

@@ -1,0 +1,12 @@
+#+BEGIN_COMMENT
+.. title: Action-Value Methods
+.. slug: action-value-methods
+.. date: 2021-07-17 17:31:12 UTC-07:00
+.. tags: slipnote,action-value methods
+.. category: Action-Value Method
+.. link: 
+.. description: Action-Value method definition.
+.. type: text
+
+#+END_COMMENT
+*Action-Value Methods* are methods to estimate the value of actions and to select actions. An example would be the {{% lancelot title="Average Rewards Method" %}}the-average-rewards-method{{% /lancelot %}} which uses chooses the action that has the highest average reward so far.

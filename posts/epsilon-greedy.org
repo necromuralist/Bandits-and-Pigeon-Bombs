@@ -1,0 +1,17 @@
+#+BEGIN_COMMENT
+.. title: Epsilon-Greedy Strategy
+.. slug: epsilon-greedy
+.. date: 2021-07-17 20:17:29 UTC-07:00
+.. tags: bandits,slipnote
+.. category: Bandits
+.. link: 
+.. description: The Epsilon-Greedy approach.
+.. type: text
+
+#+END_COMMENT
+One way to try and get around the {{% lancelot title="Exploration-Exploitation Dilemma" %}}the-exploitation-exploration-dilemma{{% /lancelot %}} is to use the \(\epsilon\)-Greedy Strategy. 
+* Greedy
+To be /greedy/ in this case means to only exploit (pick the action that seems to have the best reward).
+* \(\epsilon\)-Greedy
+
+In the \(\epsilon\)-Greedy strategy you exploit most of the time but you explore with a probability of \(\epsilon\). So you define \(\epsilon\) as a number from \(0\) to \(1\) and before choosing an action you generate a random number from \(0\) to \(1\) and if it's greater than \(\epsilon\) you choose the action that has the highest expected reward and if not you pick a random action instead. If \(\epsilon=0\) then you never explore, just exploit, and if \(\epsilon=0\) then you only explore, never exploit.
