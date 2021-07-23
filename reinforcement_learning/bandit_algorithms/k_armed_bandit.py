@@ -1,51 +1,10 @@
-#+BEGIN_COMMENT
-.. title: K-Armed Bandits
-.. slug: k-armed-bandits
-.. date: 2021-07-16 15:31:44 UTC-07:00
-.. tags: bandits,tabular model
-.. category: Bandits
-.. link: 
-.. description: Another version of the k-armed bandit.
-.. type: text
-
-#+END_COMMENT
-#+OPTIONS: ^:{}
-#+TOC: headlines 3
-#+PROPERTY: header-args :session ~/.local/share/jupyter/runtime/kernel-5185c0ac-0474-4aab-a419-b4975377855b.json
-
-#+BEGIN_SRC python :results none :exports none
-%load_ext autoreload
-%autoreload 2
-#+END_SRC
-* Beginning
-#+begin_src python :exports none :tangle ../reinforcement_learning/bandit_algorithms/k_armed_bandit.py
-<<imports>>
-
-
-<<the-arm>>
-
-
-<<the-bandit>>
-
-
-<<epsilon-explorer>>
-#+end_src
-** Imports
-#+begin_src python :noweb-ref imports
 # python
 import random
 
 # pypi
 import numpy
-#+end_src
-** Set Up
-*** Random Number Generator
-#+begin_src python :results none
-generator = numpy.random.default_rng()
-#+end_src
-* Middle
-** The Arm
-#+begin_src python :noweb-ref the-arm
+
+
 class Arm:
     """An arm for the bandit"""
     def __init__(self):
@@ -66,9 +25,8 @@ class Arm:
          reward for this pull
         """
         return random.gauss(mu=self.center, sigma=1)
-#+end_src
-** The Bandit
-#+begin_src python :noweb-ref the-bandit
+
+
 class Bandit:
     """A k-armed bandit
 
@@ -110,9 +68,8 @@ class Bandit:
          the payout from the arm
         """
         return self.arms[arm].pull()
-#+end_src
-** An Epsilon Explorer
-#+begin_src python :noweb-ref epsilon-explorer
+
+
 class EpsilonExplorer:
     """runs the epsilon-greedy algorithm
 
@@ -183,6 +140,3 @@ class EpsilonExplorer:
             self.rewards[step] = reward
             self.is_optimal[step] = int(arm == self.bandit.best_arm)
         return
-#+end_src
-* End
-  - {{% lancelot title="Reinforcement Learning by Sutton and Barto" %}}reference-reinforcement-learning{{% /lancelot %}}
