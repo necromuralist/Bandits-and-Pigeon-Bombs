@@ -130,7 +130,7 @@ class EpsilonExplorer:
         for step in range(self.steps):
             exploit = random.random()
             arm = (self.expected_reward.argmax() if exploit > self.epsilon
-                   else random.randrange(self.k))
+                   else random.randrange(self.arms))
             reward = self.bandit(arm)
             self.pulled[arm] += 1
             previous_expected = self.expected_reward[arm]

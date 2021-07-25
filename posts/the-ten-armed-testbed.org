@@ -1,0 +1,281 @@
+#+BEGIN_COMMENT
+.. title: The Ten-Armed Testbed
+.. slug: the-ten-armed-testbed
+.. date: 2021-07-23 16:24:30 UTC-07:00
+.. tags: bandits,tabular model,epsilon-greedy
+.. category: EpsilonGreedy
+.. link: 
+.. description: Teting the Epsilon Greedy performance.
+.. type: text
+.. has_math: True
+#+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 3
+#+PROPERTY: header-args :session ~/.local/share/jupyter/runtime/kernel-6c77c0bc-10fe-46df-b89a-98d0def1ebc2.json
+
+#+BEGIN_SRC python :results none :exports none
+%load_ext autoreload
+%autoreload 2
+#+END_SRC
+* Beginning
+  This tests the performance of the Epsilon Greedy bandit solution as implemented in {{% lancelot title="this post" %}}k-armed-bandits{{% /lancelot %}}.
+** Imports
+#+begin_src python :results none
+# python
+from argparse import Namespace
+from functools import partial
+
+# pypi
+import hvplot.pandas
+import numpy
+import pandas
+
+# this code
+from reinforcement_learning.bandit_algorithms.k_armed_bandit import EpsilonExplorer
+
+# some other code
+from graeae import EmbedHoloviews, Timer
+#+end_src
+** Setup
+#+begin_src python :results none
+TIMER = Timer()
+#+end_src
+
+#+begin_src python :results none
+Parameters = Namespace(
+    arms = 10,
+    steps = 1000,
+    runs = 2000,
+    epsilons = [0, 0.01, 0.1]
+)
+#+end_src
+
+#+begin_src python :results none
+SLUG = "the-ten-armed-testbed"
+Embed = partial(EmbedHoloviews, folder_path=f"files/posts/{SLUG}")
+Plot = Namespace(
+    width=990,
+    height=780,
+    fontscale=2,
+    tan="#ddb377",
+    blue="#4687b7",
+    red="#ce7b6d",
+ )
+#+end_src
+* Middle
+** The Testbed
+#+begin_src python :results none
+class TestBed:
+    """Testbed for the epsilon-greedy bandit optimizer
+
+    Args:
+     epsilon: fraction of the time for the explorer to explore
+     arms: number of arms for the bandit
+     runs: number of times to run the explorer
+     steps: number of steps for the explorer to take (time)
+     reporting_interval: how often to report what run you're on
+    """
+    def __init__(self, epsilon: float, arms: int=10, runs: int=2000,
+                 steps: int=1000, reporting_interval: int=100):
+        self.epsilon = epsilon
+        self.arms = arms
+        self.runs = runs
+        self.steps = steps
+        self.reporting_interval = reporting_interval
+        self._total_rewards = None
+        self._optimal_choices = None
+        self._explore = None
+        return
+
+    @property
+    def total_rewards(self) -> numpy.ndarray:
+        """The total rewards earned from the bandit"""
+        if self._total_rewards is None:
+            self._total_rewards = numpy.zeros(self.steps)
+        return self._total_rewards
+
+    @total_rewards.setter
+    def total_rewards(self, new_rewards: numpy.ndarray):
+        """Sets the total_rewards
+
+        Args:
+         new_rewards: updated rewards
+        """
+        self._total_rewards = new_rewards
+        return
+
+    @property
+    def optimal_choices(self) -> numpy.ndarray:
+        """The number of times the choice made was the optimal arm"""
+        if self._optimal_choices is None:
+            self._optimal_choices = numpy.zeros(self.steps)
+        return self._optimal_choices
+
+    @optimal_choices.setter
+    def optimal_choices(self, new_optimal_count: numpy.ndarray):
+        """Sets the optimal choices
+
+        Args:
+         new_optimal_count: updated optimal_choices
+        """
+        self._optimal_choices = new_optimal_count
+        return
+
+    @property
+    def explore(self) -> EpsilonExplorer:
+        """The epsilon greedy explorer"""
+        if self._explore is None:
+            self._explore = EpsilonExplorer(epsilon=self.epsilon,
+                                             arms=self.arms,
+                                             steps=self.steps)
+        return self._explore
+
+    def __call__(self):
+        """Runs the explorer"""
+        for run in range(self.runs):
+            if run % self.reporting_interval == 0:
+                print(f"(epsilon={self.epsilon}) Run {run}")
+            self.explore()
+            self.total_rewards += self.explore.rewards
+            self.optimal_choices += self.explore.is_optimal
+
+            # need to fix this
+            self._explore = None
+        return
+#+end_src
+** The First Epsilon
+   This is the case where \(\epsilon=0\), so there is no exploration (it's a greedy algorithm).
+
+#+begin_src python :results output :exports both
+tester = TestBed(epsilon=Parameters.epsilons[0])
+with TIMER:
+    tester()
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Started: 2021-07-24 17:58:39.911810
+(epsilon=0) Run 0
+(epsilon=0) Run 100
+(epsilon=0) Run 200
+(epsilon=0) Run 300
+(epsilon=0) Run 400
+(epsilon=0) Run 500
+(epsilon=0) Run 600
+(epsilon=0) Run 700
+(epsilon=0) Run 800
+(epsilon=0) Run 900
+(epsilon=0) Run 1000
+(epsilon=0) Run 1100
+(epsilon=0) Run 1200
+(epsilon=0) Run 1300
+(epsilon=0) Run 1400
+(epsilon=0) Run 1500
+(epsilon=0) Run 1600
+(epsilon=0) Run 1700
+(epsilon=0) Run 1800
+(epsilon=0) Run 1900
+Ended: 2021-07-24 17:58:56.804264
+Elapsed: 0:00:16.892454
+#+end_example
+** A Little Exploration
+   Here, \(\epsilon=0.01\) so it explores about 1 out of every 100 times.
+
+#+begin_src python :results output :exports both
+tester_2 = TestBed(epsilon=Parameters.epsilons[1], reporting_interval=1000)
+with TIMER:
+    tester_2()
+#+end_src
+
+#+RESULTS:
+: Started: 2021-07-24 18:24:49.047510
+: (epsilon=0.01) Run 0
+: (epsilon=0.01) Run 1000
+: Ended: 2021-07-24 18:25:05.048563
+: Elapsed: 0:00:16.001053
+
+** A Little More Exploration
+   Here, \(\epsilon=0.1\) so it explores about 1 out of every 10 times.
+
+#+begin_src python :results output :exports both
+tester_3 = TestBed(epsilon=Parameters.epsilons[2], reporting_interval=1000)
+with TIMER:
+    tester_3()
+#+end_src
+
+#+RESULTS:
+: Started: 2021-07-24 19:07:18.796314
+: (epsilon=0.1) Run 0
+: (epsilon=0.1) Run 1000
+: Ended: 2021-07-24 19:07:36.326321
+: Elapsed: 0:00:17.530007
+** Plotting
+*** Average Rewards
+#+begin_src python :results none
+greedy = tester.total_rewards/tester.runs
+less_greedy = tester_2.total_rewards/tester_2.runs
+least_greedy = tester_3.total_rewards/tester_3.runs
+
+plotter = pandas.DataFrame.from_dict({"Greedy": greedy,
+                                      "0.01": less_greedy,
+                                      "0.1": least_greedy})
+
+plot = plotter.hvplot().opts(
+    title="Average Reward",
+    width=Plot.width,
+    height=Plot.height,
+    fontscale=Plot.fontscale,
+    xlabel="Step",
+    ylabel="Average Reward"
+)
+
+outcome = Embed(plot=plot, file_name="average_rewards")()
+#+end_src
+
+#+begin_src python :results output html :exports output
+print(outcome)
+#+end_src
+
+#+RESULTS:
+#+begin_export html
+<object type="text/html" data="average_rewards.html" style="width:100%" height=800>
+  <p>Figure Missing</p>
+</object>
+#+end_export
+
+It looks like the explorer that did the minimal amount of exploration did the best, insofar as it neared the highest payout earlier than the maximally exploring one, and as might be expected, the greedy version didn't improve over time. In the actual algorithm you are supposed to settle ties using randomness, while numpy chooses the first instance, so, since I'm initializing the values with zeros, the greedy algorithm always picks the first one. If this turns out to be a big deal we could initialize the expected rewards with random values instead.
+*** Optimal Choices
+#+begin_src python :results none
+greedy = 100 * tester.optimal_choices/tester.runs
+less_greedy = 100 * tester_2.optimal_choices/tester_2.runs
+least_greedy = 100 * tester_3.optimal_choices/tester_3.runs
+
+plotter = pandas.DataFrame.from_dict({"Greedy": greedy,
+                                      "0.01": less_greedy,
+                                      "0.1": least_greedy})
+
+plot = plotter.hvplot().opts(
+    title="% Optimal Arm Chosen",
+    width=Plot.width,
+    height=Plot.height,
+    fontscale=Plot.fontscale,
+    xlabel="Step",
+    ylabel="% Optimal"
+)
+
+outcome = Embed(plot=plot, file_name="optimal_arm")()
+#+end_src
+
+#+begin_src python :results output html :exports output
+print(outcome)
+#+end_src
+
+#+RESULTS:
+#+begin_export html
+<object type="text/html" data="optimal_arm.html" style="width:100%" height=800>
+  <p>Figure Missing</p>
+</object>
+#+end_export
+
+In this case the minimally exploring version did quite a bit better than the other two, perhaps because the rewards were close enough to each other that not picking the optimal arm didn't penalize the reward that much.
+* End

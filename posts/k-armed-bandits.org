@@ -2,8 +2,8 @@
 .. title: K-Armed Bandits
 .. slug: k-armed-bandits
 .. date: 2021-07-16 15:31:44 UTC-07:00
-.. tags: bandits,tabular model
-.. category: Bandits
+.. tags: bandits,tabular model,epsilon-greedy
+.. category: EpsilonGreedy
 .. link: 
 .. description: Another version of the k-armed bandit.
 .. type: text
@@ -11,7 +11,6 @@
 #+END_COMMENT
 #+OPTIONS: ^:{}
 #+TOC: headlines 3
-#+PROPERTY: header-args :session ~/.local/share/jupyter/runtime/kernel-5185c0ac-0474-4aab-a419-b4975377855b.json
 
 #+BEGIN_SRC python :results none :exports none
 %load_ext autoreload
@@ -173,7 +172,7 @@ class EpsilonExplorer:
         for step in range(self.steps):
             exploit = random.random()
             arm = (self.expected_reward.argmax() if exploit > self.epsilon
-                   else random.randrange(self.k))
+                   else random.randrange(self.arms))
             reward = self.bandit(arm)
             self.pulled[arm] += 1
             previous_expected = self.expected_reward[arm]
