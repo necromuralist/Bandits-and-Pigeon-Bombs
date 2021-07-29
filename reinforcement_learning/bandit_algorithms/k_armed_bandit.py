@@ -58,6 +58,12 @@ class Bandit:
                 arm.center for arm in self.arms]).argmax()
         return self._best_arm
 
+    def reset(self):
+        """Resets the arms and best arm"""
+        self._arms = None
+        self._best_arm = None
+        return
+
     def __call__(self, arm: int) -> float:
         """Pulls the arm
 
@@ -124,6 +130,17 @@ class EpsilonExplorer:
         if self._is_optimal is None:
             self._is_optimal = numpy.zeros(self.steps)
         return self._is_optimal
+
+    def reset(self):
+        """Resets the arrays and the bandit"""
+        self._is_optimal = None
+        self._rewards = None
+        self.bandit.reset()
+        self._pulled = None
+        self._expected_reward = None
+        self._is_optimal = None
+        self._expected_reward = None
+        return
 
     def __call__(self):
         """Runs the epsilon-greedy algorithm"""

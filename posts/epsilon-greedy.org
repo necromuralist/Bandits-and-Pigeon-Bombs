@@ -7,7 +7,7 @@
 .. link: 
 .. description: The Epsilon-Greedy approach.
 .. type: text
-
+.. has_math: True
 #+END_COMMENT
 One way to try and get around the {{% lancelot title="Exploration-Exploitation Dilemma" %}}the-exploitation-exploration-dilemma{{% /lancelot %}} is to use the \(\epsilon\)-Greedy Strategy. 
 * Greedy

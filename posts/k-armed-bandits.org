@@ -37,11 +37,6 @@ import random
 # pypi
 import numpy
 #+end_src
-** Set Up
-*** Random Number Generator
-#+begin_src python :results none
-generator = numpy.random.default_rng()
-#+end_src
 * Middle
 ** The Arm
 #+begin_src python :noweb-ref the-arm
@@ -98,6 +93,12 @@ class Bandit:
             self._best_arm = numpy.array([
                 arm.center for arm in self.arms]).argmax()
         return self._best_arm
+
+    def reset(self):
+        """Resets the arms and best arm"""
+        self._arms = None
+        self._best_arm = None
+        return
 
     def __call__(self, arm: int) -> float:
         """Pulls the arm
@@ -167,6 +168,17 @@ class EpsilonExplorer:
             self._is_optimal = numpy.zeros(self.steps)
         return self._is_optimal
 
+    def reset(self):
+        """Resets the arrays and the bandit"""
+        self._is_optimal = None
+        self._rewards = None
+        self.bandit.reset()
+        self._pulled = None
+        self._expected_reward = None
+        self._is_optimal = None
+        self._expected_reward = None
+        return
+
     def __call__(self):
         """Runs the epsilon-greedy algorithm"""
         for step in range(self.steps):
@@ -184,4 +196,4 @@ class EpsilonExplorer:
         return
 #+end_src
 * End
-  - {{% lancelot title="Reinforcement Learning by Sutton and Barto" %}}reference-reinforcement-learning{{% /lancelot %}}
+  - {{% lancelot title="Reinforcement Learning by Sutton and Barto" %}}reinforcement-learning-sutton-barto{{% /lancelot %}}

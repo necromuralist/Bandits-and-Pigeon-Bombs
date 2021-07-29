@@ -1,0 +1,219 @@
+#+BEGIN_COMMENT
+.. title: Sample Average Vs Alpha
+.. slug: sample-average-vs-alpha
+.. date: 2021-07-27 20:22:38 UTC-07:00
+.. tags: bandits,tabular model,epsilon-greedy
+.. category: EpsilonGreedy
+.. link: 
+.. description: Comparing the sample average and fixed-alpha greedy epsilon algorithms.
+.. type: text
+
+#+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 3
+#+PROPERTY: header-args :session ~/.local/share/jupyter/runtime/kernel-1778c099-aa57-443d-a2e3-15c9e0ceca6c.json
+
+#+BEGIN_SRC python :results none :exports none
+%load_ext autoreload
+%autoreload 2
+#+END_SRC
+* Beginning
+** Imports
+#+begin_src python :results none
+# python
+from argparse import Namespace
+from functools import partial
+
+# pypi
+import hvplot.pandas
+import numpy
+import pandas
+
+# this code
+from reinforcement_learning.bandit_algorithms.k_armed_bandit import EpsilonExplorer
+from reinforcement_learning.bandit_algorithms.k_armed_non_stationary_bandit import WalkExplorer, MovingBandit
+from reinforcement_learning.bandit_algorithms.testbed import TestBed
+
+# some other code
+from graeae import EmbedHoloviews, Timer
+#+end_src
+** Setup
+#+begin_src python :results none
+TIMER = Timer()
+#+end_src
+
+#+begin_src python :results none
+Parameters = Namespace(
+    arms = 10,
+    steps = 10000,
+    runs = 2000,
+    epsilon = 0.1,
+    starting_reward=0,
+    center = 0,
+    sigma = 0.01,
+    alpha = 0.1,
+)
+#+end_src
+
+#+begin_src python :results none
+SLUG = "sample-average-vs-alpha"
+Embed = partial(EmbedHoloviews, folder_path=f"files/posts/{SLUG}")
+Plot = Namespace(
+    width=990,
+    height=780,
+    fontscale=2,
+    tan="#ddb377",
+    blue="#4687b7",
+    red="#ce7b6d",
+ )
+#+end_src
+* Middle
+** The Sample Average Explorer
+#+begin_src python :results none
+average_explorer = EpsilonExplorer(epsilon=Parameters.epsilon, arms=Parameters.arms,
+                           steps=Parameters.steps)
+bandit = MovingBandit(k=Parameters.arms,
+                      starting_reward=Parameters.starting_reward,
+                      center=Parameters.center, sigma=Parameters.sigma)
+average_explorer._bandit = bandit
+
+average_test_bed = TestBed(epsilon=Parameters.epsilon, arms=Parameters.arms,
+                           runs=Parameters.runs, steps=Parameters.steps, explorer=average_explorer)
+#+end_src
+
+#+begin_src python :results output :exports both
+with TIMER:
+    average_test_bed()
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Started: 2021-07-28 17:18:08.289450
+(epsilon=0.1) Run 0
+(epsilon=0.1) Run 100
+(epsilon=0.1) Run 200
+(epsilon=0.1) Run 300
+(epsilon=0.1) Run 400
+(epsilon=0.1) Run 500
+(epsilon=0.1) Run 600
+(epsilon=0.1) Run 700
+(epsilon=0.1) Run 800
+(epsilon=0.1) Run 900
+(epsilon=0.1) Run 1000
+(epsilon=0.1) Run 1100
+(epsilon=0.1) Run 1200
+(epsilon=0.1) Run 1300
+(epsilon=0.1) Run 1400
+(epsilon=0.1) Run 1500
+(epsilon=0.1) Run 1600
+(epsilon=0.1) Run 1700
+(epsilon=0.1) Run 1800
+(epsilon=0.1) Run 1900
+Ended: 2021-07-28 17:26:42.716870
+Elapsed: 0:08:34.427420
+#+end_example
+** The Alpha Explorer
+#+begin_src python :results output :exports both
+walker = WalkExplorer(epsilon=Parameters.epsilon, alpha=Parameters.alpha,
+                      arms=Parameters.arms, steps=Parameters.steps,
+                      starting_reward=Parameters.starting_reward,
+                      center=Parameters.center, sigma=Parameters.sigma)
+alpha_test_bed = TestBed(epsilon=Parameters.epsilon, arms=Parameters.arms,
+                         runs=Parameters.runs, steps=Parameters.steps,
+                         explorer=walker)
+
+with TIMER:
+    alpha_test_bed()
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Started: 2021-07-28 17:31:44.444094
+(epsilon=0.1) Run 0
+(epsilon=0.1) Run 100
+(epsilon=0.1) Run 200
+(epsilon=0.1) Run 300
+(epsilon=0.1) Run 400
+(epsilon=0.1) Run 500
+(epsilon=0.1) Run 600
+(epsilon=0.1) Run 700
+(epsilon=0.1) Run 800
+(epsilon=0.1) Run 900
+(epsilon=0.1) Run 1000
+(epsilon=0.1) Run 1100
+(epsilon=0.1) Run 1200
+(epsilon=0.1) Run 1300
+(epsilon=0.1) Run 1400
+(epsilon=0.1) Run 1500
+(epsilon=0.1) Run 1600
+(epsilon=0.1) Run 1700
+(epsilon=0.1) Run 1800
+(epsilon=0.1) Run 1900
+Ended: 2021-07-28 17:39:50.951599
+Elapsed: 0:08:06.507505
+#+end_example
+** Plotting
+*** Average Rewards
+#+begin_src python :results none
+average = average_test_bed.total_rewards/average_test_bed.runs
+alpha = alpha_test_bed.total_rewards/alpha_test_bed.runs
+
+plotter = pandas.DataFrame.from_dict({"Average": average,
+                                      "Alpha": alpha})
+
+plot = plotter.hvplot().opts(
+    title="Average vs Alpha Reward",
+    width=Plot.width,
+    height=Plot.height,
+    fontscale=Plot.fontscale,
+    xlabel="Step",
+    ylabel="Reward"
+)
+
+outcome = Embed(plot=plot, file_name="average_vs_alpharewards")()
+#+end_src
+
+#+begin_src python :results output html :exports output
+print(outcome)
+#+end_src
+
+#+RESULTS:
+#+begin_export html
+<object type="text/html" data="average_vs_alpharewards.html" style="width:100%" height=800>
+  <p>Figure Missing</p>
+</object>
+#+end_export
+*** Optimal Choices
+#+begin_src python :results none
+average = 100 * average_test_bed.optimal_choices/average_test_bed.runs
+alpha = 100 * alpha_test_bed.optimal_choices/alpha_test_bed.runs
+
+plotter = pandas.DataFrame.from_dict({"Average": average,
+                                      "Alpha": alpha})
+
+plot = plotter.hvplot().opts(
+    title="% Optimal Arm Chosen",
+    width=Plot.width,
+    height=Plot.height,
+    fontscale=Plot.fontscale,
+    xlabel="Step",
+    ylabel="% Optimal"
+)
+
+outcome = Embed(plot=plot, file_name="average_vs_alpha_optimal_arm")()
+#+end_src
+
+#+begin_src python :results output html :exports output
+print(outcome)
+#+end_src
+
+#+RESULTS:
+#+begin_export html
+<object type="text/html" data="average_vs_alpha_optimal_arm.html" style="width:100%" height=800>
+  <p>Figure Missing</p>
+</object>
+#+end_export
+
+* End
+
+Using a constant learning rate instead of one that diminishes over time seems to have helped with these bandits where the arms didn't payout from a distribution with a constant mean.
