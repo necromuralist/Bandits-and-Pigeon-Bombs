@@ -45,7 +45,7 @@ TIMER = Timer()
 #+begin_src python :results none
 Parameters = Namespace(
     arms = 10,
-    steps = 10000,
+    steps = 200000,
     runs = 2000,
     epsilon = 0.1,
     starting_reward=0,
