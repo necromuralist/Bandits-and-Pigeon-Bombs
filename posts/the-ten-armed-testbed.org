@@ -11,7 +11,7 @@
 #+END_COMMENT
 #+OPTIONS: ^:{}
 #+TOC: headlines 3
-#+PROPERTY: header-args :session ~/.local/share/jupyter/runtime/kernel-6c77c0bc-10fe-46df-b89a-98d0def1ebc2.json
+#+PROPERTY: header-args :session ~/.local/share/jupyter/runtime/kernel-16429c0a-93ec-4314-be58-e8468474bf46.json
 
 #+BEGIN_SRC python :results none :exports none
 %load_ext autoreload
@@ -75,7 +75,7 @@ Plot = Namespace(
 import numpy
 
 # this code
-from reinforcement_learning.bandit_algorithms.k_armed_bandit import EpsilonExplorer
+from reinforcement_learning.bandit_algorithms.k_armed_bandit import Bandit, EpsilonExplorer
 
 #+end_src
 
@@ -99,10 +99,18 @@ class TestBed:
         self.runs = runs
         self.steps = steps
         self.reporting_interval = reporting_interval
+        self._bandit = None
         self._total_rewards = None
         self._optimal_choices = None
         self._explore = explorer
         return
+
+    @property
+    def bandit(self) -> Bandit:
+        """The K-armed bandit"""
+        if self._bandit is None:
+            self._bandit = Bandit(self.arms)
+        return self._bandit
 
     @property
     def total_rewards(self) -> numpy.ndarray:
@@ -143,8 +151,7 @@ class TestBed:
         """The epsilon greedy explorer"""
         if self._explore is None:
             self._explore = EpsilonExplorer(epsilon=self.epsilon,
-                                             arms=self.arms,
-                                             steps=self.steps)
+                                             arms=self.arms)
         return self._explore
 
     def __call__(self):
@@ -152,12 +159,18 @@ class TestBed:
         for run in range(self.runs):
             if run % self.reporting_interval == 0:
                 print(f"(epsilon={self.epsilon}) Run {run}")
-            self.explore()
-            self.total_rewards += self.explore.rewards
-            self.optimal_choices += self.explore.is_optimal
-
-            # need to fix this
+            arm = self.explore.first_arm
+            rewards = numpy.zeros(self.steps)
+            is_optimal = numpy.zeros(self.steps)
+            for step in range(self.steps):
+                reward = self.bandit(arm)
+                rewards[step] = reward
+                is_optimal[step] = int(arm == self.bandit.best_arm)
+                arm = self.explore(reward=reward)
             self.explore.reset()
+            self.bandit.reset()
+            self.total_rewards += rewards
+            self.optimal_choices += is_optimal
         return
 #+end_src
 ** The First Epsilon
@@ -171,7 +184,7 @@ with TIMER:
 
 #+RESULTS:
 #+begin_example
-Started: 2021-07-24 17:58:39.911810
+Started: 2021-08-01 15:03:38.538891
 (epsilon=0) Run 0
 (epsilon=0) Run 100
 (epsilon=0) Run 200
@@ -192,8 +205,8 @@ Started: 2021-07-24 17:58:39.911810
 (epsilon=0) Run 1700
 (epsilon=0) Run 1800
 (epsilon=0) Run 1900
-Ended: 2021-07-24 17:58:56.804264
-Elapsed: 0:00:16.892454
+Ended: 2021-08-01 15:05:04.487850
+Elapsed: 0:01:25.948959
 #+end_example
 ** A Little Exploration
    Here, \(\epsilon=0.01\) so it explores about 1 out of every 100 times.
@@ -205,11 +218,11 @@ with TIMER:
 #+end_src
 
 #+RESULTS:
-: Started: 2021-07-24 18:24:49.047510
+: Started: 2021-08-01 15:05:34.102630
 : (epsilon=0.01) Run 0
 : (epsilon=0.01) Run 1000
-: Ended: 2021-07-24 18:25:05.048563
-: Elapsed: 0:00:16.001053
+: Ended: 2021-08-01 15:06:59.237237
+: Elapsed: 0:01:25.134607
 
 ** A Little More Exploration
    Here, \(\epsilon=0.1\) so it explores about 1 out of every 10 times.
@@ -221,11 +234,11 @@ with TIMER:
 #+end_src
 
 #+RESULTS:
-: Started: 2021-07-24 19:07:18.796314
+: Started: 2021-08-01 15:10:53.971011
 : (epsilon=0.1) Run 0
 : (epsilon=0.1) Run 1000
-: Ended: 2021-07-24 19:07:36.326321
-: Elapsed: 0:00:17.530007
+: Ended: 2021-08-01 15:12:12.851665
+: Elapsed: 0:01:18.880654
 ** Plotting
 *** Average Rewards
 #+begin_src python :results none
@@ -260,7 +273,7 @@ print(outcome)
 </object>
 #+end_export
 
-It looks like the explorer that did the minimal amount of exploration did the best, insofar as it neared the highest payout earlier than the maximally exploring one, and as might be expected, the greedy version didn't improve over time. In the actual algorithm you are supposed to settle ties using randomness, while numpy chooses the first instance, so, since I'm initializing the values with zeros, the greedy algorithm always picks the first one. If this turns out to be a big deal we could initialize the expected rewards with random values instead.
+It looks like the explorer that did the most exploration did the best, insofar as it neared the highest payout earlier than the second-most exploring one, and as might be expected, the greedy version didn't improve over time.
 *** Optimal Choices
 #+begin_src python :results none
 greedy = 100 * tester.optimal_choices/tester.runs
@@ -294,5 +307,5 @@ print(outcome)
 </object>
 #+end_export
 
-In this case the minimally exploring version did quite a bit better than the other two, perhaps because the rewards were close enough to each other that not picking the optimal arm didn't penalize the reward that much.
+In this case the maximally exploring version did quite a bit better than the other two, which, when contrasted with the average rewards, suggests that the difference between the optimal arm and the sub-optimal arms wasn't large enough to really show how well the agents performed.
 * End

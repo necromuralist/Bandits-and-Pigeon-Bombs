@@ -2,7 +2,7 @@
 import numpy
 
 # this code
-from reinforcement_learning.bandit_algorithms.k_armed_bandit import EpsilonExplorer
+from reinforcement_learning.bandit_algorithms.k_armed_bandit import Bandit, EpsilonExplorer
 
 
 
@@ -24,10 +24,18 @@ class TestBed:
         self.runs = runs
         self.steps = steps
         self.reporting_interval = reporting_interval
+        self._bandit = None
         self._total_rewards = None
         self._optimal_choices = None
         self._explore = explorer
         return
+
+    @property
+    def bandit(self) -> Bandit:
+        """The K-armed bandit"""
+        if self._bandit is None:
+            self._bandit = Bandit(self.arms)
+        return self._bandit
 
     @property
     def total_rewards(self) -> numpy.ndarray:
@@ -68,8 +76,7 @@ class TestBed:
         """The epsilon greedy explorer"""
         if self._explore is None:
             self._explore = EpsilonExplorer(epsilon=self.epsilon,
-                                             arms=self.arms,
-                                             steps=self.steps)
+                                             arms=self.arms)
         return self._explore
 
     def __call__(self):
@@ -77,10 +84,16 @@ class TestBed:
         for run in range(self.runs):
             if run % self.reporting_interval == 0:
                 print(f"(epsilon={self.epsilon}) Run {run}")
-            self.explore()
-            self.total_rewards += self.explore.rewards
-            self.optimal_choices += self.explore.is_optimal
-
-            # need to fix this
+            arm = self.explore.first_arm
+            rewards = numpy.zeros(self.steps)
+            is_optimal = numpy.zeros(self.steps)
+            for step in range(self.steps):
+                reward = self.bandit(arm)
+                rewards[step] = reward
+                is_optimal[step] = int(arm == self.bandit.best_arm)
+                arm = self.explore(reward=reward)
             self.explore.reset()
+            self.bandit.reset()
+            self.total_rewards += rewards
+            self.optimal_choices += is_optimal
         return
