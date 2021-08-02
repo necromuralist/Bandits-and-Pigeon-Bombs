@@ -11,7 +11,7 @@
 #+END_COMMENT
 #+OPTIONS: ^:{}
 #+TOC: headlines 3
-#+PROPERTY: header-args :session ~/.local/share/jupyter/runtime/kernel-1778c099-aa57-443d-a2e3-15c9e0ceca6c.json
+#+PROPERTY: header-args :session ~/.local/share/jupyter/runtime/kernel-fbb0ff77-eb81-42a0-8451-38d2035f152c.json
 
 #+BEGIN_SRC python :results none :exports none
 %load_ext autoreload
@@ -31,7 +31,7 @@ import pandas
 
 # this code
 from reinforcement_learning.bandit_algorithms.k_armed_bandit import EpsilonExplorer
-from reinforcement_learning.bandit_algorithms.k_armed_non_stationary_bandit import WalkExplorer, MovingBandit
+from reinforcement_learning.bandit_algorithms.k_armed_non_stationary_bandit import MovingBandit, ConstantMemory
 from reinforcement_learning.bandit_algorithms.testbed import TestBed
 
 # some other code
@@ -45,7 +45,7 @@ TIMER = Timer()
 #+begin_src python :results none
 Parameters = Namespace(
     arms = 10,
-    steps = 200000,
+    steps = 10000,
     runs = 2000,
     epsilon = 0.1,
     starting_reward=0,
@@ -69,26 +69,20 @@ Plot = Namespace(
 #+end_src
 * Middle
 ** The Sample Average Explorer
-#+begin_src python :results none
-average_explorer = EpsilonExplorer(epsilon=Parameters.epsilon, arms=Parameters.arms,
-                           steps=Parameters.steps)
+#+begin_src python :results output :exports both
 bandit = MovingBandit(k=Parameters.arms,
                       starting_reward=Parameters.starting_reward,
                       center=Parameters.center, sigma=Parameters.sigma)
-average_explorer._bandit = bandit
 
 average_test_bed = TestBed(epsilon=Parameters.epsilon, arms=Parameters.arms,
-                           runs=Parameters.runs, steps=Parameters.steps, explorer=average_explorer)
-#+end_src
-
-#+begin_src python :results output :exports both
+                           runs=Parameters.runs, steps=Parameters.steps, bandit=bandit)
 with TIMER:
     average_test_bed()
 #+end_src
 
 #+RESULTS:
 #+begin_example
-Started: 2021-07-28 17:18:08.289450
+Started: 2021-08-02 16:06:18.934037
 (epsilon=0.1) Run 0
 (epsilon=0.1) Run 100
 (epsilon=0.1) Run 200
@@ -109,8 +103,8 @@ Started: 2021-07-28 17:18:08.289450
 (epsilon=0.1) Run 1700
 (epsilon=0.1) Run 1800
 (epsilon=0.1) Run 1900
-Ended: 2021-07-28 17:26:42.716870
-Elapsed: 0:08:34.427420
+Ended: 2021-08-02 16:06:44.669402
+Elapsed: 0:00:25.735365
 #+end_example
 ** The Alpha Explorer
 #+begin_src python :results output :exports both

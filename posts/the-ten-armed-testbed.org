@@ -90,16 +90,17 @@ class TestBed:
      runs: number of times to run the explorer
      steps: number of steps for the explorer to take (time)
      explorer: epsilon explorer instance
+     bandit: the multi-armed bandit
      reporting_interval: how often to report what run you're on
     """
     def __init__(self, epsilon: float, arms: int=10, runs: int=2000,
-                 steps: int=1000, explorer: type=None, reporting_interval: int=100):
+                 steps: int=1000, explorer: type=None, bandit: type=None, reporting_interval: int=100):
         self.epsilon = epsilon
         self.arms = arms
         self.runs = runs
         self.steps = steps
         self.reporting_interval = reporting_interval
-        self._bandit = None
+        self._bandit = bandit
         self._total_rewards = None
         self._optimal_choices = None
         self._explore = explorer

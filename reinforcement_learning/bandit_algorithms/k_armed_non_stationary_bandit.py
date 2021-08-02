@@ -4,6 +4,9 @@ import random
 # pypi
 import numpy
 
+# this project
+from reinforcement_learning.bandit_algorithms.k_armed_bandit import AverageMemory
+
 
 class RandomWalkArm:
     """A random-walk arm
@@ -92,6 +95,31 @@ class MovingBandit:
         return self.arms[arm].reward
 
 
+class ConstantMemory(AverageMemory):
+    """A non-decaying memory
+
+    Args:
+     arms: number of arms on the bandit
+     alpha: the learning rate
+    """
+    def __init(self, alpha: float, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.alpha = alpha
+        return
+
+    def update(self, arm: int, reward: float) -> None:
+        """Updates the expected reward
+
+        Args:
+         arm: the arm that was pulled to earn the reward
+         reward: the reward earned by pulling the arm
+        """
+        self.pulled[arm] += 1
+        expected = self.expected_reward[arm]
+        self.expected_reward[arm] = expected + (reward - expected) * self.alpha
+        return
+
+
 class WalkExplorer:
     """Epsilon-Greedy explorer with constant alpha
 
@@ -99,10 +127,6 @@ class WalkExplorer:
      epsilon: fraction of the time to explore
      alpha: learning rate for updating the expected reward
      arms: number of arms for the bandit
-     steps: number of times to pull the bandit's arm
-     starting_reward: the starting reward for each arm
-     center: center of the reward update distribution
-     sigma: spread of the reward update distribution
     """
     def __init__(self, epsilon: float=0.1, alpha: float=0.1,
                  arms: int=10, steps: int=10000,
