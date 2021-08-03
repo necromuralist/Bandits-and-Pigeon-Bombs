@@ -36,3 +36,5 @@ ln -s /usr/bin/pip3 /usr/bin/pip
 
 # other stuff
 apt install rsync
+
+chown -R neurotic:neurotic /home/neurotic/.ssh/authorized_keys

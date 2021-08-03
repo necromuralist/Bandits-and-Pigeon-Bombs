@@ -18,14 +18,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     useradd --create-home --shell /bin/bash neurotic && \
     echo "export PATH=$PATH:/home/neurotic/.local/bin/" && \
     echo "source /opt/conda/etc/profile.d/conda.sh" >> /home/neurotic/.bashrc && \
-    echo 'eval "$(register-python-argcomplete conda)"'
+    echo 'eval "$(register-python-argcomplete conda)"' && \
 
-RUN curl https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | gpg --dearmor > conda.gpg && \
-    install -o root -g root -m 644 conda.gpg /usr/share/keyrings/conda-archive-keyring.gpg && \
-    apt update && \
-    apt install conda && \
-    conda update conda -y && \
-    conda install argcomplete -y
+    # run_in_container.sh installs conda using debian
+    # curl https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh -o Anaconda3-2021.05-Linux-x86_64.sh
+
+
 COPY authorized_keys /home/neurotic/.ssh/
 COPY setup_conda.sh /home/neurotic/
 COPY run_in_container.sh /run_in_container.sh

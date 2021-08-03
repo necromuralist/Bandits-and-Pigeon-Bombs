@@ -126,6 +126,11 @@ class AverageMemory:
         """Index of a random arm"""
         return numpy_random.integers(self.arms)
 
+    def reset(self):
+        """Resets the memory"""
+        self._expected_reward = None
+        self._pulled = None
+
     def update(self, arm: int, reward: float) -> None:
         """Updates the expected reward
 
@@ -167,7 +172,7 @@ class EpsilonExplorer:
 
     def reset(self):
         """Resets the memory"""
-        self._memory = None
+        self.memory.reset()
         return
 
     def __call__(self, reward: float) -> int:
