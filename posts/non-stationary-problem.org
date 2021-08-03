@@ -138,7 +138,7 @@ class ConstantMemory(AverageMemory):
      arms: number of arms on the bandit
      alpha: the learning rate
     """
-    def __init(self, alpha: float, *args, **kwargs):
+    def __init__(self, alpha: float, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.alpha = alpha
         return
