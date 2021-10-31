@@ -25,7 +25,7 @@ SITE_URL = "https://necromuralist.github.io/Bandits-and-Pigeon-Bombs/"
 # This is the URL where Nikola's output will be deployed.
 # If not set, defaults to SITE_URL
 # BASE_URL = "https://example.com/"
-BLOG_EMAIL = "necromuralist@protonmail.com"
+BLOG_EMAIL = "cloisteredmonkey.jmark@slmail.me"
 BLOG_DESCRIPTION = "Notes while learning reinforcement learning."  # (translatable)
 
 # Nikola is multilingual!
